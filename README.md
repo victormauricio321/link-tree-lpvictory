@@ -5,20 +5,26 @@ subpastas. Sem build, sem framework, sem dependência de domínio.
 
 ```
 /           Link Tree            (index.html)
-/mdp/       Marques Drumond & Patrão
+/mdp/       Marques Drumond & Patrão   ← cópia, NÃO é o destino do banner
 /brasa/     BRASA Smash House
 ```
 
-Os dois banners da Link Tree apontam para `mdp/` e `brasa/` — **relativos, sem
-barra inicial**. Funciona em `*.vercel.app`, em domínio próprio, em `localhost`
-e em subpasta, sem editar uma linha e sem depender de um domínio definido.
+Os banners apontam para destinos diferentes de propósito:
+
+| Banner | Destino | Por quê |
+| --- | --- | --- |
+| 1 — MDP | `https://mdpodontologia.com.br/` | o cliente já tem domínio próprio no ar |
+| 2 — BRASA | `brasa/` | ainda não tem domínio; é servida por este deploy |
+
+`brasa/` é **relativo sem barra inicial**: funciona em `*.vercel.app`, em
+domínio próprio, em `localhost` e em subpasta, sem editar uma linha.
 
 ## Estrutura
 
 | Caminho | O que é |
 | --- | --- |
 | `index.html` + `assets/` | Link Tree — a página principal |
-| `mdp/` | cópia de deploy de `../site-mdp` — **gerada, não edite aqui** |
+| `mdp/` | cópia de deploy de `../site-mdp` — **gerada, não edite aqui**. Nenhum link aponta para ela desde que o banner 1 passou a usar o domínio do cliente (ver *Observações*) |
 | `brasa/` | cópia de deploy de `../meu-site-hamburger` — **gerada, não edite aqui** |
 | `link-na-bio.html` | Link Tree em arquivo único offline (WhatsApp, e-mail, pen drive) — a página abre sem internet, mas os **banners precisam do site publicado** |
 | `build-deploy.ps1` | sincroniza `mdp/` e `brasa/` a partir das pastas originais |
@@ -69,16 +75,23 @@ Todos os links editáveis têm o atributo `data-edit`:
 
 | `data-edit` | Aponta para |
 | --- | --- |
-| `banner-1` | `mdp/` |
+| `banner-1` | `https://mdpodontologia.com.br/` |
 | `banner-2` | `brasa/` |
 | `instagram`, `whatsapp`, `email` | rodapé |
 
 ## Observações
 
+- **`mdp/` virou conteúdo duplicado.** É cópia byte a byte de um site que já
+  está no ar em `mdpodontologia.com.br` — mesmo HTML, mesmo `<title>`. Desde
+  que o banner 1 passou a apontar para o domínio do cliente, nada mais linka
+  para `/mdp/`, mas o endereço continua público e indexável, competindo com o
+  site real do cliente. Três saídas, em ordem de preferência:
+  1. remover `mdp/` do deploy (linha `mdp/` no `.vercelignore`);
+  2. bloquear indexação com um header `X-Robots-Tag: noindex` para
+     `/mdp/(.*)` no `vercel.json` — não toca no HTML da landing;
+  3. deixar como está, se a intenção for manter um espelho de backup.
 - Os arquivos `.htaccess` em `mdp/` e `brasa/` são ignorados pela Vercel.
   Estão ali para o caso de o site ir para um servidor Apache (HostGator).
-- A landing da BRASA referencia `apple-touch-icon.png`, que **não existe** no
-  projeto original — 404 em toda visita. É anterior a esta reorganização.
 - A BRASA carrega as 8 fotos direto do Unsplash por hotlink, e ambas as
   landings usam CDN (GSAP, Lenis, Google Fonts): dependem de internet.
 
