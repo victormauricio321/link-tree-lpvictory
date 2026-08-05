@@ -1,0 +1,111 @@
+# ==========================================================================
+# MDP ODONTOLOGIA — configuração de entrega (HostGator / Apache)
+#
+# Enviar este arquivo para a MESMA pasta do index.html (public_html ou a
+# subpasta do domínio). Ele resolve três coisas MEDIDAS no servidor atual:
+#
+#   1. Nenhum arquivo volta com Cache-Control, Expires ou ETag. Sem política
+#      de cache o navegador usa uma heurística fraca em cima do Last-Modified
+#      e acaba revalidando quase tudo a cada visita — o paciente que volta
+#      paga de novo por CSS, JS e as 40 imagens.
+#   2. Brotli está desligado. Pedindo `Accept-Encoding: br` o servidor
+#      devolve o CSS SEM compressão nenhuma (57.427 bytes); só com gzip ele
+#      comprime (24.275 bytes). Brotli no mesmo arquivo fica perto de 20 KB.
+#   3. gzip está ativo só para alguns tipos. SVG e JSON ficavam de fora.
+#
+# O que NÃO precisa de ajuste, também medido:
+#   - HTTP/2 já está ativo (o navegador negocia h2 por ALPN; conferido em
+#     todos os 17 recursos da página).
+#   - TTFB está entre 80 e 102 ms em três medições. O servidor não é o
+#     gargalo de latência.
+#
+# Todas as diretivas estão dentro de <IfModule>: se o módulo não existir no
+# plano, a linha é ignorada em vez de derrubar o site com erro 500.
+# ==========================================================================
+
+# --------------------------------------------------------------------------
+# 1. COMPRESSÃO
+# Brotli primeiro (comprime ~20% melhor que gzip em texto); gzip é o
+# fallback para quem não anuncia `br`. Imagens e fontes woff2 ficam de fora
+# de propósito: já são formatos comprimidos e recomprimir só gasta CPU.
+# --------------------------------------------------------------------------
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml
+  AddOutputFilterByType BROTLI_COMPRESS application/javascript application/x-javascript
+  AddOutputFilterByType BROTLI_COMPRESS application/json application/xml
+  AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 2. CACHE
+#
+# CSS e JS podem ir a um ano com immutable porque o HTML os pede com ?v=NN:
+# ao publicar uma alteração o número muda, a URL muda, e o navegador busca o
+# arquivo novo. É o cache busting que já existe no projeto — sem ele um ano
+# seria perigoso.
+#
+# As imagens vão a um ano sem immutable: os nomes não têm versão, mas são
+# fotos que só mudam quando alguém troca o arquivo, e aí basta renomear.
+#
+# O HTML fica em no-cache: ele é o índice que aponta para as versões novas,
+# então precisa ser revalidado sempre. no-cache NÃO quer dizer "não guarde" —
+# quer dizer "guarde, mas confirme antes de usar", o que com ETag custa um
+# 304 de poucos bytes.
+# --------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2)$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# Expires é o mecanismo antigo, para navegador ou proxy que ignore
+# Cache-Control. Redundante de propósito.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                "access plus 1 year"
+  ExpiresByType application/javascript  "access plus 1 year"
+  ExpiresByType image/jpeg              "access plus 1 year"
+  ExpiresByType image/png               "access plus 1 year"
+  ExpiresByType image/webp              "access plus 1 year"
+  ExpiresByType image/avif              "access plus 1 year"
+  ExpiresByType image/svg+xml           "access plus 1 year"
+  ExpiresByType font/woff2              "access plus 1 year"
+  ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 3. ETag
+# O Apache monta o ETag padrão com INode, que muda de servidor para servidor.
+# Em hospedagem compartilhada com mais de uma máquina servindo o mesmo site,
+# isso faz o mesmo arquivo parecer diferente e o cache não colar. Tirando o
+# INode, o ETag passa a depender só de tamanho e data de modificação.
+# --------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  FileETag MTime Size
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 4. Tipos MIME
+# Sem o tipo certo o navegador não aplica compressão nem cache direito, e
+# webp/avif podem chegar como download em servidor mal configurado.
+# --------------------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType image/webp  .webp
+  AddType image/avif  .avif
+  AddType font/woff2  .woff2
+</IfModule>

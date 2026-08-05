@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRASA — Smash House | Flat-top burgers since 2016</title>
+  <meta name="description" content="180g blend smashed on a 250°C flat top, buttered brioche bun and cheese melted to order. Smash house in Belo Horizonte since 2016.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+  <link rel="alternate" hreflang="pt-br" href="../">
+  <link rel="alternate" hreflang="en" href="./">
+  <link rel="alternate" hreflang="x-default" href="../">
+  <link rel="stylesheet" href="../style.css">
+  <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+</head>
+<body>
+
+<!-- REPLACE: iFood and Instagram hrefs are tagged with data-replace -->
+<nav class="nav" aria-label="Main navigation">
+  <a class="nav__brand" href="#top">BRASA</a>
+  <ul class="nav__links" id="nav-links">
+    <li><a href="#cardapio">Menu</a></li>
+    <li><a href="#casa">The House</a></li>
+    <li><a href="#ingredientes">Ingredients</a></li>
+    <li><a href="#onde">Find Us</a></li>
+  </ul>
+  <div class="nav__end">
+    <div class="lang" role="group" aria-label="Language">
+      <a href="../" hreflang="pt-br">PT</a>
+      <a href="./" hreflang="en" aria-current="page">EN</a>
+    </div>
+    <a class="btn" href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">Order on iFood</a>
+    <button class="nav__toggle" type="button" id="nav-toggle"
+            aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div>
+    <span class="eyebrow">Smash House · Since 2016</span>
+    <h1>Full flame<span>raw flavor</span></h1>
+    <p class="lead">
+      A 180g blend smashed on a 250°C flat top. Caramelized crust outside,
+      juicy inside — the way we have done it since day one.
+    </p>
+    <div class="hero__actions">
+      <a class="btn" href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">Order on iFood</a>
+      <a class="btn btn--ghost" href="#cardapio">See the menu →</a>
+    </div>
+  </div>
+  <div class="hero__media">
+    <img src="https://images.unsplash.com/photo-1607013251379-e6eecfffe234?w=900&q=80"
+         alt="Cheeseburger with melted cheese and pickles on a dark background" width="900" height="1125">
+    <div class="sticker" aria-label="Rated 4.9 out of 5">4.9<small>★ ★ ★ ★ ★</small></div>
+  </div>
+</header>
+
+<!-- both tracks are identical copies: one exits left while the other enters
+     right. The phrase group appears twice per track so each copy is wider than
+     the screen — see the note on .marquee__track -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Smashed on the flat top</span><span>·</span><span>180g blend</span><span>·</span>
+    <span>Buttered brioche bun</span><span>·</span><span>No rush, no shortcuts</span><span>·</span>
+    <span>Smashed on the flat top</span><span>·</span><span>180g blend</span><span>·</span>
+    <span>Buttered brioche bun</span><span>·</span><span>No rush, no shortcuts</span><span>·</span>
+  </div>
+  <div class="marquee__track">
+    <span>Smashed on the flat top</span><span>·</span><span>180g blend</span><span>·</span>
+    <span>Buttered brioche bun</span><span>·</span><span>No rush, no shortcuts</span><span>·</span>
+    <span>Smashed on the flat top</span><span>·</span><span>180g blend</span><span>·</span>
+    <span>Buttered brioche bun</span><span>·</span><span>No rush, no shortcuts</span><span>·</span>
+  </div>
+</div>
+
+<section class="section section--sand" id="cardapio">
+  <div class="inner reveal">
+    <span class="eyebrow">The Menu</span>
+    <h2>Five ways<br>to get it right</h2>
+    <p class="lead">Few items, all sharp. If it is not good enough for seconds, it does not hit the flat top.</p>
+  </div>
+</section>
+<div class="strip-wrap section--sand">
+<div class="strip" role="list" aria-label="Burgers on the menu">
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&q=80" alt="Classic burger with lettuce and tomato" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>The Classic</h3>
+      <p>180g blend, English cheddar, lettuce, tomato and house mayo.</p>
+      <span class="card__price">R$ 32</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&q=80" alt="Double burger with melted cheese" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>The Double</h3>
+      <p>Two 180g blends, double cheddar, onions caramelized in butter.</p>
+      <span class="card__price">R$ 44</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=600&q=80" alt="Breaded chicken burger" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>The Crispy</h3>
+      <p>Breaded chicken thigh, quick pickles, chili honey sauce.</p>
+      <span class="card__price">R$ 36</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=600&q=80" alt="Vegetarian burger with avocado" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>No Meat</h3>
+      <p>Chickpea and beetroot on the flat top, avocado and herb mayo.</p>
+      <span class="card__price">R$ 34</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1606131731446-5568d87113aa?w=600&q=80" alt="Burger with barbecue sauce and bacon" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>The Smoked</h3>
+      <p>House bacon, coffee barbecue and 12-month aged cheddar.</p>
+      <span class="card__price">R$ 41</span>
+    </div>
+  </article>
+</div>
+  <button class="strip__nav strip__nav--prev" type="button" aria-label="See previous burgers" disabled>
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+      <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button class="strip__nav strip__nav--next" type="button" aria-label="See more burgers">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+      <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
+<section class="section" id="casa">
+  <div class="inner split split--tilt reveal">
+    <div>
+      <span class="eyebrow">The House</span>
+      <h2>Ten years<br>one flat top</h2>
+      <p class="lead">
+        It started with a borrowed flat top and a line of nine people on the sidewalk.
+        Ten years later it is the same recipe, the same flat top and a much longer line.
+      </p>
+      <p class="lead" style="margin-top:1.25rem">
+        We grind the beef every morning. The buns come out of the oven at 10am.
+        Nothing is frozen, nothing waits — that is why the menu is short.
+      </p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1610614819513-58e34989848b?w=900&q=80" alt="Three small burgers served with fries" width="900" height="720" loading="lazy">
+  </div>
+</section>
+
+<section class="section section--dark" id="ingredientes">
+  <div class="inner reveal">
+    <span class="eyebrow">The Ingredients</span>
+    <h2>Every layer<br>has a reason</h2>
+    <p class="lead">From the farm to the flat top in under 48 hours. No middleman, no freezer.</p>
+    <div class="stats">
+      <div><strong>180g</strong><span>Angus blend ground daily</span></div>
+      <div><strong>250°C</strong><span>Flat top, seared in 90 seconds</span></div>
+      <div><strong>10am</strong><span>Brioche buns out of the oven</span></div>
+      <div><strong>12</strong><span>Months of cheddar aging</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand" id="onde">
+  <div class="inner split split--wide-media reveal">
+    <div>
+      <span class="eyebrow">Find Us</span>
+      <h2>Come<br>eat here</h2>
+      <div class="places">
+        <div>
+          <h3>Savassi</h3>
+          <p>Rua Antônio de Albuquerque, 812<br>Tue to Sun, 6pm–11:30pm</p>
+        </div>
+        <div>
+          <h3>Mercado Central</h3>
+          <p>Av. Augusto de Lima, 744 — stall 21<br>Mon to Sat, 11am–7pm</p>
+        </div>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1000&q=80" alt="Restaurant floor with wooden tables and warm light" width="1000" height="800" loading="lazy">
+  </div>
+</section>
+
+<section class="section cta">
+  <div class="inner reveal">
+    <span class="eyebrow" style="color:inherit;opacity:.8">Hungry?</span>
+    <h2>Get closer<br>to the fire</h2>
+    <p class="lead">Forty-minute delivery downtown. Or come pick it up and eat it still dripping.</p>
+    <a class="btn" href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">Order on iFood</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="inner">
+    <div class="footer__grid">
+      <div>
+        <p class="footer__brand">BRASA</p>
+        <p class="lead" style="max-width:34ch;margin-top:1rem">
+          Smash house in Belo Horizonte. Beef ground daily, buns baked in house.
+        </p>
+      </div>
+      <div>
+        <h3>Browse</h3>
+        <ul>
+          <li><a href="#cardapio">Menu</a></li>
+          <li><a href="#casa">The House</a></li>
+          <li><a href="#ingredientes">Ingredients</a></li>
+          <li><a href="#onde">Find Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Order &amp; follow</h3>
+        <ul>
+          <li><a href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">iFood</a></li>
+          <li><a href="https://instagram.com/" data-replace="instagram" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__base">
+      <span>© 2026 BRASA — All rights reserved</span>
+      <span>Hot flat top · buttered buns · since 2016</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lenis@1.3.25/dist/lenis.min.js" defer></script>
+<script src="../script.js" defer></script>
+</body>
+</html>

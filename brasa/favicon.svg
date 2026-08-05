@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Favicon BRASA. Sem webfont: favicon não carrega recurso externo, então o
+       B usa a mesma pilha de fallback da variável display do site (Georgia,
+       serif). Quadrado cheio de terracota para o ícone ter contorno próprio em
+       aba clara e escura, sem precisar de variante prefers-color-scheme.
+       Atenção: SVG é XML, comentário aqui não pode conter hífen duplo. -->
+  <rect width="64" height="64" rx="12" fill="#C17630"/>
+  <text x="32" y="47.5" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="46"
+        fill="#F5F1EA">B</text>
+</svg>

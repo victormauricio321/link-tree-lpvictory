@@ -1,0 +1,378 @@
+/* BRASA — landing. Direção: síntese das 5 referências.
+   Tipografia: img 'tipografia' | Cores: img 'cores-site'
+   Grid: paputmenorca.com | Movimento + voz: cravburgers.shop */
+
+/* ponytail: Alfa Slab One é o substituto livre do slab condensado da referência.
+   Fidelidade total = Rockwell Condensed / Bavro, trocando só --display. */
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Oswald:wght@500;600;700&family=Inter:wght@400;500&display=swap');
+
+:root {
+  /* --- Cor (amostrada de cores-site.png) --- */
+  --cream:      #F5F1EA;
+  --sand:       #EDDCCB;
+  --terracotta: #C17630;
+  --terracotta-dark: #9E5A20;
+  --espresso:   #43200A;
+  --ink:        #202020;
+  --muted:      #8F8880;
+  --ember:      #D81818;
+
+  /* --- Tipografia --- */
+  --display: 'Alfa Slab One', Georgia, serif;
+  --label:   'Oswald', Impact, sans-serif;
+  --body:    'Inter', system-ui, sans-serif;
+
+  --step-eyebrow: clamp(.75rem, .9vw, .85rem);
+  --step-body:    clamp(1rem, 1.15vw, 1.125rem);
+  --step-h3:      clamp(1.5rem, 2.2vw, 2rem);
+  --step-h2:      clamp(2.5rem, 5vw, 4rem);
+  --step-hero:    clamp(3rem, 9.5vw, 9rem);
+  --track-tight:  -0.02em;
+  --track-label:  0.14em;
+  --leading-body: 1.7;
+
+  /* --- Grid (paput: full-bleed + miolo contido) --- */
+  --gutter: clamp(1.25rem, 3vw, 2.5rem);
+  --content: 1200px;
+  --section-y: clamp(4rem, 8vw, 9rem);
+
+  /* --- Movimento (crav) --- */
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --t-fast: .2s;
+  --t-base: .3s;
+  --t-slow: .6s;
+  --tilt: 7deg;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* fallback nativo; quando o Lenis carrega ele assume e o nativo sai da frente */
+html { scroll-behavior: smooth; }
+html.lenis { scroll-behavior: auto; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font: var(--step-body)/var(--leading-body) var(--body);
+  overflow-x: hidden;
+}
+
+/* height:auto obrigatório — o atributo height do HTML sobrescreveria o aspect-ratio */
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+
+:focus-visible { outline: 3px solid var(--terracotta); outline-offset: 3px; }
+
+h1, h2, h3 {
+  font-family: var(--display);
+  color: var(--espresso);
+  text-transform: uppercase;
+  letter-spacing: var(--track-tight);
+  line-height: .92;
+  font-weight: 400;
+}
+h1 { font-size: var(--step-hero); }
+h2 { font-size: var(--step-h2); margin-bottom: 1.5rem; }
+h3 { font-size: var(--step-h3); }
+
+.eyebrow {
+  display: block;
+  font: 600 var(--step-eyebrow)/1 var(--label);
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  color: var(--terracotta);
+  margin-bottom: 1.25rem;
+}
+
+.lead { color: var(--muted); max-width: 52ch; }
+
+/* ---------- faixas full-bleed, miolo contido (padrão paput) ---------- */
+.section { padding: var(--section-y) var(--gutter); }
+.inner { max-width: var(--content); margin-inline: auto; }
+.section--sand { background: var(--sand); }
+.section--dark { background: var(--espresso); color: var(--sand); }
+.section--dark h2, .section--dark h3 { color: var(--cream); }
+/* --muted não tem contraste suficiente sobre o espresso */
+.section--dark .lead { color: color-mix(in srgb, var(--sand) 80%, transparent); }
+
+/* ---------- botões ---------- */
+.btn {
+  display: inline-block;
+  padding: .95em 2.1em;
+  background: var(--terracotta);
+  color: var(--cream);
+  font: 600 1rem/1 var(--label);
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  text-decoration: none;
+  border: 2px solid var(--terracotta);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background var(--t-base) var(--ease), transform var(--t-base) var(--ease);
+}
+.btn:hover { background: var(--terracotta-dark); border-color: var(--terracotta-dark); transform: translateY(-2px); }
+.btn--ghost { background: none; color: var(--espresso); }
+.btn--ghost:hover { background: var(--espresso); border-color: var(--espresso); color: var(--cream); }
+
+/* ---------- nav (esconde ao descer, volta ao subir — crav) ---------- */
+.nav {
+  position: fixed; inset: 0 0 auto; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 1rem var(--gutter);
+  background: color-mix(in srgb, var(--cream) 88%, transparent);
+  backdrop-filter: blur(10px);
+  transition: transform var(--t-base) var(--ease);
+}
+.nav.is-hidden { transform: translateY(-100%); }
+.nav__brand { font: 400 1.5rem/1 var(--display); color: var(--espresso); text-decoration: none; letter-spacing: .02em; }
+.nav__links { display: flex; gap: 1.75rem; list-style: none; }
+.nav__links a {
+  font: 500 .85rem/1 var(--label);
+  text-transform: uppercase; letter-spacing: var(--track-label);
+  text-decoration: none; color: var(--ink);
+  transition: color var(--t-fast) var(--ease);
+}
+.nav__links a:hover { color: var(--terracotta); }
+.nav__end { display: flex; align-items: center; gap: .75rem; }
+
+/* troca de idioma: as duas páginas compartilham este CSS e o script.js */
+.lang { display: flex; align-items: center; font: 600 .75rem/1 var(--label); letter-spacing: var(--track-label); }
+.lang a {
+  padding: .4rem .45rem; text-decoration: none; color: var(--muted);
+  transition: color var(--t-fast) var(--ease);
+}
+.lang a:hover { color: var(--espresso); }
+.lang a[aria-current="page"] { color: var(--terracotta); }
+.lang a + a {
+  margin-left: .45rem; padding-left: .6rem;
+  border-left: 1px solid color-mix(in srgb, var(--espresso) 20%, transparent);
+}
+.nav .btn { padding: .7em 1.4em; font-size: .8rem; }
+
+/* hambúrguer: só existe no mobile */
+.nav__toggle {
+  display: none;
+  width: 44px; height: 44px; padding: 12px 10px;
+  flex-direction: column; justify-content: space-between;
+  background: none; border: 0; cursor: pointer;
+}
+.nav__toggle span {
+  display: block; height: 2px; width: 100%;
+  background: var(--espresso); border-radius: 2px;
+  transition: transform var(--t-base) var(--ease), opacity var(--t-fast) var(--ease);
+}
+.nav.is-open .nav__toggle span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.nav.is-open .nav__toggle span:nth-child(2) { opacity: 0; }
+.nav.is-open .nav__toggle span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+@media (max-width: 860px) {
+  .nav__toggle { display: flex; }
+  .nav__links {
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 0;
+    padding: .5rem var(--gutter) 1.5rem;
+    background: var(--cream);
+    border-bottom: 1px solid color-mix(in srgb, var(--espresso) 12%, transparent);
+    transform: translateY(-101%);
+    visibility: hidden;
+    transition: transform var(--t-base) var(--ease), visibility var(--t-base);
+  }
+  .nav.is-open .nav__links { transform: none; visibility: visible; }
+  .nav__links a { display: block; padding: .9rem 0; font-size: 1rem; }
+  .nav__links li + li { border-top: 1px solid color-mix(in srgb, var(--espresso) 10%, transparent); }
+}
+
+/* ---------- hero ---------- */
+.hero {
+  display: grid; align-items: center; gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: 1.1fr .9fr;
+  padding: clamp(8rem, 14vw, 12rem) var(--gutter) var(--section-y);
+  max-width: var(--content); margin-inline: auto;
+}
+.hero h1 { margin-bottom: 1.5rem; }
+.hero h1 span { display: block; color: var(--terracotta); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.25rem; }
+.hero__media { position: relative; }
+.hero__media img { width: 100%; aspect-ratio: 4/5; object-fit: cover; border-radius: 6px; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; } }
+
+/* selo adesivo torto (crav) */
+.sticker {
+  position: absolute; top: -1.5rem; right: -1rem;
+  display: grid; place-content: center; text-align: center;
+  width: clamp(76px, 9vw, 110px); aspect-ratio: 1;
+  background: var(--terracotta); color: var(--cream);
+  border-radius: 50%;
+  font: 600 clamp(1.1rem, 1.8vw, 1.6rem)/1 var(--label);
+  transform: rotate(calc(var(--tilt) * -1));
+  transition: transform var(--t-base) var(--ease);
+}
+.sticker small { display: block; font-size: .5em; letter-spacing: var(--track-label); }
+.sticker:hover { transform: rotate(0deg) scale(1.06); }
+
+/* ---------- marquee (bordão repetido — paput) ---------- */
+.marquee {
+  display: flex; overflow: hidden; gap: 0;
+  background: var(--espresso); color: var(--sand);
+  padding: .9rem 0; user-select: none;
+}
+.marquee__track {
+  display: flex; flex-shrink: 0; gap: 2.5rem; padding-right: 2.5rem;
+  /* cada cópia precisa ser >= a largura da viewport: a animação desloca uma
+     cópia inteira, então se a cópia for mais estreita que a tela sobra buraco
+     no fim do ciclo. min-width garante isso em qualquer largura; o conteúdo
+     duplicado no HTML é o que mantém o espaçamento apertado até ~2400px. */
+  min-width: 100%; justify-content: space-around;
+  animation: marquee 28s linear infinite;
+}
+.marquee span {
+  font: 600 clamp(.9rem, 1.6vw, 1.3rem)/1 var(--label);
+  text-transform: uppercase; letter-spacing: var(--track-label);
+  white-space: nowrap;
+}
+@keyframes marquee { to { transform: translateX(-100%); } }
+
+/* ---------- cardápio: tira horizontal (paput) ---------- */
+.strip-wrap { position: relative; }
+.strip {
+  display: flex; gap: 1.5rem;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  /* começa alinhado à coluna de conteúdo, mas sangra até a borda (paput) */
+  /* 100% e não 100vw: vw inclui a barra de rolagem vertical, o que dessincroniza
+     o padding do scroll-padding e deixa o snap parando alguns px fora do zero */
+  --strip-inset: max(var(--gutter), (100% - var(--content)) / 2);
+  padding: 2.5rem var(--gutter) 1rem var(--strip-inset);
+  /* sem isto o scroll-snap engole o padding esquerdo no load: o snapport começa
+     na borda e o navegador rola até o primeiro card, quebrando o alinhamento
+     com a coluna de conteúdo e já habilitando a seta da esquerda */
+  scroll-padding-left: var(--strip-inset);
+  /* barra de rolagem escondida: a navegação é pelas setas e pelo swipe */
+  scrollbar-width: none;
+}
+.strip::-webkit-scrollbar { display: none; }
+
+/* setas: somem por opacidade quando :disabled — o JS só liga/desliga o disabled */
+.strip__nav {
+  position: absolute; top: 50%; z-index: 5;
+  display: grid; place-items: center;
+  width: 48px; height: 48px; padding: 0;
+  border: 0; border-radius: 50%;
+  background: #fff; color: #a9a9a9;
+  box-shadow: 0 2px 12px rgb(0 0 0 / .18);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: opacity var(--t-base) var(--ease), color var(--t-fast) var(--ease),
+              box-shadow var(--t-base) var(--ease);
+}
+.strip__nav:hover { color: var(--espresso); box-shadow: 0 4px 16px rgb(0 0 0 / .24); }
+.strip__nav:disabled { opacity: 0; pointer-events: none; }
+.strip__nav--prev { left: clamp(.5rem, 1.5vw, 1.25rem); }
+.strip__nav--next { right: clamp(.5rem, 1.5vw, 1.25rem); }
+.card {
+  flex: 0 0 clamp(240px, 26vw, 320px);
+  scroll-snap-align: start;
+  background: var(--cream);
+  border-radius: 6px; overflow: hidden;
+  transition: transform var(--t-base) var(--ease);
+}
+.section--sand .card { background: var(--cream); }
+.card:hover { transform: translateY(-6px); }
+.card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.card__body { padding: 1.25rem 1.25rem 1.5rem; }
+.card h3 { font-size: 1.25rem; margin-bottom: .5rem; }
+.card p { font-size: .95rem; color: var(--muted); line-height: 1.5; }
+.card__price {
+  display: block; margin-top: 1rem;
+  font: 600 1.35rem/1 var(--label); color: var(--terracotta);
+}
+
+/* ---------- blocos assimétricos ---------- */
+.split {
+  display: grid; gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+  grid-template-columns: 1fr 1fr;
+}
+.split--wide-media { grid-template-columns: .85fr 1.15fr; }
+.split img { width: 100%; aspect-ratio: 5/4; object-fit: cover; border-radius: 6px; }
+.split--tilt img { transform: rotate(calc(var(--tilt) * -.4)); }
+@media (max-width: 860px) { .split, .split--wide-media { grid-template-columns: 1fr; } }
+
+/* ---------- stats (crav: número no lugar de adjetivo) ---------- */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; margin-top: 3rem; }
+.stats div { border-top: 2px solid var(--terracotta); padding-top: 1rem; }
+.stats strong { display: block; font: 400 clamp(2rem, 3.5vw, 3rem)/1 var(--display); color: var(--espresso); }
+.section--dark .stats strong { color: var(--sand); }
+.stats span { font: 500 .8rem/1.4 var(--label); text-transform: uppercase; letter-spacing: var(--track-label); color: var(--muted); }
+.section--dark .stats span { color: color-mix(in srgb, var(--sand) 82%, transparent); }
+
+/* ---------- endereço / horários ---------- */
+.places { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2.5rem; margin-top: 3rem; }
+.places h3 { font-size: 1.15rem; margin-bottom: .75rem; }
+.places p { font-size: .95rem; color: var(--muted); }
+
+/* ---------- CTA final ---------- */
+.cta { background: var(--terracotta); color: var(--cream); text-align: center; }
+.cta h2 { color: var(--cream); }
+.cta .lead { color: color-mix(in srgb, var(--cream) 82%, transparent); margin: 1.5rem auto 2.5rem; }
+.cta .btn { background: var(--cream); color: var(--espresso); border-color: var(--cream); }
+.cta .btn:hover { background: var(--espresso); color: var(--cream); border-color: var(--espresso); }
+
+/* ---------- footer ---------- */
+.footer { background: var(--espresso); color: var(--sand); padding: var(--section-y) var(--gutter) 2.5rem; }
+.footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2.5rem; }
+.footer__brand { font: 400 clamp(2.5rem, 6vw, 4.5rem)/1 var(--display); color: var(--cream); }
+.footer .lead { color: color-mix(in srgb, var(--sand) 80%, transparent); }
+.footer h3 { font: 500 .85rem/1 var(--label); letter-spacing: var(--track-label); color: var(--terracotta); margin-bottom: 1rem; }
+.footer ul { list-style: none; display: grid; gap: .6rem; }
+.footer a { text-decoration: none; font-size: .95rem; transition: color var(--t-fast) var(--ease); }
+.footer a:hover { color: var(--terracotta); }
+.footer__base {
+  margin-top: 3.5rem; padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--sand) 22%, transparent);
+  display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;
+  font: 500 .75rem/1.6 var(--label); text-transform: uppercase; letter-spacing: var(--track-label);
+  color: color-mix(in srgb, var(--sand) 65%, transparent);
+}
+@media (max-width: 700px) { .footer__grid { grid-template-columns: 1fr; } }
+
+/* ---------- revelação por scroll (crav, sem lib) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(2rem) scale(.97);
+  transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+/* sem scale nos cards: o scroll-snap mede a caixa já transformada, e o .97
+   deslocava o ponto de encaixe do primeiro card ~5px, deixando a tira em
+   repouso fora do zero (seta da esquerda nunca sumia) */
+.card.reveal { transform: translateY(2rem); }
+
+/* ---------- movimento amarrado ao scroll (o que o crav faz com GSAP) ----------
+   animation-timeline nativo: a animação é escrubada pela posição do scroll, não
+   disparada por um gatilho. Zero KB. Onde não houver suporte, as imagens ficam
+   estáticas e o .reveal acima continua cobrindo a entrada.
+   ponytail: sem GSAP/ScrollTrigger (~50KB). Só adicionar se precisar de seção
+   pinada ou timeline com múltiplos passos, que animation-timeline não faz. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__media img, .split img {
+      animation: scroll-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% exit 95%;
+    }
+    .split--tilt img { animation-name: scroll-rise-tilt; }
+  }
+}
+@keyframes scroll-rise {
+  from { transform: translateY(3%) scale(1.07); }
+  to   { transform: translateY(-3%) scale(1); }
+}
+@keyframes scroll-rise-tilt {
+  from { transform: translateY(3%) scale(1.07) rotate(-4.5deg); }
+  to   { transform: translateY(-3%) scale(1) rotate(-1.2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}

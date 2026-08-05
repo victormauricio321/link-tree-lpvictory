@@ -1,0 +1,8 @@
+# Nao precisam ir para producao.
+build-standalone.ps1
+build-deploy.ps1
+README.md
+
+# Versao offline de arquivo unico: entregue por WhatsApp/e-mail, nao pela web.
+# Servida junto, criaria um segundo endereco com a mesma home.
+link-na-bio.html

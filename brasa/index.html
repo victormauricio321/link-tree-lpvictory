@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Detecção de idioma. Inline e bloqueante de propósito: se rodasse no
+       script.js (defer) a página PT já teria pintado antes do salto.
+       Regras: só a raiz redireciona (quem abre /en/ direto foi por vontade
+       própria), a escolha manual guardada no localStorage sempre vence, e
+       location.replace não empilha histórico — senão o botão voltar prende
+       o usuário num pingue-pongue. Só redireciona quem não tem português
+       em nenhuma posição da lista de idiomas do navegador. */
+    (function () {
+      try {
+        var saved = localStorage.getItem('brasa-lang');
+        if (saved) { if (saved === 'en') location.replace('en/'); return; }
+        var langs = navigator.languages || [navigator.language || 'pt'];
+        if (![].some.call(langs, function (l) { return /^pt/i.test(l); })) location.replace('en/');
+      } catch (e) { /* localStorage bloqueado: fica no PT, que é o canônico */ }
+    })();
+  </script>
+  <title>BRASA — Smash House | Hambúrgueres na chapa desde 2016</title>
+  <meta name="description" content="Blend de 180g esmagado na chapa a 250°C, pão brioche na manteiga e queijo derretido na hora. Smash house em Belo Horizonte desde 2016.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- PNG opaco 180x180, sem cantos arredondados: o iOS aplica a própria
+       máscara. Se mudar a cor ou a letra do favicon.svg, este PNG não
+       acompanha — precisa ser gerado de novo. -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="alternate" hreflang="pt-br" href="./">
+  <link rel="alternate" hreflang="en" href="en/">
+  <link rel="alternate" hreflang="x-default" href="./">
+  <link rel="stylesheet" href="style.css">
+  <noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
+</head>
+<body>
+
+<!-- TROCAR: os href do iFood e Instagram estão marcados com data-replace -->
+<nav class="nav" aria-label="Navegação principal">
+  <a class="nav__brand" href="#top">BRASA</a>
+  <ul class="nav__links" id="nav-links">
+    <li><a href="#cardapio">Cardápio</a></li>
+    <li><a href="#casa">A Casa</a></li>
+    <li><a href="#ingredientes">Ingredientes</a></li>
+    <li><a href="#onde">Onde Estamos</a></li>
+  </ul>
+  <div class="nav__end">
+    <div class="lang" role="group" aria-label="Idioma">
+      <a href="./" hreflang="pt-br" aria-current="page">PT</a>
+      <a href="en/" hreflang="en">EN</a>
+    </div>
+    <a class="btn" href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">Peça no iFood</a>
+    <button class="nav__toggle" type="button" id="nav-toggle"
+            aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div>
+    <span class="eyebrow">Smash House · Desde 2016</span>
+    <h1>Fogo alto<span>sabor bruto</span></h1>
+    <p class="lead">
+      Blend de 180g esmagado na chapa a 250°C. Crosta caramelizada por fora,
+      suculento por dentro — do jeito que a gente faz desde o primeiro dia.
+    </p>
+    <div class="hero__actions">
+      <a class="btn" href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">Peça no iFood</a>
+      <a class="btn btn--ghost" href="#cardapio">Ver cardápio →</a>
+    </div>
+  </div>
+  <div class="hero__media">
+    <img src="https://images.unsplash.com/photo-1607013251379-e6eecfffe234?w=900&q=80"
+         alt="Cheeseburger com queijo derretido e picles sobre fundo escuro" width="900" height="1125">
+    <div class="sticker" aria-label="Nota 4,9 de 5">4.9<small>★ ★ ★ ★ ★</small></div>
+  </div>
+</header>
+
+<!-- as duas faixas são cópias idênticas: uma sai pela esquerda enquanto a outra
+     entra pela direita. O grupo de frases aparece duas vezes em cada faixa para
+     a cópia ficar mais larga que a tela — ver a nota em .marquee__track -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Smash na chapa</span><span>·</span><span>Blend 180g</span><span>·</span>
+    <span>Pão brioche na manteiga</span><span>·</span><span>Sem pressa, sem atalho</span><span>·</span>
+    <span>Smash na chapa</span><span>·</span><span>Blend 180g</span><span>·</span>
+    <span>Pão brioche na manteiga</span><span>·</span><span>Sem pressa, sem atalho</span><span>·</span>
+  </div>
+  <div class="marquee__track">
+    <span>Smash na chapa</span><span>·</span><span>Blend 180g</span><span>·</span>
+    <span>Pão brioche na manteiga</span><span>·</span><span>Sem pressa, sem atalho</span><span>·</span>
+    <span>Smash na chapa</span><span>·</span><span>Blend 180g</span><span>·</span>
+    <span>Pão brioche na manteiga</span><span>·</span><span>Sem pressa, sem atalho</span><span>·</span>
+  </div>
+</div>
+
+<section class="section section--sand" id="cardapio">
+  <div class="inner reveal">
+    <span class="eyebrow">O Cardápio</span>
+    <h2>Cinco jeitos<br>de fazer certo</h2>
+    <p class="lead">Poucos itens, todos afiados. Se não está bom o bastante para repetir, não entra na chapa.</p>
+  </div>
+</section>
+<div class="strip-wrap section--sand">
+<div class="strip" role="list" aria-label="Hambúrgueres do cardápio">
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&q=80" alt="Hambúrguer clássico com alface e tomate" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>A Clássica</h3>
+      <p>Blend 180g, cheddar inglês, alface, tomate e maionese da casa.</p>
+      <span class="card__price">R$ 32</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&q=80" alt="Hambúrguer duplo com queijo derretido" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>Dobradinha</h3>
+      <p>Dois blends de 180g, cheddar duplo, cebola caramelizada na manteiga.</p>
+      <span class="card__price">R$ 44</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=600&q=80" alt="Hambúrguer de frango empanado" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>Crocante</h3>
+      <p>Sobrecoxa empanada, picles rápido, molho de pimenta com mel.</p>
+      <span class="card__price">R$ 36</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=600&q=80" alt="Hambúrguer vegetariano com abacate" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>Sem Carne</h3>
+      <p>Grão-de-bico e beterraba na chapa, abacate e maionese de ervas.</p>
+      <span class="card__price">R$ 34</span>
+    </div>
+  </article>
+  <article class="card reveal" role="listitem">
+    <img src="https://images.unsplash.com/photo-1606131731446-5568d87113aa?w=600&q=80" alt="Hambúrguer com molho barbecue e bacon" width="600" height="600" loading="lazy">
+    <div class="card__body">
+      <h3>Defumada</h3>
+      <p>Bacon artesanal, barbecue de café e cheddar curado 12 meses.</p>
+      <span class="card__price">R$ 41</span>
+    </div>
+  </article>
+</div>
+  <button class="strip__nav strip__nav--prev" type="button" aria-label="Ver hambúrgueres anteriores" disabled>
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+      <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <button class="strip__nav strip__nav--next" type="button" aria-label="Ver mais hambúrgueres">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+      <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</div>
+
+<section class="section" id="casa">
+  <div class="inner split split--tilt reveal">
+    <div>
+      <span class="eyebrow">A Casa</span>
+      <h2>Dez anos<br>na mesma chapa</h2>
+      <p class="lead">
+        Começou com uma chapa emprestada e uma fila de nove pessoas na calçada.
+        Dez anos depois é a mesma receita, a mesma chapa e uma fila bem maior.
+      </p>
+      <p class="lead" style="margin-top:1.25rem">
+        Moemos a carne todo dia de manhã. O pão sai do forno às 10h.
+        Nada congela, nada espera — por isso o cardápio é curto.
+      </p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1610614819513-58e34989848b?w=900&q=80" alt="Três hambúrgueres pequenos servidos com batatas fritas" width="900" height="720" loading="lazy">
+  </div>
+</section>
+
+<section class="section section--dark" id="ingredientes">
+  <div class="inner reveal">
+    <span class="eyebrow">Os Ingredientes</span>
+    <h2>Cada camada<br>tem um porquê</h2>
+    <p class="lead">Da fazenda à chapa em menos de 48 horas. Sem intermediário, sem congelador.</p>
+    <div class="stats">
+      <div><strong>180g</strong><span>Blend angus moído no dia</span></div>
+      <div><strong>250°C</strong><span>Chapa para selar em 90 segundos</span></div>
+      <div><strong>10h</strong><span>Pão brioche saindo do forno</span></div>
+      <div><strong>12</strong><span>Meses de cura no cheddar</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--sand" id="onde">
+  <div class="inner split split--wide-media reveal">
+    <div>
+      <span class="eyebrow">Onde Estamos</span>
+      <h2>Vem<br>comer aqui</h2>
+      <div class="places">
+        <div>
+          <h3>Savassi</h3>
+          <p>Rua Antônio de Albuquerque, 812<br>Ter a dom, 18h–23h30</p>
+        </div>
+        <div>
+          <h3>Mercado Central</h3>
+          <p>Av. Augusto de Lima, 744 — box 21<br>Seg a sáb, 11h–19h</p>
+        </div>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1000&q=80" alt="Salão do restaurante com mesas de madeira e luz quente" width="1000" height="800" loading="lazy">
+  </div>
+</section>
+
+<section class="section cta">
+  <div class="inner reveal">
+    <span class="eyebrow" style="color:inherit;opacity:.8">Tá com fome?</span>
+    <h2>Chega mais<br>perto do fogo</h2>
+    <p class="lead">Entrega em 40 minutos na região central. Ou vem buscar e come ainda pingando.</p>
+    <a class="btn" href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">Peça no iFood</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="inner">
+    <div class="footer__grid">
+      <div>
+        <p class="footer__brand">BRASA</p>
+        <p class="lead" style="max-width:34ch;margin-top:1rem">
+          Smash house em Belo Horizonte. Carne moída no dia, pão feito na casa.
+        </p>
+      </div>
+      <div>
+        <h3>Navegue</h3>
+        <ul>
+          <li><a href="#cardapio">Cardápio</a></li>
+          <li><a href="#casa">A Casa</a></li>
+          <li><a href="#ingredientes">Ingredientes</a></li>
+          <li><a href="#onde">Onde Estamos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Peça e siga</h3>
+        <ul>
+          <li><a href="https://www.ifood.com.br/" data-replace="ifood" target="_blank" rel="noopener">iFood</a></li>
+          <li><a href="https://instagram.com/" data-replace="instagram" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__base">
+      <span>© 2026 BRASA — Todos os direitos reservados</span>
+      <span>Chapa quente · pão na manteiga · desde 2016</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lenis@1.3.25/dist/lenis.min.js" defer></script>
+<script src="script.js" defer></script>
+</body>
+</html>
