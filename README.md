@@ -10,8 +10,8 @@ subpastas. Sem build, sem framework, sem dependência de domínio.
 ```
 
 Os dois banners da Link Tree apontam para `mdp/` e `brasa/` — **relativos, sem
-barra inicial**. Funciona em `*.vercel.app`, em domínio próprio, em
-`localhost` e até abrindo o arquivo do disco, sem editar uma linha.
+barra inicial**. Funciona em `*.vercel.app`, em domínio próprio, em `localhost`
+e em subpasta, sem editar uma linha e sem depender de um domínio definido.
 
 ## Estrutura
 
@@ -20,7 +20,7 @@ barra inicial**. Funciona em `*.vercel.app`, em domínio próprio, em
 | `index.html` + `assets/` | Link Tree — a página principal |
 | `mdp/` | cópia de deploy de `../site-mdp` — **gerada, não edite aqui** |
 | `brasa/` | cópia de deploy de `../meu-site-hamburger` — **gerada, não edite aqui** |
-| `link-na-bio.html` | Link Tree em arquivo único offline (WhatsApp, e-mail, pen drive) |
+| `link-na-bio.html` | Link Tree em arquivo único offline (WhatsApp, e-mail, pen drive) — a página abre sem internet, mas os **banners precisam do site publicado** |
 | `build-deploy.ps1` | sincroniza `mdp/` e `brasa/` a partir das pastas originais |
 | `build-standalone.ps1` | gera o `link-na-bio.html` a partir do `index.html` |
 | `vercel.json` | cache de 1 ano para `assets/` e `mdp/assets/` |
