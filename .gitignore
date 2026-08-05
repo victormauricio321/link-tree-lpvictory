@@ -1,0 +1,11 @@
+# artefatos temporários de preview/screenshot
+.edgeprofile/
+.check.png
+.preview*.png
+.frame*.html
+.debug.html
+
+# sistema
+Thumbs.db
+desktop.ini
+.DS_Store
