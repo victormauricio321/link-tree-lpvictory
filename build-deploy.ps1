@@ -1,29 +1,28 @@
-# Sincroniza as duas landing pages para dentro deste projeto, prontas para deploy.
+# Sincroniza a landing page da BRASA para dentro deste projeto, pronta para deploy.
 #
-#   site-mdp/            -> mdp/     (servida em /mdp/)
-#   meu-site-hamburger/  -> brasa/   (servida em /brasa/)
+#   meu-site-hamburger/  ->  brasa/   (servida em /brasa/)
 #
-# As pastas de origem NAO sao alteradas: continuam sendo a fonte da verdade.
-# Rode este script sempre que editar uma das landing pages.
+# A pasta de origem NAO e alterada: continua sendo a fonte da verdade.
+# Rode este script sempre que editar a landing page.
 #
 # Uso:  .\build-deploy.ps1
 
 $ErrorActionPreference = "Stop"
 
-$root    = $PSScriptRoot
+$root     = $PSScriptRoot
 $projetos = Split-Path $root -Parent
 
 $fontes = @(
-    @{ Nome = "Marques Drumond & Patrao"; De = "site-mdp";           Para = "mdp"   },
-    @{ Nome = "BRASA Smash House";        De = "meu-site-hamburger"; Para = "brasa" }
+    @{ Nome = "BRASA Smash House"; De = "meu-site-hamburger"; Para = "brasa" }
 )
 
 # Material de trabalho que nao deve ir para producao.
 $excluirPastas   = @(".git", ".claude", "graphify-out", "prints-portfolio", "node_modules")
 $excluirArquivos = @(".gitignore", "*.ps1", "*.md")
 
-# A pasta assets/ do burger so tem referencias de design (paleta, tipografia),
-# nenhuma delas usada pelo site. O site-mdp, ao contrario, depende da sua.
+# A pasta assets/ do burger so tem referencias de design (paleta, tipografia)
+# e as duas imagens que viraram o card da Link Tree: nada disso e usado pelo
+# site em si, que carrega as fotos do Unsplash.
 $excluirPorProjeto = @{ "meu-site-hamburger" = @("assets", "b-icon.png", "card-imagem.png") }
 
 foreach ($f in $fontes) {
@@ -63,19 +62,10 @@ foreach ($f in $fontes) {
         throw "$($f.Para)/index.html nao foi gerado - a origem tem index.html?"
     }
 
-    # O .htaccess do MDP e generico (compressao + cache) e serve as duas.
-    # E ignorado pela Vercel, mas mantem o projeto pronto para Apache/HostGator.
-    $htaccess = Join-Path $destino ".htaccess"
-    if (-not (Test-Path $htaccess)) {
-        $modelo = Join-Path $projetos "site-mdp\.htaccess"
-        if (Test-Path $modelo) { Copy-Item $modelo $htaccess }
-    }
-
     Write-Host ("   {0} arquivos, {1:N0} KB" -f $copiados, ($bytes / 1KB)) -ForegroundColor Green
 }
 
 Write-Host ""
 Write-Host "Estrutura pronta:" -ForegroundColor Green
 Write-Host "  /        -> index.html      (Link Tree)"
-Write-Host "  /mdp/    -> mdp/index.html"
 Write-Host "  /brasa/  -> brasa/index.html"

@@ -1,19 +1,18 @@
 # Link na Bio — LP Victory
 
-Site estático de três páginas: a Link Tree na raiz e duas landing pages em
-subpastas. Sem build, sem framework, sem dependência de domínio.
+Site estático de duas páginas: a Link Tree na raiz e uma landing page em
+subpasta. Sem build, sem framework, sem dependência de domínio.
 
 ```
 /           Link Tree            (index.html)
-/mdp/       Marques Drumond & Patrão   ← cópia, NÃO é o destino do banner
 /brasa/     BRASA Smash House
 ```
 
-Os banners apontam para destinos diferentes de propósito:
+Os dois banners apontam para destinos diferentes de propósito:
 
 | Banner | Destino | Por quê |
 | --- | --- | --- |
-| 1 — MDP | `https://mdpodontologia.com.br/` | o cliente já tem domínio próprio no ar |
+| 1 — MDP | `https://mdpodontologia.com.br/` | site do cliente, hospedado por ele — **nenhum arquivo dele mora aqui** |
 | 2 — BRASA | `brasa/` | ainda não tem domínio; é servida por este deploy |
 
 `brasa/` é **relativo sem barra inicial**: funciona em `*.vercel.app`, em
@@ -24,24 +23,28 @@ domínio próprio, em `localhost` e em subpasta, sem editar uma linha.
 | Caminho | O que é |
 | --- | --- |
 | `index.html` + `assets/` | Link Tree — a página principal |
-| `mdp/` | cópia de deploy de `../site-mdp` — **gerada, não edite aqui**. Nenhum link aponta para ela desde que o banner 1 passou a usar o domínio do cliente (ver *Observações*) |
 | `brasa/` | cópia de deploy de `../meu-site-hamburger` — **gerada, não edite aqui** |
-| `link-na-bio.html` | Link Tree em arquivo único offline (WhatsApp, e-mail, pen drive) — a página abre sem internet, mas os **banners precisam do site publicado** |
-| `build-deploy.ps1` | sincroniza `mdp/` e `brasa/` a partir das pastas originais |
+| `link-na-bio.html` | Link Tree em arquivo único offline (WhatsApp, e-mail, pen drive) — a página abre sem internet, mas o banner 2 precisa do site publicado |
+| `build-deploy.ps1` | sincroniza `brasa/` a partir da pasta original |
 | `build-standalone.ps1` | gera o `link-na-bio.html` a partir do `index.html` |
-| `vercel.json` | cache de 1 ano para `assets/` e `mdp/assets/` |
+| `vercel.json` | cache de 1 ano para `assets/` |
 | `.vercelignore` | mantém scripts e o standalone fora do deploy |
 
-As pastas `mdp/` e `brasa/` são **cópias**. As fontes da verdade continuam em
-`../site-mdp` e `../meu-site-hamburger`, cada uma com seu próprio histórico.
+`brasa/` é uma **cópia**. A fonte da verdade continua em
+`../meu-site-hamburger`, com seu próprio histórico.
+
+Os arquivos `assets/mdp-logo.png` e `assets/mdp-tile.png` são as imagens do
+**card** do banner 1 na Link Tree — junto com as variáveis `--mdp-*` e a
+classe `.card--mdp` no CSS. Não têm relação com a landing page do cliente:
+são o visual do botão que leva ao site dele.
 
 ## Fluxo de trabalho
 
-Editou uma das landing pages na pasta original:
+Editou a landing da BRASA na pasta original:
 
 ```powershell
-.\build-deploy.ps1     # ressincroniza mdp/ e brasa/
-git add -A; git commit -m "atualiza landing X"; git push
+.\build-deploy.ps1     # ressincroniza brasa/
+git add -A; git commit -m "atualiza landing brasa"; git push
 ```
 
 Editou o `index.html` da Link Tree:
@@ -50,7 +53,7 @@ Editou o `index.html` da Link Tree:
 .\build-standalone.ps1 # regera o link-na-bio.html
 ```
 
-Testar as três páginas juntas antes de publicar:
+Testar as duas páginas juntas antes de publicar:
 
 ```powershell
 python -m http.server 8777
@@ -66,8 +69,8 @@ Importe o repositório na Vercel. Nas configurações do projeto:
 - **Build Command:** vazio
 - **Output Directory:** vazio (a raiz do repo já é o site)
 
-A Vercel serve `/mdp/` e `/brasa/` pelo `index.html` de cada pasta
-automaticamente. Nenhuma rota precisa ser declarada.
+A Vercel serve `/brasa/` pelo `index.html` da pasta automaticamente. Nenhuma
+rota precisa ser declarada.
 
 ## Editar os links
 
@@ -81,19 +84,11 @@ Todos os links editáveis têm o atributo `data-edit`:
 
 ## Observações
 
-- **`mdp/` virou conteúdo duplicado.** É cópia byte a byte de um site que já
-  está no ar em `mdpodontologia.com.br` — mesmo HTML, mesmo `<title>`. Desde
-  que o banner 1 passou a apontar para o domínio do cliente, nada mais linka
-  para `/mdp/`, mas o endereço continua público e indexável, competindo com o
-  site real do cliente. Três saídas, em ordem de preferência:
-  1. remover `mdp/` do deploy (linha `mdp/` no `.vercelignore`);
-  2. bloquear indexação com um header `X-Robots-Tag: noindex` para
-     `/mdp/(.*)` no `vercel.json` — não toca no HTML da landing;
-  3. deixar como está, se a intenção for manter um espelho de backup.
-- Os arquivos `.htaccess` em `mdp/` e `brasa/` são ignorados pela Vercel.
-  Estão ali para o caso de o site ir para um servidor Apache (HostGator).
-- A BRASA carrega as 8 fotos direto do Unsplash por hotlink, e ambas as
-  landings usam CDN (GSAP, Lenis, Google Fonts): dependem de internet.
+- A BRASA carrega as 8 fotos direto do Unsplash por hotlink e usa CDN
+  (GSAP, Lenis, Google Fonts): depende de internet.
+- Não há mais nenhum `.htaccess` no projeto. O que existia era um arquivo de
+  performance para Apache, herdado de outro projeto, e a Vercel o ignora. Se
+  um dia o site for para HostGator, vale reescrever um.
 
 ## Fontes
 
