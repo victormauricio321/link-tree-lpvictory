@@ -1,0 +1,1151 @@
+/* ============================================================================
+   sections.css — layout específico de cada seção
+   ----------------------------------------------------------------------------
+   Um bloco por seção, na ordem da página. Cada bloco entra junto com sua
+   justificativa de direção de arte (design-system/SECTION-PROTOCOL.md).
+
+   Media queries de layout de seção ficam AQUI, junto do bloco a que pertencem.
+   responsive.css guarda apenas overrides globais de token — separar as regras
+   de um mesmo bloco em dois arquivos custa mais legibilidade do que ganha
+   organização.
+
+   Ordem da narrativa — "o escuro é o forno, o claro é a mesa, o vermelho é a
+   fome" (ART-DIRECTION.md §7):
+
+     [1]  Header ................ —
+     [2]  Hero .................. theme-dark    · pico 10
+     [3]  Credibilidade ......... theme-light   · pausa 3
+     [4]  Mais pedidas .......... theme-light   · pico 7
+     [5]  Cardápio .............. theme-light   · respiro 4
+     [6]  História .............. theme-dark    · imersão 6
+     [7]  Depoimentos ........... theme-light   · 5
+     [8]  FAQ ................... theme-light   · vale 2
+     [9]  Fechamento ............ theme-cta     · pico 10
+     [10] Contato + Footer ...... theme-dark    · descida 2
+   ============================================================================ */
+
+
+/* ============================================================================
+   [1] HEADER
+   Intensidade 1 na curva emocional: se chamar atenção, roubou do hero.
+   ============================================================================ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background-color: var(--surface);
+  border-bottom: var(--border-width-hair) solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-std);
+}
+
+/* A barra é OPACA, e isso é decisão revista.
+   Havia aqui uma translucidez de 92% (via `hsl(from … / .92)`) e ela custava o
+   que a translucidez sempre custa: em cima de uma seção escura com acento
+   âmbar, os números da história e o texto dos depoimentos atravessavam a barra
+   e passavam por trás dos links do nav. Legibilidade de navegação não se troca
+   por efeito.
+   Em repouso a barra está sobre o hero, que é do MESMO tema — os 92% nunca
+   foram percebidos ali. O efeito não entregava nada e cobrava um defeito.
+   `backdrop-filter` segue descartado, agora por dois motivos: custa um
+   reprocessamento do fundo a cada frame (INTERACTION.md §6) e resolveria o
+   mesmo nada. */
+
+/* O filete só aparece quando ser sticky significa alguma coisa. */
+.site-header.is-scrolled { border-bottom-color: var(--border); }
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--header-h);
+}
+
+/* Ações à direita. No mobile o `auto` daqui é o único — a nav está oculta. */
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-inline-start: auto;
+}
+
+/* Abaixo de 768px o header não tem CTA: o hero logo abaixo já carrega a ação
+   primária, e a barra fixa a devolve depois. Dois CTAs primários na mesma
+   tela violariam a regra de uma ação primária por tela. */
+.site-header__cta { display: none; }
+
+.site-nav { display: none; }
+
+/* Calha de 12: os outros 16 do respiro entre palavras vêm do recuo horizontal
+   do próprio `.nav-link`, que existe para o alvo de toque chegar a 44px. */
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {          /* --bp-md */
+  .site-header__cta { display: inline-flex; }
+}
+
+@media (min-width: 1024px) {         /* --bp-lg */
+  /* `margin-inline: auto` centra a nav na folga entre wordmark e ações —
+     decisão explícita. Dois `auto` concorrentes dividiriam o espaço por
+     acidente, e o resultado mudaria a cada palavra nova no menu. */
+  .site-nav              { display: block; margin-inline: auto; }
+  .site-header__actions  { margin-inline-start: 0; }
+  .menu-toggle           { display: none; }
+}
+
+/* ----------------------------------------------------------------------------
+   [1b] MENU MOBILE
+   `visibility` em vez de `hidden`: remove da ordem de tabulação e da árvore de
+   acessibilidade, e ainda permite animar por transform.
+   ---------------------------------------------------------------------------- */
+
+/* A gaveta começa ABAIXO do header, e não por cima dele. Assim o botão que
+   virou "×" continua visível e clicável — sem esse recorte, a única saída
+   seria Esc ou uma faixa estreita de scrim (falha de modal-escape).
+   Resolve por geometria em vez de disputa de z-index. */
+.menu {
+  position: fixed;
+  inset-block-start: var(--header-h);
+  inset-block-end: 0;
+  inset-inline: 0;
+  z-index: var(--z-drawer);
+  visibility: hidden;
+}
+
+.menu.is-open { visibility: visible; }
+
+.menu__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-scrim);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-std);
+}
+
+.menu.is-open .menu__scrim { opacity: 1; }
+
+.menu__panel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  /* 78vw deixa uma faixa de scrim larga o bastante para ser alvo de toque
+     confortável — a 86vw a gaveta virava tela cheia em 375px. */
+  width: min(18rem, 78vw);
+  padding: var(--space-5);
+  padding-block-end: max(var(--space-5), env(safe-area-inset-bottom));
+  overflow-y: auto;
+  background-color: var(--surface);
+  border-inline-start: var(--border-width-hair) solid var(--border);
+  transform: translateX(100%);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.menu.is-open .menu__panel { transform: none; }
+
+/* Saída mais curta que a entrada: sair rápido parece responsivo. */
+.menu:not(.is-open) .menu__panel,
+.menu:not(.is-open) .menu__scrim {
+  transition-duration: var(--dur-exit);
+  transition-timing-function: var(--ease-in);
+}
+
+.menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* No painel os links usam o display: aqui há espaço para a voz da marca. */
+.menu__link {
+  display: block;
+  padding-block: var(--space-3);
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-display);
+  text-transform: var(--case-display);
+  text-decoration: none;
+  color: inherit;
+  border-bottom: var(--rule-border);
+  transition: color var(--dur-fast) var(--ease-std);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .menu__link:hover { color: var(--color-accent); }
+}
+
+.menu__cta { margin-block-start: auto; }
+
+
+/* ============================================================================
+   [2] HERO
+   Pico 10 da curva. Único ponto saturado da tela: o CTA primário.
+   ============================================================================ */
+
+.hero { display: grid; }
+
+.hero__media img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.hero__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--stack-loose);
+  padding-block: var(--space-8) var(--space-9);
+  padding-inline-end: var(--container-pad);
+}
+
+/* Empurra o corpo para baixo do H1 sem criar um quarto nível de espaçamento */
+.hero__title { margin-block-start: calc(var(--space-1) * -1); }
+
+/* Abaixo de 360px o clamp trava no mínimo (42px) e o teto medido em 320px é
+   39,8 — o H1 iria a quatro linhas. 36px devolve as três linhas com 10,6% de
+   folga sob o teto. Escopo no hero, não no token: `--fs-hero` também veste o
+   fechamento, que nesta faixa já assume três linhas por decisão declarada
+   (COMPOSITION.md §4). */
+@media (max-width: 359.98px) {
+  .hero__title { font-size: 2.25rem; }
+}
+
+/* Segundo tempo da headline. Âmbar, não vermelho: o vermelho de marca
+   reprova sobre o ink (3.42:1); o âmbar entrega 8.54:1. */
+.hero__title-b { color: var(--color-accent); }
+
+/* Empilhados e largos no celular: dois botões lado a lado somam mais que a
+   largura útil de 335px e quebrariam de forma desalinhada. */
+.hero__actions {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.hero__proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--on-surface-muted);
+}
+
+/* O âmbar da nota volta nas aspas do depoimento — repetição vira vocabulário */
+.hero__star { color: var(--color-accent); }
+
+@media (min-width: 480px) {           /* --bp-sm */
+  .hero__actions {
+    grid-auto-flow: column;
+    justify-content: start;
+    width: auto;
+  }
+}
+
+@media (min-width: 1024px) {          /* --bp-lg */
+  /* 40/60 a favor da fotografia (COMPOSITION.md §3, linha do Hero).
+     ------------------------------------------------------------------------
+     A coluna de texto NÃO é uma porcentagem, e a diferença importa. Com
+     `2fr 3fr` o texto ENCOLHE conforme a tela cresce: a coluna vale 40% da
+     largura, mas o recuo editorial dentro dela vale (100cqw − 1200)/2 + 40 e
+     cresce mais rápido. A conta é 0,4·L − 0,5·L + 600, ou seja −0,1·L + 600 —
+     em 1440 sobram 393px de texto, em 1920 sobram 345, em 2560 sobram 265.
+     Percentual pura entrega, na tela grande, a coluna mais estreita da página.
+
+     Então a coluna 1 é declarada pelo que ela precisa entregar: o recuo (que
+     alinha o H1 à mesma linha vertical do wordmark) + uma medida de texto fixa
+     + o respiro até a foto. A coluna 2 leva todo o resto. O resultado medido
+     em 1440 é 40,6/59,4; em 1280, 38,7/61,3; em 1024, 45/55 — sempre a favor
+     da imagem, nunca 50/50 (COMPOSITION.md §5 regra 3), e a medida de leitura
+     não muda de tamanho quando a janela muda. */
+  .hero {
+    /* 352 → 400. O piso protege a faixa 1024–1350, onde o recuo editorial já
+       está no chão e uma medida maior empurraria a proporção para perto de
+       50/50. O teto impede que a coluna de texto continue crescendo em tela
+       larga, que é onde a foto deve ganhar, não o parágrafo. */
+    --hero-text: clamp(22rem, 26vw, 25rem);
+
+    grid-template-columns:
+      minmax(0, calc(var(--container-inset) + var(--hero-text) + var(--space-6)))
+      minmax(0, 1fr);
+    align-items: center;
+    min-height: calc(100svh - var(--header-h));
+  }
+
+  /* A foto sangra pela direita; o texto ocupa a coluna 1 mesmo vindo depois
+     no DOM. Nenhum dos dois é focável, então a ordem de tabulação não muda. */
+  .hero__media {
+    grid-area: 1 / 2;
+    align-self: stretch;
+  }
+
+  /* <picture> é inline por padrão e não tem altura própria — sem esta linha o
+     `height: 100%` do img resolve contra altura automática e a foto não
+     preenche a coluna. */
+  .hero__media picture {
+    display: block;
+    height: 100%;
+  }
+
+  .hero__media img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  /* O H1 aqui vive na coluna de texto do 40/60, não em largura total, e por
+     isso tem escala própria — --fs-hero segue valendo para o fechamento, que é
+     full-width. A curva acompanha `--hero-text`: 48px enquanto a coluna está no
+     piso de 352, 56px quando ela chega aos 400.
+     Teto medido por varredura: 54,8 na coluna de 352 e 62,3 na de 400 — os
+     valores abaixo ficam 10% a 12% sob ele. */
+  .hero__title { font-size: clamp(3rem, 2.111rem + 1.389vw, 3.5rem); }
+
+  .hero__body {
+    grid-area: 1 / 1;
+    padding-block: var(--space-10);
+    padding-inline-end: var(--space-6);
+  }
+}
+
+
+/* ============================================================================
+   [3] FAIXA DE CREDIBILIDADE
+   Pausa 3. Vale entre o pico do hero e a vitrine das mais pedidas. Nenhuma
+   imagem: depois de uma foto de tela cheia, a próxima imagem competiria com
+   a memória dela em vez de somar.
+   ============================================================================ */
+
+.creds__list {
+  display: grid;
+}
+
+/* Empilhado: o ícone é marcador, fica ao lado e cobre as duas linhas de texto.
+   Alinhado pelo topo, não pelo centro — o topo é estável, o centro se deslocaria
+   sozinho quando um título de outra pizzaria quebrasse em duas linhas. A folga
+   ótica entre o topo do ícone e o topo da maiúscula é herdada da fonte, e é
+   justamente por isso que ela sobrevive à troca do par tipográfico. */
+.cred {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  align-items: start;
+  padding-block: var(--space-5);
+}
+
+/* Tinta, não vermelho. O vermelho é a cor da AÇÃO nesta página, e três ícones
+   decorativos numa faixa que não pede clique nenhum diluíam o único pico de
+   saturação que a direção de arte reserva para o fechamento
+   (ART-DIRECTION.md §4 — "vermelho pleno, primeira e única vez").
+   O âmbar não serve aqui: 1,95:1 sobre a superfície clara, reprova até como
+   elemento gráfico. A tinta cheia dá 15,8:1 e devolve o ícone ao bloco de
+   texto a que ele pertence — marcador editorial, não botão. */
+.cred__icon {
+  grid-row: 1 / 3;
+  color: var(--on-surface);
+}
+
+/* Separador entre irmãos, nunca nas pontas: a faixa não é uma caixa fechada,
+   é uma linha de leitura contínua. */
+.cred + .cred {
+  border-block-start: var(--rule-border);
+}
+
+/* Três colunas só a partir de --bp-lg, não de --bp-md. Medido em 768px: a
+   coluna de texto do item central caía para 108px e TODOS os títulos quebravam
+   em duas linhas — três colunas apertadas leem pior que três linhas folgadas.
+   A faixa precisa de ~900px de conteúdo para respirar, e é o que 1024 entrega. */
+@media (min-width: 1024px) {         /* --bp-lg */
+  .creds__list { grid-template-columns: repeat(3, 1fr); }
+
+  /* Virando coluna, o ícone deixa de ser marcador lateral e vira cabeça do
+     bloco: devolve a largura inteira ao texto (245px contra 197px) e dá à
+     faixa a leitura de três verbetes, não de três linhas de lista. */
+  .cred {
+    grid-template-columns: 1fr;
+    padding-block: 0;
+    /* O filete vertical fica exatamente no meio da calha: space-6 de cada lado.
+       `gap` + borda encostaria a linha no item seguinte. */
+    padding-inline: var(--space-6);
+  }
+
+  .cred__icon {
+    grid-row: auto;
+    margin-block-end: var(--space-3);
+  }
+
+  /* As pontas abrem mão do respiro externo para alinhar com a coluna editorial
+     do container — a mesma em que nascem o header e o texto do hero. */
+  .cred:first-child { padding-inline-start: 0; }
+  .cred:last-child  { padding-inline-end: 0; }
+
+  .cred + .cred {
+    border-block-start: 0;
+    border-inline-start: var(--rule-border);
+  }
+}
+
+
+/* ============================================================================
+   [4] MAIS PEDIDAS
+   Pico 7. A vitrine. Abaixo de 1024px o trilho rola na horizontal e o último
+   card corta na borda; em ≥1024px vira grade de 3 colunas, porque corte em
+   grade de desktop lê como bug (COMPOSITION.md §2).
+   ============================================================================ */
+
+.showcase__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-tight);
+  margin-block-end: var(--space-7);
+}
+
+.showcase__foot {
+  margin-block-start: var(--space-7);
+}
+
+/* ----------------------------------------------------------------------------
+   Trilho — carrossel nativo
+   `scroll-snap` do próprio navegador: sem biblioteca, sem handler de swipe,
+   e o gesto continua sendo o do sistema (INTERACTION.md §2, linha "Swipe").
+   `proximity` em vez de `mandatory`: com `mandatory` um flick curto é sempre
+   sequestrado para o card seguinte e a rolagem deixa de obedecer ao dedo.
+   ---------------------------------------------------------------------------- */
+.showcase__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 15rem;                       /* 240px */
+  gap: var(--gap-card);
+
+  /* O trilho sangra dos dois lados; só a borda de conteúdo alinha à coluna.
+     `scroll-padding` repete o recuo para o snap parar na mesma linha — sem
+     ele, o card encostaria na borda da tela ao parar. */
+  padding-inline: var(--container-inset) var(--container-pad);
+  scroll-padding-inline-start: var(--container-inset);
+
+  /* Respiro para o anel de foco do contêiner não ser cortado pelo overflow. */
+  padding-block-end: var(--space-2);
+
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  /* Impede que o fim do trilho vire navegação "voltar" no iOS. */
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.pcard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  scroll-snap-align: start;
+}
+
+/* `overflow: hidden` é o que permite a foto crescer sem empurrar vizinho:
+   a caixa não muda de tamanho, só o conteúdo dela. */
+.pcard__media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  /* Cor de espera enquanto a imagem preguiçosa não chega — bloco estático,
+     sem shimmer (INTERACTION.md §6.4). */
+  background-color: var(--surface-2);
+}
+
+.pcard__media img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+/* ----------------------------------------------------------------------------
+   A QUEBRA DE GRID — a única da página inteira
+   ----------------------------------------------------------------------------
+   COMPOSITION.md §1.6 nomeia esta e só esta: "o mosaico da vitrine, em que um
+   card tem altura diferente dos demais", e §3 a marca como "quebra de grid (a
+   única)". A página estava gastando 3 de 3 sangramentos e 0 de 1 quebra — o
+   orçamento de exceção estava subutilizado, e sem exceção nenhuma a sequência
+   credibilidade → vitrine → cardápio lia como um campo creme contínuo.
+
+   A irregularidade cai no card que já é o destacado (o do selo "Mais pedida"):
+   assim ela CARREGA informação em vez de ser ruído gráfico, que é a diferença
+   entre quebra e acidente. §1.6: "a quebra só significa alguma coisa se o grid
+   tiver sido respeitado antes" — os outros cinco seguem quadrados.
+
+   Funciona nos dois layouts sem media query, e é por isso que a proporção mora
+   na imagem e não na caixa: no trilho horizontal do mobile o card fica mais
+   alto que os vizinhos (§4: "vira diferença de ALTURA entre cards adjacentes",
+   a adaptação que o próprio documento prescreve); na grade de 3 colunas do
+   desktop a primeira fileira cresce e a base fica propositalmente irregular.
+   4/5 e não 3/4: medido no arquivo, a pizza ocupa 68% da largura, então o
+   recorte de 80% não encosta nela. Uma proporção mais alta cortaria a borda.
+   ---------------------------------------------------------------------------- */
+.pcard--feature .pcard__media img { aspect-ratio: 4 / 5; }
+
+/* Selo estático de status. Fundo âmbar com texto no neutro mais escuro:
+   8,55:1 — e a dupla é fixa, não depende do tema da seção. */
+.pcard__badge {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--n-900);
+  background-color: var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+/* Nome e preço na mesma linha de base — o gesto de menu impresso, que volta
+   inteiro na seção [5]. `baseline` e não `center`: o que alinha é a letra. */
+.pcard__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.pcard__desc {
+  /* Anula o gap do card: a descrição pertence ao nome, não é um terceiro
+     bloco. Sobe para colar no par nome/preço. */
+  margin-block-start: calc(var(--space-3) * -1 + var(--space-1));
+}
+
+/* A foto cresce dentro da moldura fixa. Só em ponteiro fino — no toque o
+   estado ficaria grudado depois do tap. */
+@media (hover: hover) and (pointer: fine) {
+  .pcard:hover .pcard__media img { transform: scale(1.03); }
+}
+
+@media (min-width: 1024px) {         /* --bp-lg */
+  /* Vira grade: o trilho deixa de rolar e reconstrói a coluna do container.
+     Não dá para trocar `.container-start` por `.container` numa media query —
+     classe não é condicional — então o container é remontado aqui. */
+  .showcase__track {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-columns: auto;
+    gap: var(--space-8) var(--gap-card);
+
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    padding-block-end: 0;
+
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+}
+
+
+/* ============================================================================
+   [5] CARDÁPIO
+   Respiro 4. Inversão deliberada de densidade: depois da vitrine cheia de foto,
+   só tipografia, filete e preço à direita. É este vazio que faz a seção
+   anterior parecer farta (ART-DIRECTION.md §3).
+   Coluna estreita em qualquer largura — no desktop, o branco dos dois lados é
+   a "grande área vazia" pedida pelo Composition System, não sobra de layout.
+   ============================================================================ */
+
+.carte__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-tight);
+  margin-block-end: var(--space-8);
+}
+
+/* O accordion virou componente (components.css). A seção só declara o que é
+   dela: a família tipográfica do título vem do utilitário no HTML, e nada
+   mais precisa ser dito aqui. */
+
+/* ----------------------------------------------------------------------------
+   Item — o gesto de menu impresso
+   Nome à esquerda, preço em coluna própria à direita, ingredientes correndo
+   por baixo dos dois. O alinhamento do preço é ESTRUTURAL (coluna de grid),
+   não depende de `tabular-nums`: amarrar o layout a um recurso opcional da
+   fonte quebraria no primeiro conceito que trocasse a família.
+   Item não é clicável — ver a justificativa da seção.
+   ---------------------------------------------------------------------------- */
+.carte-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  padding-block: var(--space-4);
+  border-block-start: var(--rule-border);
+}
+
+.carte-item__price { grid-column: 2; grid-row: 1; }
+
+/* Corre sob as duas colunas: o preço fica sozinho no alto à direita, como em
+   menu impresso, e a descrição usa a largura inteira.
+   O teto de medida é seguro para o white-label: os ingredientes de hoje cabem
+   numa linha, mas a pizzaria que escrever três vezes mais continua legível. */
+.carte-item__desc {
+  grid-column: 1 / -1;
+  max-width: var(--measure);
+}
+
+/* Metadado, não rótulo de destaque: peso baixo, cor apagada, separador `·`. */
+.carte-item__tag {
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--on-surface-faint);
+}
+
+.carte-item__tag::before { content: "·"; margin-inline: var(--space-2); }
+
+
+/* ============================================================================
+   [6] HISTÓRIA DA CASA
+   Imersão 6. Escuro de novo — aqui não é apetite, é noite e tempo.
+   Espelho do hero: lá a foto sangra à direita e o texto ocupa a coluna 1;
+   aqui a foto sangra à esquerda e o texto vai para a coluna 2. É essa troca
+   de eixo que mantém o zigue-zague vertical da página.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   A SOBREPOSIÇÃO — 1 das 2 do orçamento da página
+   ----------------------------------------------------------------------------
+   COMPOSITION.md §1.5 define o gesto: "um card avançando sobre a borda da
+   seção seguinte", no máximo duas por página, sempre entre seções ADJACENTES.
+   §3 marca a cota como "sobreposição (1 de 2)". A página não estava gastando
+   nenhuma — e é a exceção que mais grita "isso foi diagramado", justamente o
+   que faltava no trecho creme.
+
+   Desvio declarado: §3 pendura a cota no bloco de depoimentos. A foto da
+   história faz o mesmo trabalho um limite antes, e é a única versão que
+   sobrevive ao mobile — §4 exige que a sobreposição do celular seja VERTICAL e
+   feita por "foto avança sobre a seção seguinte", e no eixo único a foto está
+   no topo da seção, não no fim. Uma implementação, todas as larguras, o mesmo
+   gesto: fotografia atravessando a fronteira creme→escuro entre duas seções
+   vizinhas. Duas implementações diferentes para cumprir a mesma linha da
+   tabela seria pior engenharia e pior composição.
+
+   A fronteira NÃO se move: a faixa escura continua começando onde começava. É
+   só a foto que sai dela para cima. Mover a fronteira seria outra coisa —
+   seria mudar o layout, não sobrepor.
+   ---------------------------------------------------------------------------- */
+.story {
+  --story-hang: clamp(1.5rem, 4vw, 3rem);
+
+  display: grid;
+  /* Contexto de empilhamento próprio: o z-index da foto não precisa disputar
+     com a escala global. */
+  position: relative;
+  /* O respiro do topo passa a ser responsabilidade da própria foto, que agora
+     nasce na borda da seção e sobe além dela. */
+  padding-block-start: 0;
+}
+
+.story__media {
+  position: relative;
+  z-index: var(--z-raised);
+  margin-block-start: calc(var(--story-hang) * -1);
+}
+
+.story__media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* Declara só o padding de INÍCIO. O do fim vem de `.container-end`, e uma
+   regra de seção aqui venceria a utilitária por ordem de cascata — foi o que
+   deixou o texto correr 32px além da coluna do header na primeira versão.
+   Mesma divisão de responsabilidade do hero, espelhada. */
+.story__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-block: var(--space-8);
+  padding-inline-start: var(--container-pad);
+}
+
+.story__body p { max-width: var(--measure); }
+
+/* ----------------------------------------------------------------------------
+   Números
+   Display na escala de título de seção: o número É a imagem desta faixa.
+   Âmbar e não vermelho — o vermelho de marca entrega 3,43:1 sobre o escuro e
+   reprova; o âmbar dá 8,55:1. A mesma decisão do segundo tempo do H1.
+   ---------------------------------------------------------------------------- */
+.story__figures {
+  display: grid;
+  gap: var(--space-6);
+  margin-block-start: var(--space-9);
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-block-start: var(--space-4);
+  border-block-start: var(--rule-border);
+}
+
+.figure__value {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-display);
+  text-transform: var(--case-display);
+  color: var(--color-accent);
+}
+
+.figure__label { max-width: 22ch; }
+
+@media (min-width: 480px) {           /* --bp-sm */
+  .story__figures { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1024px) {          /* --bp-lg */
+  .story {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  /* A foto atravessa as DUAS fileiras — texto em cima, números embaixo, e ela
+     correndo pela altura inteira da seção.
+     ------------------------------------------------------------------------
+     Antes ocupava só a fileira 1 e, pior, DITAVA a altura dela: com proporção
+     4/5 numa coluna de 712px a foto pedia 891px, enquanto o texto pedia 458.
+     A fileira ficava com a altura da foto e o texto boiava no meio, deixando
+     216px de preto vazio acima e 256px abaixo — medido em 1440. Era o "vazio
+     morto" da revisão, e ele nascia de a imagem governar o layout do texto.
+     Agora quem dá a altura é o conteúdo, e a foto preenche o que sobrar: a
+     `<picture>` sai do fluxo, então não empurra nada, e o `cover` do img cuida
+     do enquadramento. A foto fica MAIOR (a seção inteira, não uma fileira) e o
+     vazio desaparece — as duas coisas ao mesmo tempo. */
+  .story__media  { grid-area: 1 / 1; align-self: stretch; }
+
+  .story__media picture {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .story__media img { height: 100%; aspect-ratio: auto; }
+
+  /* `padding-inline-end` NÃO é zerado aqui: quem o define é `.container-end`,
+     e é ele que faz a borda direita do texto parar na mesma linha do header.
+     Zerar (como estava) jogava o texto até a borda da tela. */
+  /* O recuo vertical do texto é o que dá altura à seção — e, por tabela, à
+     foto, que agora preenche em vez de ditar. `--space-11` no topo põe a
+     história de volta na faixa de altura do hero (COMPOSITION.md §2: seção
+     expansiva, "altura generosa sinaliza importância antes de qualquer
+     leitura"), sem que nenhum pixel dessa altura seja vazio. */
+  .story__body {
+    grid-area: 1 / 2;
+    padding-block: var(--space-11) var(--space-6);
+    padding-inline-start: var(--space-8);
+  }
+
+  /* A faixa de números atravessa as duas colunas e volta para o container.
+     Testei mantê-la só na coluna do texto, sob o parágrafo: a foto ganhava a
+     altura inteira da seção, mas cada verbete caía para 149px e os rótulos
+     iam a duas e três linhas, com as bases desalinhadas. Faixa larga com três
+     colunas de 373px lê melhor e é a composição que COMPOSITION.md §3
+     descreve. A altura da foto agora vem do texto, não o contrário, então
+     manter os números aqui embaixo não recria vazio nenhum. */
+  .story__figures {
+    grid-area: 2 / 1 / 3 / 3;
+    margin-block-start: var(--space-6);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Parallax — o ÚNICO da página (MASTER.md §5, regra 5)
+   `view()` roda no compositor, sem JavaScript e sem listener. O deslocamento é
+   recortado por `clip-path` na moldura, então não cria altura extra nem barra.
+   Morto abaixo de 768px (em tela pequena o efeito só custa bateria) e sob
+   movimento reduzido.
+   ---------------------------------------------------------------------------- */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* `clip-path`, e NÃO `overflow: hidden`. `overflow` faz deste elemento um
+       contêiner de rolagem, e aí o `view()` da imagem ancora AQUI em vez de no
+       documento — timeline que nunca avança, parallax congelado. Mesma
+       armadilha do trilho da seção [4], verificada por `timeline.source`.
+       `clip-path` recorta a pintura sem criar contêiner de rolagem nenhum. */
+    .story__media {
+      clip-path: inset(0);
+    }
+
+    .story__media img {
+      /* 108% de altura dá os 8% de folga que o deslocamento consome; sem essa
+         sobra, o topo ou a base da foto abriria um vão dentro da moldura. */
+      height: 108%;
+      animation: story-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes story-drift {
+  from { transform: translateY(-4%); }
+  to   { transform: translateY(4%); }
+}
+
+
+/* ============================================================================
+   [7] DEPOIMENTOS
+   Intensidade 5. Volta ao claro para o fechamento vermelho doer mais logo
+   adiante. O elemento gráfico é a aspa em âmbar, em escala grande — é ela que
+   diz "aqui fala outra pessoa" antes de qualquer palavra ser lida.
+   ============================================================================ */
+
+.voices__head { margin-block-end: var(--space-8); }
+
+.voices__list {
+  display: grid;
+  gap: var(--gap-card);
+}
+
+/* A barra âmbar à esquerda é o que separa a voz do cliente da voz da marca.
+   Largura em token próprio de componente: o valor não pertence à escala de
+   borda (que serve a filete e anel) e não é usado fora daqui. Se aparecer num
+   segundo componente, sobe para variables.css. */
+.voice {
+  --voice-accent-w: 3px;
+  /* Onde o glifo da aspa começa dentro da caixa. É o único valor deste bloco
+     acoplado às métricas da fonte do conceito: `--font-accent` desenha a aspa
+     alta na altura-de-em, e quanto exatamente varia de família para família.
+     Um conceito novo ajusta ESTE número e nada mais. */
+  --voice-mark-lh: 0.8;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-5);
+  /* Rede de segurança do ajuste acima: se uma fonte futura desenhar a aspa
+     mais alta, ela é recortada na borda do card em vez de vazar para fora.
+     Nenhum [data-reveal] mora aqui dentro — o `overflow` não captura timeline
+     nenhuma (a armadilha da seção [4] é com ancestrais, não descendentes). */
+  overflow: hidden;
+  background-color: var(--surface-2);
+  border-inline-start: var(--voice-accent-w) solid var(--color-accent);
+}
+
+/* A aspa vive numa caixa de altura zero: ela é grafismo, não linha de texto.
+   Sem isso, o corpo do glifo empurraria a citação para baixo e cada card
+   ganharia um vão diferente conforme a fonte do conceito. */
+.voice__mark {
+  align-self: start;
+  height: 0;
+  font-family: var(--font-accent);
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: var(--voice-mark-lh);
+  color: var(--color-accent);
+}
+
+.voice__quote p { margin: 0; }
+
+/* Atribuição: nome e contexto empilhados, separados por filete. Mesma
+   gramática de separação do resto da página — nada de recurso novo. */
+.voice__by {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-block-start: auto;
+  padding-block-start: var(--space-3);
+  border-block-start: var(--rule-border);
+}
+
+.voice__name { font-weight: 600; }
+
+@media (min-width: 1024px) {          /* --bp-lg */
+  /* Três colunas só a partir de --bp-lg, pela mesma razão medida na faixa de
+     credibilidade: em 768px a coluna cai para ~230px e a citação vira uma
+     torre de cinco linhas. */
+  .voices__list { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+/* ============================================================================
+   [8] FAQ
+   Vale 2 — o ponto mais baixo da curva, e é para ser. Zero imagem, coluna
+   estreita, pergunta em corpo e não em display. Toda a energia que esta seção
+   não gasta é energia que sobra para o fechamento logo abaixo.
+   O accordion vem inteiro do componente: aqui só entram a cabeça da seção e a
+   resposta.
+   ============================================================================ */
+
+.faq__head { margin-block-end: var(--space-8); }
+
+/* Filete no topo da lista: fecha a caixa por cima, já que cada accordion só
+   traz o seu por baixo. Mesmo gesto do cardápio. */
+.faq__list {
+  border-block-start: var(--rule-border);
+}
+
+.faq__answer {
+  max-width: var(--measure);
+  padding-block: 0 var(--space-5);
+  color: var(--on-surface-muted);
+}
+
+
+/* ============================================================================
+   [9] FECHAMENTO
+   Pico 10, o segundo e último. Tudo aqui serve a uma decisão: centralizado,
+   expansivo, uma frase e um botão. O grande vazio em volta não é sobra — é o
+   silêncio antes da fala (COMPOSITION.md §2).
+   ============================================================================ */
+
+.close__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+/* Medida curta de propósito: em largura total a headline viraria uma linha só
+   e perderia a pausa da vírgula. Mas 16ch era CURTO DEMAIS — medido em 1280px,
+   o segundo tempo ("você já tava comendo.") pede 954px e só cabiam 828, então
+   ele quebrava sozinho e a frase ia a três linhas, desfazendo os dois tempos.
+   20ch dá 1036px e mantém a estrutura em toda largura de desktop. */
+.close__title { max-width: 20ch; }
+
+/* Único texto além do botão. Sem `.t-muted`: sobre o vermelho pleno o nível
+   "muted" fica a 4,7:1 contra os 5,56:1 do branco puro — a diferença não paga
+   o custo de aproximar do piso de AA. Ver o aviso em variables.css. */
+.close__note { color: var(--on-surface); }
+
+
+/* ============================================================================
+   [10] CONTATO + FOOTER
+   Descida 2. Escuro sem drama: o trabalho foi feito uma tela acima. Compacto
+   por definição — é vale, não pico (COMPOSITION.md §2).
+   ============================================================================ */
+
+/* Porte compacto, como a faixa de credibilidade e o FAQ: são os vales da
+   curva, e o Composition System §2 os lista juntos. Compactar o que é
+   funcional acelera a passagem para o que importa. */
+.site-footer {
+  padding-block-start: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.site-footer__cols {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.site-footer__col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+/* Ícone e texto na mesma linha, com o ícone alinhado à PRIMEIRA linha e não
+   ao centro do bloco: endereço de duas linhas puxaria o pino para o meio. */
+.site-footer__line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.site-footer__line .icon { margin-block-start: 0.35em; }
+
+/* Alvo de toque nos links de contato. Eles são texto corrido, mas são o
+   caminho de conversão de quem rolou a página inteira — medidos em 18px (o
+   ghost do mapa) e 28px (WhatsApp e telefone), os três abaixo do mínimo.
+   `inline-flex` + `min-height` levam a caixa a 44px sem inflar a tipografia,
+   o mesmo recurso já usado no wordmark do header.
+   `.nav-link` fica de fora: ele já resolve o alvo pelo próprio padding. */
+.site-footer a:not(.nav-link) {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+}
+
+.site-footer__nav {
+  margin-block-start: var(--space-8);
+  padding-block-start: var(--space-5);
+  border-block-start: var(--rule-border);
+}
+
+/* Mesma calha do menu do topo. A margem negativa devolve os 8px de recuo do
+   primeiro item para fora da coluna, de modo que a palavra "Cardápio" comece
+   exatamente na mesma linha vertical do endereço e do texto legal acima.
+   Mesmo recurso da cabeça do accordion. */
+.site-footer__navlist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-3);
+  margin-inline-start: calc(var(--space-2) * -1);
+}
+
+/* Afordância em repouso. `.nav-link` nasce com o sublinhado em `scaleX(0)` —
+   correto no header, onde o contexto (barra de navegação, ao lado do wordmark)
+   já diz que aquilo é link. No rodapé os mesmos rótulos ficam soltos entre
+   parágrafos e endereços, sem nada que os distinga de texto comum: cor
+   herdada, sem sublinhado, sem ícone. O sublinhado passa a existir sempre, no
+   tom do filete, e acende no hover. Continua sendo resposta na LUZ, não na
+   forma — nada muda de tamanho. */
+.site-footer .nav-link::after {
+  transform: none;
+  background-color: var(--rule);
+  transition: background-color var(--dur-fast) var(--ease-std);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer .nav-link:hover::after { background-color: currentColor; }
+}
+
+.site-footer__legal {
+  margin-block-start: var(--space-4);
+  color: var(--on-surface-faint);
+}
+
+/* ----------------------------------------------------------------------------
+   Wordmark em escala máxima, cortado pela borda inferior
+   ----------------------------------------------------------------------------
+   O corte é VERTICAL e só vertical: a palavra inteira aparece, e a borda de
+   baixo da página come a metade inferior das letras. Corte horizontal seria
+   marca truncada, que lê como build quebrada.
+
+   Por que `cqi` e não `cqw`
+   -------------------------
+   `30cqw` media a VIEWPORT (fora de `main` não há contêiner, e `cqw` cai para a
+   viewport pequena) — que inclui a barra de rolagem e ignora o padding. A conta
+   dava uma palavra maior que a caixa em toda largura. Fazendo deste elemento o
+   próprio contêiner de consulta, `1cqi` passa a valer 1% da largura ÚTIL, já
+   descontados padding e barra. A razão palavra/fonte é constante, então uma
+   única calibração vale para 320px e para 2560px — não é aproximação.
+
+   Calibração (medida em Chromium, glifo a glifo, com a tinta conferida no
+   pixel): "FORNALHA" em Big Shoulders 800 com tracking 0.01em ocupa 3,69× o
+   tamanho da fonte. 100 / 3,69 = 27,1 — arredondado para baixo, 26 deixa ~4%
+   de folga para o arredondamento do navegador e para a fonte de fallback.
+   Marca de outro comprimento ou display menos condensado: remedir e ajustar
+   ESTE número. Nada mais no projeto depende dele.
+
+   `white-space: nowrap` é o antídoto direto do defeito que existia aqui: o
+   `overflow-wrap: break-word` do reset (reset.css §"Quebra palavras longas")
+   se aplica a `<p>` e quebrou FORNALHA no meio, jogando "HA" para uma segunda
+   linha que o `overflow: hidden` engolia. `Range.getBoundingClientRect()` media
+   só a primeira linha e reportava que cabia — a caixa mentia, a tinta não.
+   ---------------------------------------------------------------------------- */
+.site-footer__mark {
+  /* % da largura útil que UM pixel de fonte gera de palavra — ver calibração */
+  --mark-size: 26cqi;
+  /* Só a parte de cima da caixa aparece: o resto é comido pela borda da
+     página. É o corte que faz a marca virar textura em vez de título. */
+  --mark-crop: 0.62;
+
+  /* Contêiner de consulta de si mesmo: dá a `cqi` a largura útil real.
+     Seguro aqui — nada `position: fixed` mora dentro, e a contenção de bloco
+     não incomoda porque a altura é declarada. */
+  container-type: inline-size;
+
+  overflow: hidden;
+  margin-block-start: var(--space-9);
+  padding-inline: var(--container-pad);
+}
+
+/* A altura vive no PSEUDO-ELEMENTO, em `em`, e não no `<p>` em `cqi`.
+   `cqi` escrito no próprio contêiner não se resolve contra ele mesmo: resolve
+   contra o contêiner ancestral, e como aqui não existe nenhum, caía para a
+   viewport. O resultado é que a fonte media a coluna útil e a altura media a
+   tela — duas réguas diferentes para o mesmo recorte, que na prática variava
+   de 0,77 em 320px a 0,66 em 1440px em vez dos 0,62 declarados.
+   Em `em` a altura é sempre a mesma fração do tamanho da fonte, em qualquer
+   largura. Quem corta continua sendo o `overflow` do pai, que agora tem a
+   altura do filho. */
+.site-footer__mark::before {
+  content: attr(data-marca);
+  display: block;
+  height: calc(1em * var(--mark-crop));
+  font-family: var(--font-display);
+  font-size: var(--mark-size);
+  font-weight: 800;
+  line-height: 0.75;
+  letter-spacing: var(--tracking-display);
+  text-transform: var(--case-display);
+  /* A marca é uma palavra só e nunca quebra. Sem isto o reset a parte no meio
+     e a segunda metade desaparece dentro do `overflow`. */
+  white-space: nowrap;
+  overflow-wrap: normal;
+  /* Grafismo, não texto: o degrau mais próximo da superfície que ainda deixa
+     a silhueta legível. Como é decorativo e `aria-hidden`, não há piso de
+     contraste a respeitar — e se houvesse, ele destruiria o efeito. */
+  color: var(--n-700);
+}
+
+@media (min-width: 768px) {          /* --bp-md */
+  .site-footer__cols { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+/* ============================================================================
+   BARRA CTA FIXA (mobile)
+   ============================================================================ */
+
+.cta-bar {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: var(--z-cta-bar);
+  min-height: var(--cta-bar-h);
+  padding-block: var(--space-3);
+  /* A barra respeita a área segura do aparelho; o corpo da página reserva a
+     mesma altura, para que nada fique embaixo dela. */
+  padding-block-end: max(var(--space-3), env(safe-area-inset-bottom));
+  background-color: var(--surface);
+  border-block-start: var(--border-width-hair) solid var(--border);
+
+  /* `visibility` sai da ordem de tabulação; o atraso na saída deixa a
+     animação terminar antes de o elemento sumir. Mesmo par do menu mobile. */
+  visibility: hidden;
+  transform: translateY(100%);
+  transition:
+    transform  var(--dur-exit) var(--ease-in),
+    visibility 0s linear var(--dur-exit);
+}
+
+.cta-bar.is-visible {
+  visibility: visible;
+  transform: none;
+  transition:
+    transform  var(--dur-base) var(--ease-out),
+    visibility 0s;
+}
+
+/* Linha da barra. Com um botão só, `flex` produz exatamente o mesmo resultado
+   que o bloco anterior — o `width: 100%` do `btn--block` ocupa a linha inteira.
+   Com o CTA de plataforma, os dois dividem a largura: `min-width: 0` é o que
+   permite encolher abaixo da largura do conteúdo, sem ele o flex se recusa a
+   comprimir e a barra estoura em 320px. */
+.cta-bar__inner {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.cta-bar__inner > .btn { min-width: 0; }
+
+/* Some por completo no desktop: lá o CTA vive no header, sempre visível. */
+@media (min-width: 1024px) {         /* --bp-lg */
+  .cta-bar { display: none; }
+}

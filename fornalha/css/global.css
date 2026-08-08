@@ -1,0 +1,337 @@
+/* ============================================================================
+   global.css — base tipográfica, primitivas de layout e utilitários
+   Consome apenas tokens semânticos. Nenhum hex, nenhum nome de fonte.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1. APLICAÇÃO DE TEMA
+   As classes de tema só declaram variáveis (variables.css). É aqui que elas
+   viram pixel.
+   ---------------------------------------------------------------------------- */
+.theme-light,
+.theme-dark,
+.theme-cta {
+  background-color: var(--surface);
+  color: var(--on-surface);
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: 400;
+  background-color: var(--canvas);
+  color: var(--canvas-on);
+}
+
+/* Reserva a altura da barra fixa de CTA. Sem isto, a barra cobriria o fim do
+   rodapé — inclusive o corte da marca, que precisa acontecer na borda da
+   PÁGINA e não atrás de um botão. Só existe onde a barra existe. */
+@media (max-width: 1023.98px) {
+  body { padding-block-end: calc(var(--cta-bar-h) + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ----------------------------------------------------------------------------
+   2. TIPOGRAFIA
+   O display não tem eixo de peso útil abaixo de 700 — a hierarquia dentro dele
+   vem de tamanho e tracking, nunca de bold. É uma restrição saudável.
+   ---------------------------------------------------------------------------- */
+.t-hero,
+.t-display,
+.t-h3,
+.t-h5 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: var(--case-display);
+  letter-spacing: var(--tracking-display);
+  line-height: var(--lh-tight);
+  text-wrap: balance;
+}
+
+.t-hero    { font-size: var(--fs-hero); }
+.t-display { font-size: var(--fs-display); }
+.t-h3      { font-size: var(--fs-h3); line-height: var(--lh-snug); }
+
+.t-h4 {
+  font-family: var(--font-body);
+  font-size: var(--fs-h4);
+  font-weight: 600;
+  line-height: var(--lh-snug);
+}
+
+/* h4 e h5 ocupam o MESMO degrau da escala. A diferença não é tamanho, é voz:
+   h4 é o corpo em negrito (subtítulo dentro de texto corrido); h5 é o display
+   pequeno — rótulo de vitrine, o gesto de placa de menu. Um conceito com
+   display menos condensado herda os dois sem tocar em componente. */
+.t-h5 {
+  font-size: var(--fs-h4);
+  line-height: var(--lh-snug);
+}
+
+.t-lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--on-surface-muted);
+  max-width: var(--measure-narrow);
+}
+
+/* O negrito do corpo neste sistema é 600, não o 700 do agente de usuário.
+   A escala usa 400/500/600, e o eixo de peso da serifada do conceito atual vai
+   até 600 — pedir 700 é truncado em silêncio pelo navegador, então o CSS
+   estava dizendo uma coisa e a tela mostrando outra. Aparece uma vez hoje (a
+   nota "4,9" no hero) e vale para qualquer `<strong>` que o cliente escreva. */
+strong, b { font-weight: 600; }
+
+.t-sm     { font-size: var(--fs-sm); }
+.t-muted  { color: var(--on-surface-muted); }
+.t-faint  { color: var(--on-surface-faint); }
+
+/* Eyebrow — rótulo de seção. Caixa alta com tracking aberto, sempre. */
+.t-eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--on-surface-faint);
+}
+
+/* Citação — única aparição do itálico da família de corpo */
+.t-quote {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+}
+
+/* Números de preço: coluna própria alinhada à direita.
+   O alinhamento é estrutural, não depende de `tabular-nums` — assim
+   funciona com qualquer fonte que um conceito futuro escolher. */
+.t-price {
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;   /* usado se a fonte oferecer */
+}
+
+/* ----------------------------------------------------------------------------
+   3. LAYOUT
+   Seções são full-bleed por natureza; o conteúdo é que se limita.
+   Isso elimina o hack de `width:100vw`, que gera scroll horizontal quando
+   existe barra de rolagem vertical.
+   ---------------------------------------------------------------------------- */
+/* Contêiner de consulta que dá a `--container-inset` uma régua honesta: a
+   largura da página SEM a barra de rolagem. Fica em `main` e não em `body`
+   de propósito — `container-type` cria contexto de contenção, e um elemento
+   `position: fixed` lá dentro passaria a se posicionar por ele em vez de pela
+   viewport. A gaveta do menu e a barra de CTA fixa vivem fora de `main`
+   justamente por isso. */
+main { container-type: inline-size; }
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.container--narrow { max-width: var(--container-narrow); }
+
+/* Alinha a borda de conteúdo de um filho full-bleed à coluna do .container,
+   preservando o sangramento do lado oposto. O cálculo virou token — ver
+   `--container-inset` em variables.css §5. */
+.container-start { padding-inline-start: var(--container-inset); }
+
+/* Espelho de `.container-start`, para o bloco que sangra pelo lado oposto: o
+   hero sangra à direita, a história sangra à esquerda. */
+.container-end   { padding-inline-end:   var(--container-inset); }
+
+.section    { padding-block: var(--section-y); }
+.section--lg { padding-block: var(--section-y-lg); }
+/* Faixas de transição: curtas em altura, generosas por dentro. */
+.section--tight { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+
+/* ----------------------------------------------------------------------------
+   FRONTEIRA ENTRE SEÇÕES DE MESMO TEMA
+   ----------------------------------------------------------------------------
+   COMPOSITION.md §1.1 fixa o ritmo em três níveis e define o de seção como
+   `--section-y`. A implementação entregava o DOBRO em toda fronteira, porque
+   cada seção declara `padding-block` nos dois lados e os dois se somam.
+
+   Onde os temas mudam isso é correto: cada faixa de cor precisa do próprio
+   respiro interno, e o olho lê a mudança de fundo como a fronteira. Onde o
+   tema é o MESMO não existe fronteira nenhuma para ler — só um lago. Medido em
+   1440: 184px entre a credibilidade e a vitrine, 224px entre a vitrine e o
+   cardápio, 196px entre os depoimentos e o FAQ. Somados, quase 600px de creme
+   sem evento, que é exatamente o "campo creme contínuo" apontado na revisão.
+
+   A regra devolve o valor do sistema: a seção que segue outra de mesmo tema
+   abre mão do próprio recuo de topo, e a fronteira passa a valer o recuo de
+   baixo da anterior — um `--section-y`, como está escrito. Três consumidores
+   hoje ([3]→[4], [4]→[5], [7]→[8]) e nenhuma exceção manual por seção.
+   ---------------------------------------------------------------------------- */
+.theme-light + .theme-light,
+.theme-dark  + .theme-dark { padding-block-start: 0; }
+
+/* Ritmo vertical entre irmãos. Os três níveis do sistema (8/16/24) existem
+   como TOKEN — `--stack-tight`, `--stack`, `--stack-loose` — e é assim que os
+   componentes os consomem. Como utilitário de classe só o do meio tem
+   consumidor, e as outras duas classes ficavam declaradas sem uso. */
+.stack > * + * { margin-top: var(--stack); }
+
+/* ----------------------------------------------------------------------------
+   4. ÍCONES
+   O filete editorial (o gesto herdado do menu Cinque) não tem classe própria:
+   ele aparece como `border-block-start` no item de credibilidade, no item de
+   cardápio, no accordion e na atribuição do depoimento — sempre como borda do
+   próprio elemento, nunca como um `<hr>` avulso. Havia uma classe `.rule` para
+   esse caso, e ela nunca teve uma marcação para vestir.
+   ---------------------------------------------------------------------------- */
+.icon {
+  width: var(--icon-md);
+  height: var(--icon-md);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon--sm { width: var(--icon-sm); height: var(--icon-sm); }
+.icon--lg { width: var(--icon-lg); height: var(--icon-lg); }
+
+/* Ícone preenchido — dois casos, e só estes dois:
+   1. o preenchimento É a informação (estrela de avaliação preenchida);
+   2. glifo de marca de terceiro (WhatsApp), que é desenhado por preenchimento
+      na diretriz oficial e perderia a forma redesenhado em traço.
+   Continua vestido por `currentColor`, então o white-label recolore junto. */
+.icon--filled { fill: currentColor; stroke: none; }
+
+/* ----------------------------------------------------------------------------
+   5. ACESSIBILIDADE
+   ---------------------------------------------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-skip);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-cta);
+  color: var(--color-cta-on);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transform: translateY(-150%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible { transform: translateY(0); }
+
+/* Travamento do scroll com o menu mobile aberto */
+.is-locked { overflow: hidden; }
+
+/* Sprite SVG: contêiner dos <symbol>, nunca renderizado. */
+.sprite { display: none; }
+
+/* Sentinela: nó de 1px observado por IntersectionObserver para detectar
+   posição de scroll sem listener. Invisível e fora do fluxo. */
+.sentinel {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------------------------
+   6. REVELAÇÃO AO SCROLL
+   ----------------------------------------------------------------------------
+   Dois caminhos:
+
+   a) Sem JS ............ conteúdo visível. O estado inicial oculto só existe
+                          sob `html.js`, então nada some se o script falhar.
+   b) IntersectionObserver único, disparo ÚNICO, para todos os navegadores.
+
+   Por que NÃO `animation-timeline: view()`
+   ----------------------------------------
+   A timeline de scroll é, por definição, bidirecional: o progresso é a posição
+   do elemento na viewport, então subir a página desfaz a revelação. Isso viola
+   MASTER.md §5 regra 2 ("revelação dispara uma vez; reanimar no scroll de volta
+   irrita e gasta CPU"), fazia o Chrome se comportar de um jeito e o Firefox de
+   outro, e deixava qualquer captura ou impressão da página quase vazia.
+   O argumento original era "zero JS" — mas o JS já é baixado de qualquer forma
+   para o header, o menu e a barra de CTA, e o escalonamento já dependia dele.
+   Não economizava nada e custava três defeitos.
+   O `view()` continua em uso no parallax da seção [6], e ali a bidirecionalidade
+   é o comportamento correto: é raspagem de posição, não revelação.
+
+   O hero NUNCA recebe [data-reveal]: animar o LCP atrasa a métrica que mais
+   pesa em mobile e o observer pode nem disparar, já que o elemento já estava
+   visível no primeiro paint.
+
+   ARMADILHA — quem apaga o conteúdo e quem o traz de volta são arquivos
+   diferentes
+   ----------------------------------------------------------------------------
+   A regra abaixo esconde 16 blocos, e o que os revela é `initReveal()`, em
+   js/animations.js. Entre um e outro existe a classe `js`, escrita por um
+   script inline no <head>. Essa classe prova que HÁ JavaScript — não prova que
+   o módulo chegou a rodar, e as duas coisas se separam em três situações
+   reais: abrir por file:// (CORS bloqueia module script, origin `null`), o
+   arquivo faltar no deploy, ou uma exceção antes do init.
+   Nesses casos o conteúdo fica em opacity:0 PARA SEMPRE, sem erro visível e
+   sem layout shift — a página só aparece vazia entre o hero e o rodapé.
+   Foi exatamente o que aconteceu, e o custo de achar foi alto porque nada
+   nesta folha está errado: a regra faz o que promete.
+
+   A trava tem três partes, e ela só funciona inteira:
+     1. <head>            marca `js` antes do paint (evita FOUC)
+     2. <script module>   `onerror` devolve `no-js` se o grafo não carregar
+     3. main.js           try/catch devolve `no-js` se o init lançar
+   Ao mexer em qualquer estado inicial oculto controlado por JS, repita as
+   três. A regra geral: se o CSS esconde e o JS revela, o JS precisa de um
+   caminho de falha que desfaça o esconderijo.
+   ---------------------------------------------------------------------------- */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity   var(--dur-enter) var(--ease-out) var(--reveal-delay, 0ms),
+    transform var(--dur-enter) var(--ease-out) var(--reveal-delay, 0ms);
+}
+
+html.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Movimento reduzido: estado final imediato, sem depender do observer ter
+   rodado. É o CSS que decide se há movimento; o JS só decide o quando. */
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   NOTA — `content-visibility` foi removido
+   ----------------------------------------------------------------------------
+   Havia aqui um utilitário `.defer-render` com `content-visibility: auto`.
+   Nenhuma seção o usava: ele foi escrito na fundação e a marcação nunca o
+   aplicou. Manter valia menos que zero — o próximo a ler o arquivo assumiria
+   que a página já adia render fora da viewport, e não adia.
+   Se voltar, volta com medição: `content-visibility` interfere na âncora de
+   rolagem e no Ctrl+F, e numa página de ~6,8 mil pixels o ganho precisa ser
+   provado, não presumido.
+   ---------------------------------------------------------------------------- */

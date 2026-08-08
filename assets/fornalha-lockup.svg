@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 183.1 31.0" width="183" height="31" role="img" aria-label="Fornalha">
+  <title>Fornalha</title>
+  <!-- Lockup da marca: a chama do favicon do site da Fornalha + o wordmark em
+       Big Shoulders convertido em CONTORNOS. Vetor e sem <text>: a Link Tree
+       nao serve os .woff2 da Fornalha, entao um <text> cairia em fonte
+       substituta. Cores da Camada 1 do site (brasa-e-mesa.css). -->
+  <g transform="translate(0 -5.78) scale(1.37500)" fill="none"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 5.5c.6 3 2.5 4.6 4.1 6.6a10 10 0 0 1 2.2 5.7 6.9 6.9 0 0 1-13.8 0c0-2 .7-3.5 1.7-5"
+          stroke="#C8281F" stroke-width="2.6"/>
+    <path d="M16 26.4a3.9 3.9 0 0 1-3.9-3.9c0-2.3 3.9-5.5 3.9-5.5s3.9 3.2 3.9 5.5a3.9 3.9 0 0 1-3.9 3.9Z"
+          fill="#E3A13C"/>
+  </g>
+  <g transform="translate(57.0 29.16) scale(0.01706 -0.01706)" fill="#F5EFE4">
+    
+<path transform="translate(0.0 0)" d="M84 0V1600H739V1357H358V934H719V691H358V0Z"/>    <path transform="translate(803.0 0)" d="M475 -19Q267 -19 174.5 69.0Q82 157 78 362Q76 467 74.5 577.0Q73 687 73.0 800.5Q73 914 74.5 1025.0Q76 1136 78 1240Q82 1444 174.5 1531.5Q267 1619 475 1619Q685 1619 775.0 1531.5Q865 1444 872 1240Q875 1133 877.0 1022.5Q879 912 879.0 799.5Q879 687 877.0 577.0Q875 467 872 362Q865 157 775.0 69.0Q685 -19 475 -19ZM475 206Q536 206 566.0 232.5Q596 259 597 311Q602 419 604.0 545.0Q606 671 606.0 801.5Q606 932 604.0 1057.0Q602 1182 597 1290Q596 1342 565.5 1368.5Q535 1395 475 1395Q417 1395 386.0 1368.5Q355 1342 353 1290Q349 1182 346.5 1057.0Q344 932 343.5 801.5Q343 671 346.0 545.0Q349 419 353 311Q355 259 386.0 232.5Q417 206 475 206Z"/>    <path transform="translate(1779.0 0)" d="M84 0V1600H449Q659 1600 752.5 1514.0Q846 1428 854 1230Q855 1168 856.0 1121.0Q857 1074 856.0 1026.5Q855 979 854 921Q849 796 811.0 716.5Q773 637 693 596L877 0H586L434 550H358V0ZM358 793H448Q512 793 543.5 822.5Q575 852 578 906Q581 960 582.0 1018.0Q583 1076 582.0 1133.0Q581 1190 578 1244Q575 1299 543.5 1328.0Q512 1357 449 1357H358Z"/>    <path transform="translate(2718.0 0)" d="M84 0V1600H486L602 1090L716 243H767L715 932L694 1600H960V0H538L421 532L333 1360H279L326 611L349 0Z"/>    <path transform="translate(3786.0 0)" d="M23 0 238 1600H676L891 0H609L573 353H341L305 0ZM367 596H547L512 950L485 1357H429L402 949Z"/>    <path transform="translate(4724.0 0)" d="M84 0V1600H358V243H742V0Z"/>    <path transform="translate(5518.0 0)" d="M84 0V1600H358V934H575V1600H851V0H575V691H358V0Z"/>    <path transform="translate(6476.0 0)" d="M23 0 238 1600H676L891 0H609L573 353H341L305 0ZM367 596H547L512 950L485 1357H429L402 949Z"/>
+  </g>
+</svg>

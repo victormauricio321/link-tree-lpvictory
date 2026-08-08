@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="pt-BR" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Marca `js` antes do primeiro paint: o estado inicial oculto da revelação só
+     existe sob html.js, então nada some em navegador sem JS.
+     ATENÇÃO: esta linha sozinha NÃO garante que o conteúdo apareça. Ela prova
+     que há JS, não que o módulo que revela chegou a rodar — e os dois se
+     separam (file://, 404, erro de execução). Quem fecha essa lacuna é o
+     `onerror` do <script type="module"> no fim do <body>, e o try/catch de
+     main.js. Os três formam um contrato só; não mexa em um sem os outros. -->
+<script>document.documentElement.classList.replace('no-js','js');</script>
+
+<title>Fornalha — Pizzaria de bairro desde 1998</title>
+<meta name="description" content="Massa de fermentação de 24 horas, forno a lenha e entrega em até 40 minutos. Mais de 30 sabores. Peça pelo WhatsApp.">
+<meta name="theme-color" content="#12100E">
+<link rel="canonical" href="https://fornalha.example/">
+
+<!-- Sem esta linha o navegador pede /favicon.ico por conta própria, leva 404 e
+     registra um erro de console — que o Lighthouse conta contra "Best
+     Practices". SVG e não .ico: um arquivo, qualquer tamanho, e o white-label
+     troca o ASSET sem tocar em código. -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<!-- Open Graph -->
+<meta property="og:type" content="restaurant.restaurant">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Fornalha">
+<meta property="og:title" content="Fornalha — Pizzaria de bairro desde 1998">
+<meta property="og:description" content="Massa de 24 horas, forno a lenha e entrega em até 40 minutos.">
+<meta property="og:url" content="https://fornalha.example/">
+<meta property="og:image" content="https://fornalha.example/assets/images/og-fornalha.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pizza saindo do forno a lenha da Fornalha">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fornalha — Pizzaria de bairro desde 1998">
+<meta name="twitter:description" content="Massa de 24 horas, forno a lenha e entrega em até 40 minutos.">
+<meta name="twitter:image" content="https://fornalha.example/assets/images/og-fornalha.jpg">
+
+<!-- Fontes: SELF-HOST, servidas da mesma origem.
+     Não há <link> de fonte aqui: as declarações `@font-face` vivem em
+     css/concepts/brasa-e-mesa.css, o único arquivo do projeto que pode nomear
+     uma família. Trocar o par tipográfico continua sendo trocar aquele arquivo
+     e os .woff2 — nenhum componente é tocado, e o <head> nem fica sabendo.
+     A justificativa medida (o CDN do Google disputava banda com a foto do LCP)
+     está por extenso no cabeçalho daquele arquivo. -->
+
+<!-- Pré-carga do LCP.
+     A foto do hero é o Largest Contentful Paint medido — sem esta linha o
+     navegador só a descobre depois de baixar e analisar as seis folhas de
+     estilo, porque ela está dentro de um <picture> no corpo. Com ela, o
+     download começa junto com o CSS.
+     `imagesrcset` e `imagesizes` repetem PALAVRA POR PALAVRA o que está no
+     <source> lá embaixo: qualquer divergência faz o navegador escolher um
+     arquivo diferente aqui e outro lá, e a página baixa a foto duas vezes.
+     `type` garante que quem não suporta WebP simplesmente ignora a pré-carga
+     em vez de baixar um arquivo que não vai usar. -->
+<link rel="preload" as="image" type="image/webp"
+      imagesizes="(min-width: 1024px) max(50vw, calc((100vh - 4.5rem) * 1.5)), 100vw"
+      imagesrcset="assets/images/hero-forno-640.webp   640w,
+                   assets/images/hero-forno-1024.webp 1024w,
+                   assets/images/hero-forno-1600.webp 1600w"
+      fetchpriority="high">
+
+<!-- Camada 1: conceito (único arquivo com hex e nome de fonte) -->
+<link rel="stylesheet" href="css/concepts/brasa-e-mesa.css">
+<!-- Camada 2 e 3: arquitetura -->
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Fornalha",
+  "description": "Pizzaria de bairro desde 1998. Massa de fermentação de 24 horas e forno a lenha.",
+  "servesCuisine": "Pizza",
+  "priceRange": "$$",
+  "url": "https://fornalha.example/",
+  "telephone": "+5511900001998",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rua das Oliveiras, 342",
+    "addressLocality": "Centro",
+    "addressCountry": "BR"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "18:00",
+    "closes": "23:30"
+  }]
+}
+</script>
+
+<!-- FAQPage — espelha palavra por palavra a seção [8]. Dado estruturado que
+     contradiz a página é pior que dado estruturado nenhum: se as respostas
+     mudarem lá embaixo, mudam aqui na mesma edição.
+     Nota honesta: desde 2023 o Google só exibe rich result de FAQ para sites
+     de governo e saúde. A marcação segue válida e é lida por outros
+     buscadores e assistentes — custa ~1 KB e não depende daquele recorte. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Quanto tempo leva a entrega?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Até 40 minutos num raio de 5 km. Fora dessa área a gente calcula o tempo real e avisa antes de confirmar o pedido — nunca depois." } },
+    { "@type": "Question", "name": "Qual é a taxa de entrega?",
+      "acceptedAnswer": { "@type": "Answer", "text": "R$ 6 até 3 km e R$ 9 de 3 a 5 km. Acima de R$ 120 a entrega sai por nossa conta." } },
+    { "@type": "Question", "name": "Quais formas de pagamento vocês aceitam?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Pix, dinheiro e cartão na entrega — crédito, débito e vale-refeição." } },
+    { "@type": "Question", "name": "Dá para retirar no balcão?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Dá, e sai 10% mais barato. É só avisar no WhatsApp que a gente separa e manda uma mensagem quando estiver saindo do forno." } },
+    { "@type": "Question", "name": "Tem opção sem glúten ou vegana?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Massa sem glúten sim, pedindo com uma hora de antecedência. Queijo vegetal a gente ainda não trabalha — prefere avisar a improvisar." } },
+    { "@type": "Question", "name": "Qual o horário de funcionamento?",
+      "acceptedAnswer": { "@type": "Answer", "text": "De terça a domingo, das 18h às 23h30. Na segunda o forno descansa." } },
+    { "@type": "Question", "name": "Preciso pedir com antecedência?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Não. Mas sexta e sábado depois das 20h a fila costuma passar de uma hora, então pedir cedo muda bastante a espera." } }
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- ============================================================================
+     SPRITE DE ÍCONES
+     Inline de propósito: zero requisição, e `currentColor` permite que o
+     white-label recolora os ícones sem tocar em arquivo de imagem.
+     Nove ícones de conteúdo, um por função — nenhum reaproveitado para dois
+     significados. O marcador do accordion e o botão do menu são desenhados em
+     CSS; a estrela da avaliação e a seta do "ver cardápio" já tinham os seus.
+     ============================================================================ -->
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="i-fire" viewBox="0 0 24 24">
+    <path d="M12 2.7c.4 2.3 1.9 3.5 3.1 5A7.6 7.6 0 0 1 17.3 12a5.3 5.3 0 0 1-10.6 0c0-1.5.5-2.7 1.3-3.8"/>
+    <path d="M12 20.6a3 3 0 0 1-3-3c0-1.8 3-4.2 3-4.2s3 2.4 3 4.2a3 3 0 0 1-3 3Z"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 7v5.2l3.4 2"/>
+  </symbol>
+  <symbol id="i-moped" viewBox="0 0 24 24">
+    <circle cx="6" cy="17.5" r="2.8"/>
+    <circle cx="18" cy="17.5" r="2.8"/>
+    <path d="M8.8 17.5h6.4M6 17.5V9.5h4.6l3.2 4.4h1.6M11.4 5.5h2.8l1.4 3"/>
+  </symbol>
+  <!-- WhatsApp — glifo oficial. Substituiu um balão genérico que era um
+       provisório assumido (estava no README como pendência). Diretriz de marca:
+       o glifo é usado em cor sólida única para indicar o canal, sem alterar as
+       proporções e sem o círculo verde sobre fundo colorido. Único ícone da
+       folha desenhado por PREENCHIMENTO — daí `icon--filled` em todo uso. -->
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+  </symbol>
+  <!-- Telefone — a linha do `tel:` no rodapé era a única do bloco de contato
+       sem ícone, e ficava desalinhada da linha do WhatsApp logo acima. -->
+  <symbol id="i-phone" viewBox="0 0 24 24">
+    <path d="M6.2 3.5h3.1l1.6 4-2 1.3a12.4 12.4 0 0 0 6.3 6.3l1.3-2 4 1.6v3.1a2 2 0 0 1-2.2 2A17.3 17.3 0 0 1 4.2 5.7a2 2 0 0 1 2-2.2Z"/>
+  </symbol>
+  <!-- Sacola — CTA do iFood. Sacola e não a marca do iFood: reproduzir logo de
+       terceiro exige o arquivo oficial da marca, e um redesenho de memória sai
+       errado. O rótulo do botão já diz "iFood"; o ícone diz "fazer pedido", que
+       é a função. `#i-moped` não serve: já é a credencial de entrega. -->
+  <symbol id="i-bag" viewBox="0 0 24 24">
+    <path d="M5.6 7.8h12.8l-1 12.7H6.6L5.6 7.8Z"/>
+    <path d="M9 7.8V6.4a3 3 0 0 1 6 0v1.4"/>
+  </symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24">
+    <path d="M4.5 12h15M13.5 6l6 6-6 6"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24">
+    <path d="m12 3.2 2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.6l6-.9L12 3.2Z"/>
+  </symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24">
+    <path d="M19.5 10.3c0 5.6-7.5 11.2-7.5 11.2s-7.5-5.6-7.5-11.2a7.5 7.5 0 0 1 15 0Z"/>
+    <circle cx="12" cy="10.2" r="2.8"/>
+  </symbol>
+</svg>
+
+<!-- Sentinela do header: 1px no topo. Quando sai da viewport, o header ganha
+     filete. Sentinela em vez de listener de scroll — ver INTERACTION.md §6.3. -->
+<div class="sentinel" data-header-sentinel aria-hidden="true"></div>
+
+<!-- ============================================================================
+     [1] HEADER
+     Intensidade 1 na curva emocional. Abaixo de 768px não carrega CTA: o hero
+     já tem a ação primária e a barra fixa a devolve depois.
+     ============================================================================ -->
+<header class="site-header theme-dark" data-header>
+  <div class="site-header__inner container">
+
+    <!-- `#top` é palavra reservada do HTML: quando nenhum elemento tem esse id,
+         o fragmento significa "início do documento". Resolve sem elemento
+         âncora, sem JS e honrando `scroll-behavior` (suave em global, `auto`
+         sob movimento reduzido — reset.css §movimento).
+         O alvo NÃO pode ser o <header>: ele é `position: sticky; top: 0`, então
+         seu rect começa em 0 em qualquer rolagem. O navegador só o afastava os
+         88px do `scroll-padding-top` e parava, achando o alvo alcançado.
+         Medido: clique em 3000px levava a 2912px, não a 0. -->
+    <a class="wordmark" href="#top">Fornalha</a>
+
+    <nav class="site-nav" aria-label="Navegação principal">
+      <ul class="site-nav__list" role="list">
+        <li><a class="nav-link" href="#cardapio">Cardápio</a></li>
+        <li><a class="nav-link" href="#a-casa">A casa</a></li>
+        <li><a class="nav-link" href="#depoimentos">Depoimentos</a></li>
+        <li><a class="nav-link" href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="btn btn--primary btn--sm site-header__cta"
+         href="https://wa.me/5511900001998?text=Ol%C3%A1%2C%20quero%20fazer%20um%20pedido."
+         target="_blank" rel="noopener"
+         aria-label="Pedir no WhatsApp (abre em nova aba)">
+        <svg class="icon icon--sm icon--filled" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Pedir
+      </a>
+
+      <!-- Destino do CTA de plataforma no header. Vazio até o JS instanciar;
+           some do DOM junto com o slot se não houver plataforma configurada.
+           As classes aqui são os MODIFICADORES deste ponto de uso — é assim que
+           header e barra fixa usam o mesmo componente sem divergir. -->
+      <span data-cta-slot="btn--sm site-header__cta"></span>
+
+      <button class="menu-toggle" type="button"
+              data-menu-toggle
+              aria-expanded="false" aria-controls="menu-mobile">
+        <span class="menu-toggle__bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- O tema vai no PAINEL, não no wrapper: `.theme-*` aplica background, e no
+     wrapper isso pintaria a área inteira e anularia o scrim. -->
+<div class="menu" id="menu-mobile" data-menu-panel>
+  <div class="menu__scrim" data-menu-scrim></div>
+  <div class="menu__panel theme-dark" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+
+    <nav aria-label="Navegação do menu">
+      <ul class="menu__list" role="list">
+        <li><a class="menu__link" href="#cardapio">Cardápio</a></li>
+        <li><a class="menu__link" href="#a-casa">A casa</a></li>
+        <li><a class="menu__link" href="#depoimentos">Depoimentos</a></li>
+        <li><a class="menu__link" href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--primary btn--block menu__cta"
+       href="https://wa.me/5511900001998?text=Ol%C3%A1%2C%20quero%20fazer%20um%20pedido."
+       target="_blank" rel="noopener"
+       aria-label="Pedir no WhatsApp (abre em nova aba)">
+      <svg class="icon icon--filled" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+      Pedir no WhatsApp
+    </a>
+
+  </div>
+</div>
+
+<main id="conteudo">
+
+  <!-- ==========================================================================
+       [2] HERO — pico 10 da curva emocional
+       O texto NUNCA encosta na foto: no mobile empilha, no desktop divide em
+       duas colunas. Contraste do H1 sobe para 16.6:1 e o véu sobre a imagem
+       deixa de existir — o fogo desta foto está na parte alta, e sobrepor
+       texto ali exigiria escurecer justamente o melhor dela.
+       Esta seção não recebe [data-reveal]: animar o LCP atrasa a métrica que
+       mais pesa em mobile.
+       ========================================================================== -->
+  <section class="hero theme-dark" data-hero aria-labelledby="hero-titulo">
+
+    <!-- `sizes` no desktop NÃO descreve a largura da coluna, e isso é
+         deliberado. A foto ocupa uma caixa RETRATO com `object-fit: cover`:
+         quem determina a resolução necessária é a ALTURA, e `sizes` só sabe
+         falar de largura. A conversão é a proporção do arquivo (3:2):
+         para cobrir uma caixa de altura H é preciso uma fonte de H × 1,5.
+         A altura da caixa é `100svh - --header-h` (4.5rem em ≥1024).
+         `max(50vw, …)` cobre a janela ultralarga e baixa, onde a largura volta
+         a ser o vínculo. Medido: 1,00× de escala em 1024, 1280 e 1440 — antes,
+         descrevendo 80vw, o navegador pegava o arquivo de 1024px e o ampliava
+         1,33× justamente na imagem que é o LCP.
+         No mobile continua 100vw, e aí quem decide é o DPR — medido com cache
+         limpo em 375px: DPR 1 → 640w (38 KB), DPR 2 → 1024w (76 KB),
+         DPR 3 → 1600w (150 KB). -->
+    <div class="hero__media">
+      <picture>
+        <source
+          type="image/webp"
+          sizes="(min-width: 1024px) max(50vw, calc((100vh - 4.5rem) * 1.5)), 100vw"
+          srcset="assets/images/hero-forno-640.webp   640w,
+                  assets/images/hero-forno-1024.webp 1024w,
+                  assets/images/hero-forno-1600.webp 1600w">
+        <img
+          src="assets/images/hero-forno-1024.jpg"
+          sizes="(min-width: 1024px) max(50vw, calc((100vh - 4.5rem) * 1.5)), 100vw"
+          srcset="assets/images/hero-forno-640.jpg   640w,
+                  assets/images/hero-forno-1024.jpg 1024w,
+                  assets/images/hero-forno-1600.jpg 1600w"
+          width="1600" height="1067"
+          fetchpriority="high" decoding="async"
+          alt="Pizza recém-assada sobre a pá de madeira, diante da boca acesa do forno a lenha">
+      </picture>
+    </div>
+
+    <div class="hero__body container-start">
+      <p class="t-eyebrow">Desde 1998 · Forno a lenha</p>
+
+      <!-- Dois tempos: o segundo em âmbar. A quebra dá a estrutura, a cor
+           reforça — nenhuma informação depende só dela. -->
+      <h1 class="t-hero hero__title" id="hero-titulo">
+        Fogo de verdade.<br><span class="hero__title-b">Pressa nenhuma na massa.</span>
+      </h1>
+
+      <p class="t-lead">
+        Fermentação de 24 horas, forno a lenha e entrega em até 40 minutos.
+        A gente demora onde importa.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary"
+           href="https://wa.me/5511900001998?text=Ol%C3%A1%2C%20quero%20fazer%20um%20pedido."
+           target="_blank" rel="noopener"
+           aria-label="Pedir no WhatsApp (abre em nova aba)">
+          <svg class="icon icon--filled" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Pedir no WhatsApp
+        </a>
+        <a class="btn btn--secondary" href="#cardapio">Ver o cardápio</a>
+      </div>
+
+      <p class="hero__proof">
+        <svg class="icon icon--sm icon--filled hero__star" aria-hidden="true"><use href="#i-star"></use></svg>
+        <strong>4,9</strong>
+        <span>1.247 avaliações</span>
+        <span aria-hidden="true">·</span>
+        <span>Entrega em até 40 min</span>
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       [3] FAIXA DE CREDIBILIDADE — pausa 3 na curva emocional
+       Primeira respiração depois do pico do hero. Sem imagem, sem cor de
+       fundo saturada: três promessas verificáveis, filete e nada mais.
+       O h2 é visualmente oculto porque a faixa NÃO deve gritar um título —
+       mas a hierarquia de cabeçalhos não pode ter buraco entre h1 e h3.
+       Primeiro uso real de [data-reveal]: 40ms de escalonamento entre os
+       três itens, o suficiente para ler como sequência sem virar espera.
+       ========================================================================== -->
+  <section class="creds theme-light section--tight" aria-labelledby="creds-titulo">
+    <h2 class="visually-hidden" id="creds-titulo">Como a gente trabalha</h2>
+
+    <!-- `role="list"` explícito: `list-style: none` faz o VoiceOver do Safari
+         retirar a semântica de lista. Sem ele, "lista de 3 itens" não é
+         anunciado e as três promessas viram três parágrafos soltos. -->
+    <ul class="creds__list container" role="list" data-reveal-group>
+      <li class="cred" data-reveal>
+        <svg class="icon icon--lg cred__icon" aria-hidden="true"><use href="#i-clock"></use></svg>
+        <h3 class="t-h5 cred__title">Massa de 24 horas</h3>
+        <p class="cred__text t-sm t-muted">Fermentação natural. Sem atalho.</p>
+      </li>
+
+      <li class="cred" data-reveal>
+        <svg class="icon icon--lg cred__icon" aria-hidden="true"><use href="#i-fire"></use></svg>
+        <h3 class="t-h5 cred__title">Forno a lenha</h3>
+        <p class="cred__text t-sm t-muted">Piso de pedra, 400 graus.</p>
+      </li>
+
+      <li class="cred" data-reveal>
+        <svg class="icon icon--lg cred__icon" aria-hidden="true"><use href="#i-moped"></use></svg>
+        <h3 class="t-h5 cred__title">40 minutos ou menos</h3>
+        <p class="cred__text t-sm t-muted">Num raio de 5 km.</p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ==========================================================================
+       [4] MAIS PEDIDAS — pico 7 na curva emocional
+       A vitrine. Sai do abstrato ("boa pizza") para o específico ("essa
+       calabresa") e planta a pergunta que a seção [5] responde: o que mais tem?
+       Abaixo de 1024px é carrossel: o último card CORTA na borda direita, e o
+       corte é a affordance — nenhuma seta decorativa (COMPOSITION.md §2).
+       Em ≥1024px vira grade de 3 colunas: ali o corte leria como bug.
+       Os cards NÃO são links. Ver a justificativa no protocolo da seção.
+       ========================================================================== -->
+  <section class="showcase theme-light section" id="mais-pedidas"
+           aria-labelledby="showcase-titulo" data-reveal-group>
+
+    <div class="container showcase__head" data-reveal>
+      <p class="t-eyebrow">Mais pedidas</p>
+      <h2 class="t-display" id="showcase-titulo">As seis que saem sem parar</h2>
+    </div>
+
+    <!-- `tabindex="0"` porque a região rola: sem ele, quem navega por teclado
+         não alcança os últimos cards no mobile (WCAG 2.1.1). As setas do
+         teclado rolam o contêiner — comportamento nativo, zero JS.
+
+         [data-reveal] fica no TRILHO, não nos cards. `overflow-x: auto` faz
+         deste elemento um contêiner de rolagem também no eixo de bloco, e
+         `animation-timeline: view()` de um filho ancoraria AQUI — numa
+         timeline que nunca avança, deixando os cards invisíveis para sempre.
+         Medido por `getAnimations()[0].timeline.source`. -->
+    <ul class="showcase__track" role="list" tabindex="0"
+        aria-label="Pizzas mais pedidas" data-reveal>
+
+      <!-- `--feature` é a QUEBRA DE GRID da página (COMPOSITION.md §1.6): este
+           card é mais alto que os cinco irmãos. A exceção cai no item que já é
+           o destacado — assim ela carrega informação em vez de ser ruído. -->
+      <li class="pcard pcard--feature">
+        <div class="pcard__media">
+          <p class="pcard__badge">Mais pedida</p>
+          <picture>
+            <source type="image/webp"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-calabresa-400.webp 400w,
+                      assets/images/produto-calabresa-600.webp 600w,
+                      assets/images/produto-calabresa-700.webp 700w,
+                      assets/images/produto-calabresa-900.webp 900w">
+            <img src="assets/images/produto-calabresa-600.jpg"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-calabresa-400.jpg 400w,
+                      assets/images/produto-calabresa-600.jpg 600w,
+                      assets/images/produto-calabresa-700.jpg 700w,
+                      assets/images/produto-calabresa-900.jpg 900w"
+              width="900" height="900" loading="lazy" decoding="async"
+              alt="Pizza de calabresa inteira sobre a pá de madeira, saindo do forno">
+          </picture>
+        </div>
+        <div class="pcard__row">
+          <h3 class="t-h5 pcard__name">Calabresa</h3>
+          <p class="t-price pcard__price">R$&nbsp;58</p>
+        </div>
+        <p class="pcard__desc t-sm t-muted">Calabresa artesanal, cebola roxa, orégano.</p>
+      </li>
+
+      <li class="pcard">
+        <div class="pcard__media">
+          <picture>
+            <source type="image/webp"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-margherita-400.webp 400w,
+                      assets/images/produto-margherita-600.webp 600w,
+                      assets/images/produto-margherita-700.webp 700w,
+                      assets/images/produto-margherita-900.webp 900w">
+            <img src="assets/images/produto-margherita-600.jpg"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-margherita-400.jpg 400w,
+                      assets/images/produto-margherita-600.jpg 600w,
+                      assets/images/produto-margherita-700.jpg 700w,
+                      assets/images/produto-margherita-900.jpg 900w"
+              width="900" height="900" loading="lazy" decoding="async"
+              alt="Pizza margherita sobre pedra escura, com tomate, mussarela e folhas de manjericão">
+          </picture>
+        </div>
+        <div class="pcard__row">
+          <h3 class="t-h5 pcard__name">Margherita</h3>
+          <p class="t-price pcard__price">R$&nbsp;54</p>
+        </div>
+        <p class="pcard__desc t-sm t-muted">Molho de tomate italiano, mussarela, manjericão.</p>
+      </li>
+
+      <li class="pcard">
+        <div class="pcard__media">
+          <picture>
+            <source type="image/webp"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-frango-400.webp 400w,
+                      assets/images/produto-frango-600.webp 600w,
+                      assets/images/produto-frango-700.webp 700w,
+                      assets/images/produto-frango-900.webp 900w">
+            <img src="assets/images/produto-frango-600.jpg"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-frango-400.jpg 400w,
+                      assets/images/produto-frango-600.jpg 600w,
+                      assets/images/produto-frango-700.jpg 700w,
+                      assets/images/produto-frango-900.jpg 900w"
+              width="900" height="900" loading="lazy" decoding="async"
+              alt="Pizza de frango com cebola roxa fatiada sobre tábua de madeira escura">
+          </picture>
+        </div>
+        <div class="pcard__row">
+          <h3 class="t-h5 pcard__name">Frango com requeijão</h3>
+          <p class="t-price pcard__price">R$&nbsp;62</p>
+        </div>
+        <p class="pcard__desc t-sm t-muted">Frango desfiado, requeijão cremoso, cebola roxa.</p>
+      </li>
+
+      <li class="pcard">
+        <div class="pcard__media">
+          <picture>
+            <source type="image/webp"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-quatro-queijos-400.webp 400w,
+                      assets/images/produto-quatro-queijos-600.webp 600w,
+                      assets/images/produto-quatro-queijos-700.webp 700w,
+                      assets/images/produto-quatro-queijos-900.webp 900w">
+            <img src="assets/images/produto-quatro-queijos-600.jpg"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-quatro-queijos-400.jpg 400w,
+                      assets/images/produto-quatro-queijos-600.jpg 600w,
+                      assets/images/produto-quatro-queijos-700.jpg 700w,
+                      assets/images/produto-quatro-queijos-900.jpg 900w"
+              width="900" height="900" loading="lazy" decoding="async"
+              alt="Pizza de quatro queijos fatiada em oito, sobre tábua redonda de madeira">
+          </picture>
+        </div>
+        <div class="pcard__row">
+          <h3 class="t-h5 pcard__name">Quatro queijos</h3>
+          <p class="t-price pcard__price">R$&nbsp;64</p>
+        </div>
+        <p class="pcard__desc t-sm t-muted">Mussarela, gorgonzola, parmesão, provolone.</p>
+      </li>
+
+      <li class="pcard">
+        <div class="pcard__media">
+          <picture>
+            <source type="image/webp"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-napolitana-400.webp 400w,
+                      assets/images/produto-napolitana-600.webp 600w,
+                      assets/images/produto-napolitana-700.webp 700w,
+                      assets/images/produto-napolitana-900.webp 900w">
+            <img src="assets/images/produto-napolitana-600.jpg"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-napolitana-400.jpg 400w,
+                      assets/images/produto-napolitana-600.jpg 600w,
+                      assets/images/produto-napolitana-700.jpg 700w,
+                      assets/images/produto-napolitana-900.jpg 900w"
+              width="900" height="900" loading="lazy" decoding="async"
+              alt="Pizza napolitana recém-saída do forno sobre bancada escura polvilhada de farinha">
+          </picture>
+        </div>
+        <div class="pcard__row">
+          <h3 class="t-h5 pcard__name">Napolitana</h3>
+          <p class="t-price pcard__price">R$&nbsp;56</p>
+        </div>
+        <p class="pcard__desc t-sm t-muted">Tomate em rodelas, mussarela, parmesão, orégano.</p>
+      </li>
+
+      <li class="pcard">
+        <div class="pcard__media">
+          <picture>
+            <source type="image/webp"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-bufala-400.webp 400w,
+                      assets/images/produto-bufala-600.webp 600w,
+                      assets/images/produto-bufala-700.webp 700w,
+                      assets/images/produto-bufala-900.webp 900w">
+            <img src="assets/images/produto-bufala-600.jpg"
+              sizes="(min-width: 1280px) 362px, (min-width: 1024px) 30vw, 15rem"
+              srcset="assets/images/produto-bufala-400.jpg 400w,
+                      assets/images/produto-bufala-600.jpg 600w,
+                      assets/images/produto-bufala-700.jpg 700w,
+                      assets/images/produto-bufala-900.jpg 900w"
+              width="900" height="900" loading="lazy" decoding="async"
+              alt="Pizza de mussarela de búfala com manjericão, borda alta e tostada, em prato azul">
+          </picture>
+        </div>
+        <div class="pcard__row">
+          <h3 class="t-h5 pcard__name">Búfala</h3>
+          <p class="t-price pcard__price">R$&nbsp;72</p>
+        </div>
+        <p class="pcard__desc t-sm t-muted">Mussarela de búfala, tomate-cereja, manjericão.</p>
+      </li>
+
+    </ul>
+
+    <!-- Secundário de propósito: o primário desta tela é o WhatsApp da barra
+         fixa. Este botão só entrega a pergunta plantada pela vitrine. -->
+    <div class="container showcase__foot" data-reveal>
+      <a class="btn btn--secondary" href="#cardapio">
+        Ver o cardápio completo
+        <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+      </a>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       [5] CARDÁPIO — respiro 4 na curva emocional
+       "A mesa". Responde a pergunta plantada pela vitrine e devolve controle:
+       quem escolhe, se compromete. Densidade invertida de propósito — nenhuma
+       foto, só tipografia, filete e preço à direita.
+       Três <details> INDEPENDENTES: fechar sozinho o que o usuário abriu seria
+       o oposto de dar controle. O primeiro nasce aberto para que a seção não
+       seja uma parede de barras fechadas.
+       Os itens não são clicáveis — 18 links levariam a ordem de tabulação a 22
+       paradas para uma seção cujo trabalho é ler, não agir.
+       ========================================================================== -->
+  <section class="carte theme-light section" id="cardapio"
+           aria-labelledby="cardapio-titulo" data-reveal-group>
+    <div class="container container--narrow">
+
+      <div class="carte__head" data-reveal>
+        <p class="t-eyebrow">O cardápio</p>
+        <h2 class="t-display" id="cardapio-titulo">Dezoito sabores, três famílias</h2>
+        <p class="t-lead">Todas em tamanho grande, oito fatias. Borda recheada por R$&nbsp;12.</p>
+      </div>
+
+      <div class="carte__groups" data-reveal>
+
+        <details class="accordion" open>
+          <summary class="accordion__head">
+            <h3 class="t-h3">Tradicionais</h3>
+            <span class="t-sm t-faint">6 sabores</span>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+
+          <ul class="carte-list" role="list">
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Mussarela</p>
+              <p class="t-price carte-item__price">R$&nbsp;48</p>
+              <p class="t-sm t-muted carte-item__desc">Molho de tomate, mussarela, orégano.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Calabresa</p>
+              <p class="t-price carte-item__price">R$&nbsp;58</p>
+              <p class="t-sm t-muted carte-item__desc">Calabresa artesanal, cebola roxa, orégano.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Margherita</p>
+              <p class="t-price carte-item__price">R$&nbsp;54</p>
+              <p class="t-sm t-muted carte-item__desc">Molho de tomate italiano, mussarela, manjericão.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Portuguesa</p>
+              <p class="t-price carte-item__price">R$&nbsp;62</p>
+              <p class="t-sm t-muted carte-item__desc">Presunto, ovo, cebola, azeitona, mussarela.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Napolitana</p>
+              <p class="t-price carte-item__price">R$&nbsp;56</p>
+              <p class="t-sm t-muted carte-item__desc">Tomate em rodelas, mussarela, parmesão, orégano.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Frango com requeijão</p>
+              <p class="t-price carte-item__price">R$&nbsp;62</p>
+              <p class="t-sm t-muted carte-item__desc">Frango desfiado, requeijão cremoso, cebola roxa.</p>
+            </li>
+          </ul>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h3">Especiais</h3>
+            <span class="t-sm t-faint">6 sabores</span>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+
+          <ul class="carte-list" role="list">
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Búfala</p>
+              <p class="t-price carte-item__price">R$&nbsp;72</p>
+              <p class="t-sm t-muted carte-item__desc">Mussarela de búfala, tomate-cereja, manjericão.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Quatro queijos</p>
+              <p class="t-price carte-item__price">R$&nbsp;64</p>
+              <p class="t-sm t-muted carte-item__desc">Mussarela, gorgonzola, parmesão, provolone.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Parma</p>
+              <p class="t-price carte-item__price">R$&nbsp;84</p>
+              <p class="t-sm t-muted carte-item__desc">Presunto de parma, rúcula, lascas de parmesão.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Pepperoni</p>
+              <p class="t-price carte-item__price">R$&nbsp;68</p>
+              <p class="t-sm t-muted carte-item__desc">Pepperoni italiano, mussarela, orégano.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Cogumelos</p>
+              <p class="t-price carte-item__price">R$&nbsp;70</p>
+              <p class="t-sm t-muted carte-item__desc">
+                Shimeji, shiitake, champignon, alho confitado.<span class="carte-item__tag">vegetariana</span>
+              </p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Vegetariana</p>
+              <p class="t-price carte-item__price">R$&nbsp;62</p>
+              <p class="t-sm t-muted carte-item__desc">
+                Abobrinha, berinjela, pimentão, tomate-cereja.<span class="carte-item__tag">vegetariana</span>
+              </p>
+            </li>
+          </ul>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h3">Doces</h3>
+            <span class="t-sm t-faint">6 sabores</span>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+
+          <ul class="carte-list" role="list">
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Chocolate ao leite</p>
+              <p class="t-price carte-item__price">R$&nbsp;52</p>
+              <p class="t-sm t-muted carte-item__desc">Chocolate belga derretido na hora.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Chocolate com morango</p>
+              <p class="t-price carte-item__price">R$&nbsp;58</p>
+              <p class="t-sm t-muted carte-item__desc">Chocolate meio amargo, morango fresco.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Banana com canela</p>
+              <p class="t-price carte-item__price">R$&nbsp;48</p>
+              <p class="t-sm t-muted carte-item__desc">Banana caramelizada, canela, açúcar mascavo.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Romeu e Julieta</p>
+              <p class="t-price carte-item__price">R$&nbsp;52</p>
+              <p class="t-sm t-muted carte-item__desc">Goiabada cascão e queijo minas.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Prestígio</p>
+              <p class="t-price carte-item__price">R$&nbsp;56</p>
+              <p class="t-sm t-muted carte-item__desc">Chocolate, coco fresco, leite condensado.</p>
+            </li>
+            <li class="carte-item">
+              <p class="t-h5 carte-item__name">Doce de leite</p>
+              <p class="t-price carte-item__price">R$&nbsp;56</p>
+              <p class="t-sm t-muted carte-item__desc">Doce de leite argentino com castanha-de-caju.</p>
+            </li>
+          </ul>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       [6] HISTÓRIA DA CASA — imersão 6 na curva emocional
+       "A memória". Volta ao escuro, e aqui o escuro não é apetite: é noite e
+       tempo. Depois de ver os preços do cardápio, a pergunta é *por que
+       esses?* — a história responde e humaniza.
+       Inverte o eixo do hero: lá a foto sangra à direita, aqui à esquerda.
+       O zigue-zague vertical é o que impede a página de virar pilha de blocos.
+       ========================================================================== -->
+  <section class="story theme-dark section--lg" id="a-casa"
+           aria-labelledby="story-titulo" data-reveal-group>
+
+    <!-- Foto de PROCESSO, não de produto: o gesto, nunca a pose. Sem rosto —
+         retrato posado é a marca visual mais forte de template genérico
+         (PHOTOGRAPHY.md §2). -->
+    <div class="story__media">
+      <picture>
+        <source type="image/webp"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          srcset="assets/images/historia-massa-600.webp   600w,
+                  assets/images/historia-massa-900.webp   900w,
+                  assets/images/historia-massa-1300.webp 1300w">
+        <img src="assets/images/historia-massa-900.jpg"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          srcset="assets/images/historia-massa-600.jpg   600w,
+                  assets/images/historia-massa-900.jpg   900w,
+                  assets/images/historia-massa-1300.jpg 1300w"
+          width="1300" height="1625" loading="lazy" decoding="async"
+          alt="Mãos enfarinhadas abrindo a massa sobre a bancada de trabalho">
+      </picture>
+    </div>
+
+    <div class="story__body container-end" data-reveal>
+      <p class="t-eyebrow">A casa</p>
+      <h2 class="t-display" id="story-titulo">Um forno só, aceso desde 1998</h2>
+
+      <div class="stack">
+        <p>
+          Seu Antônio levantou este forno com as próprias mãos no fundo de uma
+          garagem na Rua das Oliveiras. Assava trinta pizzas por noite e
+          entregava de bicicleta.
+        </p>
+        <p class="t-muted">
+          O endereço é o mesmo. O forno é o mesmo — a gente só trocou o piso de
+          pedra duas vezes em vinte e sete anos. Quem faz a massa hoje é a filha
+          dele, e a fermentação continua começando na véspera.
+        </p>
+      </div>
+    </div>
+
+    <!-- Três números em display gigante. Nenhum repete a faixa de
+         credibilidade: lá são promessas de serviço, aqui é tempo acumulado. -->
+    <ul class="story__figures container" role="list" data-reveal>
+      <li class="figure">
+        <p class="figure__value">27</p>
+        <p class="figure__label t-sm t-muted">anos no mesmo endereço</p>
+      </li>
+      <li class="figure">
+        <p class="figure__value">180 mil</p>
+        <p class="figure__label t-sm t-muted">pizzas saídas deste forno</p>
+      </li>
+      <li class="figure">
+        <p class="figure__value">1</p>
+        <p class="figure__label t-sm t-muted">forno de tijolo, o mesmo desde o primeiro dia</p>
+      </li>
+    </ul>
+
+  </section>
+
+  <!-- ==========================================================================
+       [7] DEPOIMENTOS — intensidade 5 na curva emocional
+       "As vozes". O usuário já quer; falta autorização social. Terceiros dão a
+       permissão que a marca não pode dar sobre si — por isso a prova social
+       vem imediatamente antes do fechamento.
+       SEM RETRATOS, e isso é decisão, não falta de foto: colar o rosto de uma
+       pessoa real de banco de imagem numa frase inventada fabrica um
+       depoimento com identidade de terceiro. A pizzaria que usar este layout
+       entra com fotos de clientes de verdade, com autorização — ou fica só com
+       o nome, que já é o que a página faz aqui.
+       ========================================================================== -->
+  <section class="voices theme-light section" id="depoimentos"
+           aria-labelledby="voices-titulo" data-reveal-group>
+    <div class="container">
+
+      <div class="voices__head" data-reveal>
+        <p class="t-eyebrow">As vozes</p>
+        <h2 class="t-display" id="voices-titulo">1.247 avaliações.<br>Três delas.</h2>
+      </div>
+
+      <ul class="voices__list" role="list">
+
+        <li data-reveal>
+          <figure class="voice">
+            <span class="voice__mark" aria-hidden="true">&ldquo;</span>
+            <blockquote class="voice__quote t-quote">
+              <p>Pedi às onze da noite achando que ia demorar. Chegou em trinta e cinco minutos e ainda estava quente na caixa.</p>
+            </blockquote>
+            <figcaption class="voice__by t-sm">
+              <span class="voice__name">Marina R.</span>
+              <span class="t-faint">Vila Nova · há 2 semanas</span>
+            </figcaption>
+          </figure>
+        </li>
+
+        <li data-reveal>
+          <figure class="voice">
+            <span class="voice__mark" aria-hidden="true">&ldquo;</span>
+            <blockquote class="voice__quote t-quote">
+              <p>A borda é o motivo. Fina, com bolha, e com aquela marca preta que só forno a lenha faz.</p>
+            </blockquote>
+            <figcaption class="voice__by t-sm">
+              <span class="voice__name">Diego F.</span>
+              <span class="t-faint">Centro · há 1 mês</span>
+            </figcaption>
+          </figure>
+        </li>
+
+        <li data-reveal>
+          <figure class="voice">
+            <span class="voice__mark" aria-hidden="true">&ldquo;</span>
+            <blockquote class="voice__quote t-quote">
+              <p>Meus filhos não comem em outro lugar. A gente pede toda sexta há uns seis anos.</p>
+            </blockquote>
+            <figcaption class="voice__by t-sm">
+              <span class="voice__name">Cláudia M.</span>
+              <span class="t-faint">Jardim América · há 3 semanas</span>
+            </figcaption>
+          </figure>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       [8] FAQ — vale 2 na curva emocional
+       "As últimas dúvidas". O bloco mais denso e menos ilustrado da página:
+       zero imagem, tipografia menor, energia baixa DE PROPÓSITO — é o vale que
+       faz o pico do fechamento doer mais logo abaixo.
+       Cada dúvida não respondida aqui é um abandono lá na frente: entrega,
+       taxa, pagamento, horário. Todas nascem fechadas — FAQ se varre, não se lê.
+       ========================================================================== -->
+  <section class="faq theme-light section--tight" id="duvidas"
+           aria-labelledby="faq-titulo" data-reveal-group>
+    <div class="container container--narrow">
+
+      <div class="faq__head" data-reveal>
+        <p class="t-eyebrow">Antes de pedir</p>
+        <h2 class="t-display" id="faq-titulo">O que perguntam toda semana</h2>
+      </div>
+
+      <div class="faq__list" data-reveal>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h4">Quanto tempo leva a entrega?</h3>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">
+            Até 40 minutos num raio de 5 km. Fora dessa área a gente calcula o
+            tempo real e avisa antes de confirmar o pedido — nunca depois.
+          </p>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h4">Qual é a taxa de entrega?</h3>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">
+            R$ 6 até 3 km e R$ 9 de 3 a 5 km. Acima de R$ 120 a entrega sai por
+            nossa conta.
+          </p>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h4">Quais formas de pagamento vocês aceitam?</h3>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">
+            Pix, dinheiro e cartão na entrega — crédito, débito e vale-refeição.
+          </p>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h4">Dá para retirar no balcão?</h3>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">
+            Dá, e sai 10% mais barato. É só avisar no WhatsApp que a gente
+            separa e manda uma mensagem quando estiver saindo do forno.
+          </p>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h4">Tem opção sem glúten ou vegana?</h3>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">
+            Massa sem glúten sim, pedindo com uma hora de antecedência. Queijo
+            vegetal a gente ainda não trabalha — prefere avisar a improvisar.
+          </p>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h4">Qual o horário de funcionamento?</h3>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">
+            De terça a domingo, das 18h às 23h30. Na segunda o forno descansa.
+          </p>
+        </details>
+
+        <details class="accordion">
+          <summary class="accordion__head">
+            <h3 class="t-h4">Preciso pedir com antecedência?</h3>
+            <span class="accordion__mark" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">
+            Não. Mas sexta e sábado depois das 20h a fila costuma passar de uma
+            hora, então pedir cedo muda bastante a espera.
+          </p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       [9] FECHAMENTO — pico 10, o segundo e último da página
+       "A fome". A ÚNICA tela inteira em vermelho, guardada para o fim. Nada
+       novo, nada para ler: uma frase e um botão, no momento em que não sobrou
+       objeção. O vale do FAQ logo acima é o que faz este pico doer.
+       `data-final-cta` é a sentinela que APAGA a barra fixa de CTA quando esta
+       seção entra — sem ela, o usuário veria dois CTAs concorrentes na mesma
+       tela exatamente no momento da conversão (INTERACTION.md §7).
+       ========================================================================== -->
+  <section class="close theme-cta section--lg" id="pedir"
+           aria-labelledby="close-titulo" data-final-cta>
+    <div class="container close__inner">
+
+      <!-- Quebra manual: a pausa está na vírgula, e é ela que faz a frase
+           soar como cutucão amigo em vez de slogan. -->
+      <h2 class="t-hero close__title" id="close-titulo">
+        A essa hora,<br>você já tava comendo.
+      </h2>
+
+      <a class="btn btn--invert btn--lg"
+         href="https://wa.me/5511900001998?text=Ol%C3%A1%2C%20quero%20fazer%20um%20pedido."
+         target="_blank" rel="noopener"
+         aria-label="Pedir no WhatsApp (abre em nova aba)">
+        <svg class="icon icon--filled" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Pedir no WhatsApp
+      </a>
+
+      <!-- Horário real, não urgência inventada. A página é estática e não sabe
+           que dia é hoje: "aberto até 23h30" seria mentira na segunda-feira, e
+           urgência falsa queima a confiança das oito seções anteriores. -->
+      <p class="close__note t-sm">Terça a domingo, das 18h às 23h30.</p>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ==========================================================================
+     [10] CONTATO + FOOTER — descida 2 na curva emocional
+     Encerrar. Escuro de novo, agora sem drama: o trabalho já foi feito uma
+     tela acima. Três blocos de informação verificável e a marca em escala
+     máxima, cortada pela borda inferior — a última imagem na retina, sem
+     custar um byte de imagem.
+     Fica FORA de <main> por duas razões: é rodapé de página, e `main` carrega
+     `container-type: inline-size`, que mudaria o contêiner de qualquer
+     `position: fixed` aqui dentro.
+     ========================================================================== -->
+<footer class="site-footer theme-dark" id="contato" aria-labelledby="rodape-titulo">
+  <div class="container">
+
+    <!-- Um h2 para o rodapé inteiro, e h3 nas três colunas. Antes as colunas
+         eram h2 e apareciam na navegação por cabeçalho como pares das seções
+         da página — três entradas de peso máximo para blocos de duas linhas.
+         Mesmo recurso da faixa de credibilidade: o título existe para a
+         estrutura, não para a tela. -->
+    <h2 class="visually-hidden" id="rodape-titulo">Contato e horários</h2>
+
+    <div class="site-footer__cols">
+
+      <div class="site-footer__col">
+        <h3 class="t-h5">Onde a gente fica</h3>
+        <p class="site-footer__line">
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-pin"></use></svg>
+          <span>Rua das Oliveiras, 342<br>Centro</span>
+        </p>
+        <!-- Fachada sem imagem: o mapa estático seria a foto de um lugar que
+             não existe. O link resolve o mesmo problema com zero byte e zero
+             JavaScript de terceiro (MASTER.md §6.6). -->
+        <a class="btn btn--ghost btn--sm"
+           href="https://www.google.com/maps/search/?api=1&query=Rua+das+Oliveiras+342+Centro"
+           target="_blank" rel="noopener"
+           aria-label="Ver no mapa — endereço no Google Maps (abre em nova aba)">Ver no mapa</a>
+      </div>
+
+      <div class="site-footer__col">
+        <h3 class="t-h5">Quando</h3>
+        <p class="site-footer__line">
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-clock"></use></svg>
+          <span>Terça a domingo<br>das 18h às 23h30</span>
+        </p>
+        <p class="t-sm t-muted">Na segunda o forno descansa.</p>
+      </div>
+
+      <div class="site-footer__col">
+        <h3 class="t-h5">Falar com a gente</h3>
+        <p class="site-footer__line">
+          <svg class="icon icon--sm icon--filled" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          <a href="https://wa.me/5511900001998?text=Ol%C3%A1%2C%20quero%20fazer%20um%20pedido."
+             target="_blank" rel="noopener"
+             aria-label="Pedir no WhatsApp (abre em nova aba)">WhatsApp</a>
+        </p>
+        <p class="site-footer__line">
+          <svg class="icon icon--sm" aria-hidden="true"><use href="#i-phone"></use></svg>
+          <a href="tel:+5511900001998">(11) 90000-1998</a>
+        </p>
+      </div>
+
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Navegação do rodapé">
+      <ul class="site-footer__navlist" role="list">
+        <li><a class="nav-link" href="#cardapio">Cardápio</a></li>
+        <li><a class="nav-link" href="#a-casa">A casa</a></li>
+        <li><a class="nav-link" href="#depoimentos">Depoimentos</a></li>
+        <li><a class="nav-link" href="#duvidas">Dúvidas</a></li>
+      </ul>
+    </nav>
+
+    <p class="site-footer__legal t-sm">
+      Fornalha · Pizzaria de bairro desde 1998 · CNPJ 00.000.000/0001-00
+    </p>
+
+  </div>
+
+  <!-- A marca em escala máxima, cortada pela borda de baixo.
+       O nome vive num `data-*` e é desenhado por `content: attr()`, não como
+       nó de texto. Não é truque: isto AQUI é grafismo, e grafismo não deveria
+       ser texto no DOM. O nome já foi anunciado pelo wordmark do topo (a
+       15,8:1); repeti-lo encheria o leitor de tela, não seria selecionável com
+       sentido, e — medido — um verificador automático o cobrava a 1,43:1 sem
+       ter como saber que WCAG 1.4.3 isenta duas vezes o mesmo elemento (nome
+       de marca E decoração pura).
+       O nome continua na MARCAÇÃO, que é o que importa para o white-label:
+       trocar a marca é editar este atributo, não um seletor de CSS. -->
+  <p class="site-footer__mark" data-marca="Fornalha" aria-hidden="true"></p>
+</footer>
+
+<!-- ==========================================================================
+     BARRA CTA FIXA (mobile)
+     Aparece quando o hero sai e SOME quando o fechamento entra — os dois
+     gatilhos, por sentinela. Sem o segundo, o usuário veria dois CTAs
+     concorrentes na mesma tela no momento da conversão.
+     Fora de <main> pelo mesmo motivo do rodapé: `container-type` lá dentro
+     mudaria o contêiner de posicionamento deste elemento fixo.
+     ========================================================================== -->
+<div class="cta-bar theme-dark" data-cta-bar>
+  <div class="cta-bar__inner container">
+    <a class="btn btn--primary btn--block"
+       href="https://wa.me/5511900001998?text=Ol%C3%A1%2C%20quero%20fazer%20um%20pedido."
+       target="_blank" rel="noopener"
+       aria-label="Pedir no WhatsApp (abre em nova aba)">
+      <svg class="icon icon--filled" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+      Pedir no WhatsApp
+    </a>
+    <!-- Mesmo componente do header, outros modificadores. Ver o <template>
+         abaixo — a marcação do botão existe UMA vez no arquivo inteiro.
+         `data-cta-curto`: em 320px os dois botões dividem ~129px e o rótulo
+         completo quebrava em duas linhas. O aria-label continua completo. -->
+    <span data-cta-slot="btn--block" data-cta-curto></span>
+  </div>
+</div>
+
+<!-- ============================================================================
+     PLATAFORMA DE PEDIDO — configuração única de toda a página
+     ----------------------------------------------------------------------------
+     ÚNICO PONTO A EDITAR. Preencha `data-url` e `data-plataforma` e o botão
+     aparece no header E na barra fixa, com os modificadores de cada lugar.
+     Vazio, NADA entra no DOM — nem no header, nem na barra: os slots são
+     removidos. Não é botão escondido por CSS, que continuaria na ordem de
+     tabulação e na árvore de acessibilidade apontando para lugar nenhum.
+
+     NÃO HÁ LÓGICA POR PLATAFORMA em lugar nenhum do projeto. iFood, Anota AI,
+     Goomer, Cardápio Web, Delivery Direto ou plataforma própria são todos o
+     mesmo caso: nome, URL, ícone. Trocar de plataforma é editar três atributos.
+
+       data-plataforma  nome exibido; compõe "Ver no {nome}"
+       data-url         URL da loja. VAZIO = botão não existe
+       data-icone       símbolo do sprite (padrão #i-bag)
+       data-rotulo      opcional, substitui "Ver no {nome}" inteiro —
+                        para plataforma própria, ex.: "Ver o cardápio online"
+       data-rotulo-curto  opcional, forma curta para lugares apertados
+                        (padrão: o próprio nome). Só o rótulo VISÍVEL encurta;
+                        o `aria-label` continua completo em todos os lugares
+
+     Para tingir com a cor da plataforma, defina `--cta-plataforma` no arquivo
+     de conceito (Camada 1, o único lugar com hex). Sem isso o botão veste a
+     borda pela cor do texto da superfície, como qualquer secundário.
+     ============================================================================ -->
+<template data-cta-plataforma
+          data-plataforma="iFood"
+          data-url=""
+          data-icone="#i-bag">
+  <a class="btn btn--secondary btn--plataforma" target="_blank" rel="noopener">
+    <svg class="icon icon--sm" aria-hidden="true"><use href="#i-bag"></use></svg>
+    <span data-cta-rotulo></span>
+  </a>
+</template>
+
+<!-- `onerror` desfaz a marca `js` se o grafo do módulo não carregar — inclusive
+     por CORS ao abrir o arquivo por file://, que é o caso que deixava a página
+     em branco. Sem isto a promessa do script do <head> é falsa: ele afirma "há
+     JS" (verdade), mas quem revela o conteúdo é ESTE módulo, que falha sozinho.
+     O evento cobre o grafo inteiro (main → utilities, animations). -->
+<script type="module" src="js/main.js"
+        onerror="document.documentElement.classList.replace('js','no-js')"></script>
+</body>
+</html>

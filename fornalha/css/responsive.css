@@ -1,0 +1,26 @@
+/* ============================================================================
+   responsive.css — ajustes acima do mobile
+   ----------------------------------------------------------------------------
+   Mobile-first: tudo que veio antes deste arquivo já é a versão de 360px.
+   Aqui só entra o que REALMENTE quebra ao crescer.
+
+   Custom properties não funcionam dentro de @media — os valores aparecem
+   literais, com o mapa abaixo como referência (variables.css §14):
+
+     480px   --bp-sm   grid de 2 colunas em cards pequenos
+     768px   --bp-md   QUEBRA ESTRUTURAL — tablet
+    1024px   --bp-lg   QUEBRA ESTRUTURAL — nav horizontal, 12 col, sem CTA fixa
+    1280px   --bp-xl   container atinge o máximo
+
+   Boa parte da adaptação já acontece sem media query: `clamp()` na escala
+   tipográfica e no ritmo vertical, e `auto-fit/minmax` nos grids de card.
+   Cada media query aqui é uma que essas duas técnicas não resolveram.
+   ============================================================================ */
+
+/* --- 1024px · notebook ----------------------------------------------------- */
+@media (min-width: 1024px) {
+  :root {
+    --header-h:  4.5rem;   /* 72 */
+    --gap-card:  1.5rem;
+  }
+}

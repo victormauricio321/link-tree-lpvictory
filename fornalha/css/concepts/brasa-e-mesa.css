@@ -1,0 +1,165 @@
+/* ============================================================================
+   brasa-e-mesa.css — CONCEITO VISUAL (Camada 1)
+   ----------------------------------------------------------------------------
+   "O escuro é o forno. O claro é a mesa. O vermelho é a fome."
+
+   Derivado das referências do briefing: Nostra (condensada pesada, carvão +
+   vermelho + creme), menu Cinque (ritmo editorial, filete, preço tabular),
+   Pezza.X (hero escuro), PizzaDeli (headline em dois tempos).
+
+   Único arquivo do projeto com hex literal e nome de fonte.
+   Narrativa completa em design-system/ART-DIRECTION.md §2.
+   ============================================================================ */
+
+:root {
+
+  /* --- COR ---------------------------------------------------------------- */
+  --brand-ink:        #12100E;  /* nunca #000: OLED smear e buraco visual   */
+  --brand-paper:      #F5EFE4;
+  --brand-primary:    #C8281F;  /* 4.9:1 sobre paper · 5.6:1 com texto #FFF */
+  --brand-primary-dp: #8E1D22;  /* 7.9:1 sobre paper                        */
+  --brand-accent:     #E3A13C;  /* 8.6:1 sobre ink                          */
+  --brand-support:    #3D5B3A;
+
+  /* Neutros quentes: matiz 38° em toda a escala.
+     Cinza puro numa página de comida lê como hospitalar. */
+  --brand-neutral-h:  38;
+  --brand-neutral-s:  46%;
+
+  /* --- TIPOGRAFIA ---------------------------------------------------------
+     Implementação inicial do conceito — NÃO faz parte da arquitetura.
+     Trocar o par exige alterar apenas estes 4 tokens e o <link> das fontes.
+
+     Big Shoulders — condensada de sinalização, eixos opsz + wght.
+       Atenção: a família correta é 'Big Shoulders' (v4). A legada
+       'Big Shoulders Display' (v24) não tem eixo óptico.
+       Regra de uso: só peso ≥700 e sempre em caixa alta.
+     Newsreader — serifada editorial de leitura, eixos opsz + wght + ital.
+       O itálico resolve --font-accent sem uma terceira família.
+     ------------------------------------------------------------------------ */
+  --font-display: 'Big Shoulders', 'Arial Narrow', Impact, sans-serif;
+  --font-heading: var(--font-display);
+  --font-body:    'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-accent:  var(--font-body);
+
+  /* --- CARÁTER ------------------------------------------------------------ */
+  --brand-radius:     4px;        /* editorial: canto duro, não gentil      */
+  --brand-tracking:   0.01em;     /* condensada em caixa alta pede positivo */
+  --brand-case:       uppercase;
+  --brand-rule-style: solid;
+}
+
+/* ============================================================================
+   FONTES — SELF-HOST
+   ----------------------------------------------------------------------------
+   As fontes vivem no repositório, não no CDN do Google. Este é o único arquivo
+   que pode nomear uma família, então é aqui que as declarações moram: trocar o
+   par tipográfico continua sendo trocar ESTE arquivo e os arquivos de fonte.
+
+   Por que saiu do CDN (medido, não presumido)
+   -------------------------------------------
+   Com a folha do Google no <head>, o Lighthouse móvel dava LCP entre 2,0 e
+   3,8s e Performance entre 84 e 99 — variância grande. Removendo só a folha,
+   em quatro execuções: LCP 1,7–2,1s e Performance 99–100, sem nenhum outlier.
+   A causa é banda: as fontes disputavam o link estrangulado com a foto do LCP,
+   e ainda custavam DNS + TLS para duas origens (fonts.googleapis.com e
+   fonts.gstatic.com) e uma folha de estilo bloqueante de renderização.
+
+   O que foi cortado
+   -----------------
+   1. SUBSET: só `latin` e `latin-ext`. O `vietnamese` do Google ficou de fora —
+      é alfabeto que esta peça não atende. `latin-ext` custa ZERO em runtime
+      para pt-BR: `unicode-range` faz o navegador baixá-lo apenas se aparecer um
+      caractere daquela faixa, e todo acento do português vive em U+00C0–U+00FF,
+      dentro do `latin`. Ele existe para o white-label — a pizzaria que se
+      chamar "Świątek" continua funcionando.
+
+   2. EIXOS: o Google DECLARA `font-weight: 700 800` e ENTREGA o arquivo com o
+      eixo wght inteiro, de 100 a 900. Oitocentas unidades de dado de
+      interpolação para as cem que a página consome. Cortado com
+      `fontTools.varLib.instancer` para a faixa realmente usada, medida na
+      página renderizada de 320px a 2560px, com folga:
+
+        Big Shoulders  wght 700..800 (era 100..900)  ·  opsz 16..72 (era 10..72)
+        Newsreader     wght 400..600 (era 200..800)  ·  opsz 10..48 (era 6..72)
+        Newsreader it. sem eixo de peso              ·  opsz 10..48 (era 6..72)
+
+      Corte por FAIXA, nunca por valor fixo: os eixos continuam vivos, o
+      `font-optical-sizing: auto` continua funcionando e o white-label continua
+      podendo mexer nos tokens de tamanho. Fixar economizaria mais e
+      transformaria a peça num beco sem saída.
+
+   Resultado em bytes, o que um leitor em pt-BR baixa:
+     antes  247,8 KB  (Big Shoulders 57,1 + Newsreader 128,9 + itálica 61,8)
+     agora  176,3 KB  (33,6 + 85,1 + 57,6)                          −29%
+
+   Renderização conferida pixel a pixel contra a versão do CDN — ver o relatório
+   de aprovação. Instanciar eixo não pode mexer em métrica, e não mexeu.
+
+   Licença: Big Shoulders e Newsreader são SIL Open Font License 1.1, que
+   permite self-host e redistribuição. Texto em assets/fonts/OFL.txt.
+
+   Ao trocar de conceito: rode scratchpad/fontes.py com a nova URL do Google
+   Fonts, depois scratchpad/instanciar.py com as faixas do novo par, e substitua
+   o bloco abaixo. As faixas se medem na página, não se adivinham.
+   ============================================================================ */
+
+/* Big Shoulders · normal 700 800 · latin */
+@font-face {
+  font-family: 'Big Shoulders';
+  font-style: normal;
+  font-weight: 700 800;
+  font-display: swap;
+  src: url('../../assets/fonts/big-shoulders-var-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Big Shoulders · normal 700 800 · latin-ext */
+@font-face {
+  font-family: 'Big Shoulders';
+  font-style: normal;
+  font-weight: 700 800;
+  font-display: swap;
+  src: url('../../assets/fonts/big-shoulders-var-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Newsreader · normal 400 600 · latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('../../assets/fonts/newsreader-var-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Newsreader · normal 400 600 · latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('../../assets/fonts/newsreader-var-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Newsreader · italic 400 · latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../assets/fonts/newsreader-italic-var-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Newsreader · italic 400 · latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../assets/fonts/newsreader-italic-var-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}

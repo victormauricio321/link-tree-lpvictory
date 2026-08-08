@@ -1,0 +1,374 @@
+/* ============================================================================
+   components.css — Camada 3
+   ----------------------------------------------------------------------------
+   Consome APENAS tokens semânticos da Camada 2 (--surface, --on-surface,
+   --color-cta, --border, --font-*). Nunca --brand-*, nunca hex, nunca nome de
+   família tipográfica.
+
+   Regra visual do sistema: a resposta de interação acontece na BORDA e na LUZ,
+   nunca na FORMA. Nada muda de tamanho de caixa, nada empurra vizinho.
+
+   Ordem das propriedades: layout → caixa → tipografia → aparência → interação.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   Base compartilhada por tudo que é clicável
+   ---------------------------------------------------------------------------- */
+.btn,
+.nav-link,
+.menu-toggle,
+.wordmark,
+.accordion__head,
+.site-footer a {
+  cursor: pointer;
+  touch-action: manipulation;   /* elimina o atraso de 300ms no toque */
+}
+
+/* ============================================================================
+   BOTÃO
+   ============================================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--touch-min);
+  padding-inline: var(--space-5);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  border: var(--border-width-strong) solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    color            var(--dur-fast)  var(--ease-std),
+    background-color var(--dur-fast)  var(--ease-std),
+    border-color     var(--dur-fast)  var(--ease-std),
+    transform        var(--dur-press) var(--ease-std);
+}
+
+.btn:active { transform: scale(var(--press-scale)); }
+
+/* Primário — a ação da página. Um por tela. */
+.btn--primary {
+  color: var(--color-cta-on);
+  background-color: var(--color-cta);
+  border-color: var(--color-cta);
+}
+
+/* Secundário — subordinado, sem peso de cor */
+.btn--secondary {
+  color: inherit;
+  background-color: transparent;
+  border-color: currentColor;
+}
+
+/* Plataforma de pedido — modificador SOBRE o secundário, não um botão novo.
+   Existe por uma razão só: dar à borda um token próprio, para o revendedor
+   tingir com a cor da plataforma sem tocar em `.btn--secondary`, que veste
+   outros botões da página. Sem sobrescrita, é idêntico ao secundário. */
+.btn--plataforma { border-color: var(--cta-plataforma); }
+
+/* Ghost — CTA sublinhado, para quando o botão pesaria demais */
+.btn--ghost {
+  min-height: auto;
+  padding-inline: 0;
+  color: inherit;
+  border: 0;
+  border-radius: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--color-cta);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* Invertido — para a seção de ação plena, onde o primário sumiria: vermelho
+   sobre vermelho. É o mesmo botão com os papéis trocados, e o par entrega os
+   mesmos 5,56:1, só que ao contrário. */
+.btn--invert {
+  color: var(--color-cta);
+  background-color: var(--n-0);
+  border-color: var(--n-0);
+}
+
+/* Modificadores de tamanho e largura — o alvo de toque nunca encolhe */
+.btn--sm    { padding-inline: var(--space-4); font-size: var(--fs-sm); }
+.btn--block { display: flex; width: 100%; }
+
+/* Grande — só o CTA de fechamento. A altura é derivada do alvo mínimo, não
+   escolhida: mínimo + um degrau da escala. O press é mais contido (0.98) que
+   o dos alvos normais (0.97) porque botão grande encolhendo 3% parece que
+   quebrou (INTERACTION.md §4). */
+.btn--lg {
+  min-height: calc(var(--touch-min) + var(--space-3));
+  padding-inline: var(--space-7);
+  font-size: var(--fs-lead);
+}
+
+.btn--lg:active { transform: scale(var(--press-scale-wide)); }
+
+/* Hover só existe em ponteiro fino: sem esta query o estado fica "grudado"
+   depois do toque no mobile e parece bug — porque é. */
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover {
+    background-color: var(--color-cta-hover);
+    border-color: var(--color-cta-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn--secondary:hover {
+    background-color: color-mix(in srgb, currentColor calc(var(--o-hover) * 100%), transparent);
+    transform: translateY(-1px);
+  }
+
+  .btn--ghost:hover { text-decoration-thickness: 3px; }
+
+  /* Sobre o vermelho pleno não há para onde escurecer sem sujar: a resposta é
+     um branco levemente mais quente. Continua sendo luz, não forma. */
+  .btn--invert:hover {
+    background-color: var(--n-50);
+    border-color: var(--n-50);
+    transform: translateY(-1px);
+  }
+
+  .btn:hover:active { transform: translateY(0) scale(var(--press-scale)); }
+
+  .btn--lg:hover:active { transform: translateY(0) scale(var(--press-scale-wide)); }
+}
+
+.btn[aria-disabled="true"],
+.btn:disabled {
+  opacity: var(--o-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   WORDMARK
+   Token próprio de componente: o valor não pertence à escala tipográfica
+   (que serve a texto), e não é usado fora daqui. Se aparecer num segundo
+   componente, sobe para variables.css.
+   ============================================================================ */
+
+.wordmark {
+  --wordmark-size: clamp(1.25rem, 1.1rem + 0.67vw, 1.625rem);   /* 20 → 26 */
+
+  /* inline-flex + min-height expande a área de toque para 44px sem inflar a
+     tipografia — o texto tem 26px de altura, o alvo tem 44. */
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-min);
+  font-family: var(--font-display);
+  font-size: var(--wordmark-size);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  text-transform: var(--case-display);
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--dur-fast) var(--ease-std);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wordmark:hover { color: var(--color-accent); }
+}
+
+/* ============================================================================
+   LINK DE NAVEGAÇÃO
+   O sublinhado cresce por scaleX — compositor. Animar `width` seria layout.
+   ============================================================================ */
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+  /* Vertical: space-3, não space-2 — a caixa de texto tem 24,75px (15px ×
+     1.65) e com 8px de padding o alvo ficava em 41px.
+     Horizontal: o rótulo mais curto do menu ("A casa") mede 42px de texto e
+     reprovava no mesmo piso de 44 pela LARGURA — medido. 8px de cada lado
+     levam a 58px sem tocar na tipografia. O recuo sai da calha entre itens
+     (que caiu de 24 para 12), então o espaçamento ÓPTICO do menu não muda:
+     12 de gap + 16 de padding = os mesmos ~28px de respiro entre palavras. */
+  padding-block: var(--space-3);
+  padding-inline: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* O sublinhado acompanha a PALAVRA, não a área de toque: recuado nos mesmos
+   8px, ele para onde a letra para. */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: var(--space-2);
+  bottom: 0;
+  height: 2px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+/* Item ativo: o sublinhado permanente é o sinal — não a cor sozinha. */
+.nav-link[aria-current] {
+  font-weight: 600;
+}
+
+.nav-link[aria-current]::after {
+  background-color: var(--color-accent);
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-link:hover::after { transform: none; }
+}
+
+/* ============================================================================
+   BOTÃO DO MENU
+   Desenhado em CSS: não gasta um dos ícones do sprite, e a rotação das barras
+   É a explicação do que aconteceu.
+   ============================================================================ */
+
+.menu-toggle {
+  display: grid;
+  place-items: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  color: inherit;
+}
+
+.menu-toggle__bars {
+  position: relative;
+  display: block;
+  width: 1.25rem;
+  height: 2px;
+  background-color: currentColor;
+  transition:
+    background-color var(--dur-fast) var(--ease-std),
+    transform        var(--dur-base) var(--ease-out);
+}
+
+.menu-toggle__bars::before,
+.menu-toggle__bars::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.menu-toggle__bars::before { transform: translateY(-6px); }
+.menu-toggle__bars::after  { transform: translateY(6px); }
+
+/* Aberto: a barra do meio some e as outras cruzam. */
+[aria-expanded="true"] .menu-toggle__bars           { background-color: transparent; }
+[aria-expanded="true"] .menu-toggle__bars::before   { transform: rotate(45deg); }
+[aria-expanded="true"] .menu-toggle__bars::after    { transform: rotate(-45deg); }
+
+/* ============================================================================
+   ACCORDION
+   ----------------------------------------------------------------------------
+   `<details>` nativo. Zero biblioteca, zero `aria-expanded` na mão, e abre e
+   fecha com o JavaScript desligado.
+
+   Nasceu dentro da seção [5] e subiu para cá quando o FAQ virou o segundo
+   consumidor — a regra é a do §2.2: estrutura reutilizável com estados
+   próprios é componente, não bloco de seção.
+
+   O componente não decide tipografia. Quem aplica `.t-h3` ou `.t-h4` no
+   título é a seção: no cardápio o título é nome de família e pede display;
+   no FAQ é pergunta e pede corpo.
+   ============================================================================ */
+
+.accordion {
+  border-block-end: var(--rule-border);
+}
+
+.accordion__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--touch-min);
+  /* O recuo do véu de hover sai da coluna e volta por margem negativa: o
+     texto continua alinhado ao resto da página, a mancha respira. */
+  padding: var(--space-4) var(--space-3);
+  margin-inline: calc(var(--space-3) * -1);
+  cursor: pointer;
+  /* Mata o triângulo padrão: `list-style` nos navegadores atuais, o
+     pseudo-elemento no WebKit antigo. */
+  list-style: none;
+  transition: background-color var(--dur-fast) var(--ease-std);
+}
+
+.accordion__head::-webkit-details-marker { display: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .accordion__head:hover {
+    background-color: color-mix(in srgb, currentColor calc(var(--o-hover-faint) * 100%), transparent);
+  }
+}
+
+/* Marcador "+" desenhado em CSS — não gasta ícone do sprite. Girar 45° o
+   transforma em "×", e a rotação É a explicação do que aconteceu
+   (INTERACTION.md §4). Mesmo vocabulário do botão do menu.
+   O `auto` mora aqui: assim a cabeça funciona com ou sem elemento no meio. */
+/* `inherit`, não `--color-cta`: dez marcadores vermelhos entre cardápio e FAQ
+   gastavam a cor da ação em duas seções cuja função é ler, não agir. O vermelho
+   da página aparece só onde há conversão (ART-DIRECTION.md §4). Herdando a cor
+   do texto, o marcador continua sendo o mesmo sinal e some do orçamento de
+   saturação. */
+.accordion__mark {
+  position: relative;
+  flex: none;
+  margin-inline-start: auto;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  color: inherit;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.accordion__mark::before,
+.accordion__mark::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  background-color: currentColor;
+}
+
+.accordion__mark::before { inset-inline: 15%; height: 2px; transform: translateY(-1px); }
+.accordion__mark::after  { inset-block:  15%; width:  2px; transform: translateX(-1px); }
+
+.accordion[open] .accordion__mark { transform: rotate(45deg); }
+
+/* ----------------------------------------------------------------------------
+   Animação de abertura
+   ----------------------------------------------------------------------------
+   `::details-content` é o único caminho que anima os DOIS sentidos. A técnica
+   antiga de `grid-template-rows: 0fr→1fr` exigia um wrapper extra e só animava
+   a abertura — no fechamento o conteúdo some antes de a transição começar.
+   `interpolate-size` fica no escopo do componente, nunca no `:root`: ligá-lo
+   globalmente animaria toda transição para `auto` do projeto inteiro.
+   Onde não houver suporte, o painel aparece direto — o marcador girando
+   continua explicando o estado.
+   ---------------------------------------------------------------------------- */
+@supports selector(::details-content) and (interpolate-size: allow-keywords) {
+  .accordion {
+    interpolate-size: allow-keywords;
+  }
+
+  .accordion::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size         var(--dur-base) var(--ease-out),
+      content-visibility var(--dur-base) allow-discrete;
+  }
+
+  .accordion[open]::details-content { block-size: auto; }
+}

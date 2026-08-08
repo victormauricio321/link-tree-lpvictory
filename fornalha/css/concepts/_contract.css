@@ -1,0 +1,45 @@
+/* ============================================================================
+   _contract.css — CONTRATO DE CONCEITO  (documentação, não é carregado)
+   ----------------------------------------------------------------------------
+   Todo conceito visual DEVE declarar exatamente os 16 tokens abaixo.
+   Nada mais. Nada menos.
+
+   Este é o único lugar do projeto onde hex literal e nome de família
+   tipográfica são permitidos.
+
+   Para criar um conceito novo:
+     1. copie este arquivo para concepts/<nome>.css
+     2. preencha os 16 valores
+     3. troque o <link> do CSS e o <link> das fontes no index.html
+     4. troque as imagens e os textos
+   Nenhum componente, layout ou estilo estrutural é tocado.
+   ============================================================================ */
+
+:root {
+
+  /* --- COR: 6 valores de marca ------------------------------------------- */
+  --brand-ink:        /* escuro dominante — fundo do tema dark            */;
+  --brand-paper:      /* claro dominante — fundo do tema light            */;
+  --brand-primary:    /* ação / energia — CTA                             */;
+  --brand-primary-dp: /* profundidade da primária — hover, títulos        */;
+  --brand-accent:     /* destaque quente — ratings, selos, aspas          */;
+  --brand-support:    /* apoio — tags, disponibilidade                    */;
+
+  /* --- COR: 2 parâmetros que geram toda a escala neutra ------------------- */
+  --brand-neutral-h:  /* matiz dos neutros, em graus (0–360, sem unidade) */;
+  --brand-neutral-s:  /* saturação base dos neutros, em %                 */;
+
+  /* --- TIPOGRAFIA: 4 tokens ---------------------------------------------- */
+  /* Nenhum componente pode referenciar uma família diretamente.            */
+  --font-display:  /* impacto: H1, números, wordmark                      */;
+  --font-heading:  /* títulos de seção, nome de prato, pergunta do FAQ    */;
+  --font-body:     /* corpo, UI, botão, label, preço                      */;
+  --font-accent:   /* citação, eyebrow — pode apontar para --font-body    */;
+
+  /* --- CARÁTER: 4 valores ------------------------------------------------ */
+  --brand-radius:     /* 0 brutal · 4px editorial · 16px amigável         */;
+  --brand-tracking:   /* tracking do display (condensada em caixa alta
+                         pede valor POSITIVO; grotesca larga, negativo)   */;
+  --brand-case:       /* uppercase | none — caixa dos títulos display     */;
+  --brand-rule-style: /* solid | dashed | double — filete editorial       */;
+}

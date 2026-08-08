@@ -1,0 +1,107 @@
+/* ============================================================================
+   reset.css — normalização mínima
+   Só o que corrige inconsistência real. Reset grande é peso morto.
+   ============================================================================ */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;   /* impede o iOS de inflar texto no giro */
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* âncoras não param embaixo do header sticky */
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+
+  /* `stable`, e NÃO `both-edges`. A calha reservada fica fora da caixa de
+     conteúdo do html, então `both-edges` deixava uma faixa de 15px à esquerda
+     pintada com o fundo do body — clara, ao lado de um hero preto. Medido.
+     Só `stable` reserva do lado da barra e elimina o salto lateral quando a
+     página cresce além de uma tela, sem criar faixa nenhuma.
+     O alinhamento da coluna editorial não depende mais disto: `--container-inset`
+     usa unidade de contêiner, não `vw` (ver global.css §3). */
+  scrollbar-gutter: stable;
+
+  /* A calha reservada acima fica FORA da caixa de conteúdo, então ela não é
+     pintada por nenhuma seção — herda a cor de tela, que vem do `body` e é
+     clara. Ao lado do hero preto e do rodapé preto isso vira uma tira clara de
+     15px na borda direita, visível em toda captura e em qualquer navegador de
+     barra sobreposta. `scrollbar-color` veste trilho e polegar com a paleta da
+     marca e resolve os dois casos com uma linha: a calha passa a ser escura de
+     ponta a ponta, que é como uma barra de rolagem se parece de qualquer forma.
+     Palavra-chave `dark` não serve: ela pediria o cinza do sistema. */
+  scrollbar-color: var(--n-600) var(--canvas-on);
+}
+
+body {
+  min-height: 100dvh;              /* dvh, não vh: a barra do navegador móvel */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Mídia é bloco e nunca estoura o contêiner */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+img { height: auto; }
+
+/* Formulários herdam a tipografia do sistema */
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button { background: none; border: none; }
+
+/* Quebra palavras longas em vez de estourar a largura em 320px */
+p, h1, h2, h3, h4, h5, h6, li, dd, dt {
+  overflow-wrap: break-word;
+}
+
+/* `:where()` zera a especificidade do seletor. Sem ele, `ul[class]` vale (0,1,1)
+   e vence QUALQUER classe utilitária de (0,1,0) — foi o que apagou o
+   `padding-inline` do `.container` numa lista com `.container` na própria <ul>.
+   Regra de reset tem que ser a mais fraca da folha, nunca a mais forte.
+   Contra o estilo do navegador isto continua valendo: autor sempre vence UA. */
+:where(ul[class], ol[class]) {
+  list-style: none;
+  padding: 0;
+}
+
+a { color: inherit; }
+
+/* ----------------------------------------------------------------------------
+   FOCO
+   :focus-visible recebe anel; :focus puro não — evita o anel piscando a cada
+   toque no mobile. Nunca removido sem substituto (regra focus-states, High).
+   ---------------------------------------------------------------------------- */
+:focus { outline: none; }
+
+:focus-visible {
+  outline: var(--border-width-focus) solid var(--ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* ----------------------------------------------------------------------------
+   MOVIMENTO REDUZIDO
+   Entrega o ESTADO FINAL, não uma versão encurtada. 0.01ms em vez de 0 para
+   que os eventos transitionend/animationend continuem disparando.
+   ---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

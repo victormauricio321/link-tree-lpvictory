@@ -1,0 +1,368 @@
+/* ============================================================================
+   variables.css — ARQUITETURA
+   ----------------------------------------------------------------------------
+   Camada agnóstica de marca. NÃO contém hex literal nem nome de família
+   tipográfica — esses vivem exclusivamente em css/concepts/<conceito>.css.
+
+   Camada 1  PRIMITIVAS DE MARCA .... concepts/*.css   (o cliente edita)
+   Camada 2  SEMÂNTICAS ............. este arquivo     (papéis)
+   Camada 3  COMPONENTE ............. components.css   (consome só a Camada 2)
+
+   Verificação de integridade:
+     grep -rEn "font-family:\s*['\"]|#[0-9a-fA-F]{3,8}\b" css/ --exclude-dir=concepts
+   Saída vazia = arquitetura íntegra.
+   ============================================================================ */
+
+:root {
+  /* ==========================================================================
+     1. NEUTROS — derivados de --brand-neutral-h / --brand-neutral-s
+     --------------------------------------------------------------------------
+     A saturação cai conforme o tom escurece. Neutro de saturação constante
+     produz meios-tons enlameados; a curva abaixo mantém o claro caloroso e o
+     escuro sóbrio. Trocar o matiz reveste a escala inteira no clima da marca.
+     ========================================================================== */
+  --n-0:   hsl(var(--brand-neutral-h) var(--brand-neutral-s) 100%);
+  --n-50:  hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 1.00) 96%);
+  --n-100: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.92) 93%);
+  --n-200: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.72) 87%);
+  --n-300: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.55) 79%);
+  --n-400: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.40) 60%);
+  /* 40%, não 42%: em 42% o degrau entrega 4,26:1 sobre a superfície clara e
+     reprova em AA para texto normal — e é justamente ele que veste eyebrow e
+     contagem de sabores, ambos em corpo pequeno. Em 40% dá 4,61:1. Dois pontos
+     de luminosidade que ninguém vê e que tiram a escala da zona de reprovação. */
+  --n-500: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.35) 40%);
+  --n-600: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.30) 27%);
+  --n-700: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.28) 18%);
+  --n-800: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.26) 10%);
+  --n-900: hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.25)  6%);
+
+  /* ==========================================================================
+     2. COR SEMÂNTICA — papéis, não valores
+     ========================================================================== */
+  /* A TELA. `body` e a barra de rolagem pintam fora de qualquer `.theme-*`
+     (os temas são por seção), então precisavam de um papel próprio — sem ele
+     consumiam `--brand-paper`/`--brand-ink` direto e furavam a regra de que só
+     a Camada 2 alcança a Camada 1. Encontrado na revisão cruzada. */
+  --canvas:           var(--brand-paper);
+  --canvas-on:        var(--brand-ink);
+
+  /* CTA de plataforma de pedido (iFood, Goomer, Anota AI, própria…).
+     `currentColor` de propósito, e NÃO `var(--on-surface)`: este token é
+     declarado aqui, no `:root`, onde `--on-surface` não existe — ele vive
+     dentro de `.theme-*`. Um composto que referencia token de escopo mais
+     restrito computa inválido na declaração e o inválido é o que HERDA, sem
+     erro no console. Foi assim que `--rule-border` apagou nove filetes.
+     `currentColor` é válido em qualquer escopo e resolve por elemento.
+     Para tingir com a cor da plataforma, sobrescreva no arquivo de conceito
+     (Camada 1) — é o único lugar do projeto onde hex é permitido. */
+  --cta-plataforma:   currentColor;
+
+  --color-cta:        var(--brand-primary);
+  --color-cta-hover:  var(--brand-primary-dp);
+  --color-cta-on:     var(--n-0);
+  --color-accent:     var(--brand-accent);
+
+  /* Havia aqui quatro cores de estado (success/warning/danger/info) e um
+     `--color-support`. Nenhuma tinha consumidor: a página não tem formulário,
+     alerta nem tag de disponibilidade. Token declarado e não usado é dívida —
+     ele passa a ser copiado, traduzido e mantido sem nunca virar pixel.
+     Quando entrar o primeiro formulário, o degrau se declara aqui seguindo o
+     mesmo padrão de papel semântico. `--brand-support` continua no contrato de
+     conceito (concepts/_contract.css) porque é definição de MARCA, não de uso. */
+
+  /* ==========================================================================
+     3. TIPOGRAFIA — escala, ritmo e medida
+     --------------------------------------------------------------------------
+     As FAMÍLIAS estão em concepts/. Aqui só a escala, que é arquitetura.
+     clamp() interpola entre 360px e 1280px de viewport.
+     ========================================================================== */
+  /* --------------------------------------------------------------------------
+     CALIBRAÇÃO DA ESCALA — feita por varredura em Chromium, não por conta
+     --------------------------------------------------------------------------
+     A Big Shoulders tem eixo óptico (opsz 10..72): a razão largura/tamanho MUDA
+     com o tamanho. Medido no primeiro tempo da headline — 6,61 em 40px, 6,52 em
+     50px, 6,34 em 76px. Qualquer valor deduzido de uma regra de três erra, e
+     errou: a escala anterior levava o H1 a CINCO linhas em 360, 375 e 390px, as
+     três larguras de celular mais comuns do mundo. Seis medições anteriores
+     disseram "3 linhas" porque foram feitas num painel que reportava 335px de
+     coluna útil onde o Chromium mede 320.
+
+     Busca binária pelo maior tamanho que mantém o primeiro tempo numa linha só
+     (scratchpad/calibrar.py). Tetos medidos:
+       hero        320→39,8   360→46,4   375→48,9   390→51,4   768→106,6
+       fechamento  360→33,6   390→37,1   768→ 78,7  1024→108,1  1280→130,4
+     Os valores abaixo ficam 9% a 15% sob o teto — folga para variação de versão
+     de fonte e para a família de fallback.
+
+     O fechamento é o segundo consumidor de --fs-hero e tem teto MENOR no
+     celular (a frase é mais longa). Ele vai a três linhas abaixo de ~600px, e
+     isso é sancionado: COMPOSITION.md §4 determina quebra manual "só no hero"
+     no mobile — "quebras pensadas para desktop viram órfãs em 360px". O que se
+     preserva em toda largura é o primeiro tempo inteiro, que é onde está a
+     pausa retórica.
+     -------------------------------------------------------------------------- */
+  --fs-hero:    clamp(2.625rem, 0.970rem + 7.353vw, 7rem);      /*  42 → 112 */
+
+  /* 38px de teto, não 72. Em 72 o título de seção empatava com o H1 do hero
+     (76px): 4px de diferença entre o pico 10 e o pico 7 da curva emocional, e
+     a hierarquia sumia. A escala agora mantém o H1 entre 1,36× e 1,56× acima
+     dos títulos de seção em TODA largura — um degrau perceptível, medido, e
+     que existe também no celular (antes 1,18×). ART-DIRECTION.md §4. */
+  --fs-display: clamp(1.75rem,  1.505rem + 1.087vw, 2.375rem);  /*  28 →  38 */
+
+  /* Acompanha o display para trás: em 36px o h3 do cardápio ficava a 2px do
+     título da própria seção. O degrau volta a 1,27–1,36×. */
+  --fs-h3:      clamp(1.375rem, 1.228rem + 0.652vw, 1.75rem);   /*  22 →  28 */
+  --fs-h4:      clamp(1.1875rem,1.114rem + 0.326vw, 1.375rem);  /*  19 →  22 */
+  --fs-lead:    clamp(1.125rem, 1.052rem + 0.326vw, 1.3125rem); /*  18 →  21 */
+  --fs-body:    clamp(1.0625rem,1.038rem + 0.109vw, 1.125rem);  /*  17 →  18 */
+  --fs-sm:      0.9375rem;                                       /*  15       */
+  --fs-label:   clamp(0.75rem,  0.726rem + 0.109vw, 0.8125rem);  /*  12 →  13 */
+
+  --lh-tight: 0.90;   /* display grande                     */
+  --lh-snug:  1.15;   /* h3 / h4                            */
+  --lh-body:  1.65;   /* corpo — serifada pede mais que 1.5 */
+
+  --tracking-display: var(--brand-tracking);
+  /* Caixa dos títulos como PAPEL, não como primitiva. Existia só a primitiva
+     `--brand-case`, e os componentes a consumiam direto — furo na regra de que
+     a Camada 3 nunca alcança a Camada 1. Encontrado na revisão cruzada da
+     documentação: a regra estava escrita nos dois documentos e violada em 4
+     lugares no código. */
+  --case-display:     var(--brand-case);
+  --tracking-label:   0.08em;
+  --measure:          62ch;
+  --measure-narrow:   46ch;
+
+  /* ==========================================================================
+     4. ESPAÇAMENTO — escala 4pt
+     ========================================================================== */
+  --space-1:  0.25rem;  /*   4 */
+  --space-2:  0.5rem;   /*   8 */
+  --space-3:  0.75rem;  /*  12 */
+  --space-4:  1rem;     /*  16 */
+  --space-5:  1.5rem;   /*  24 */
+  --space-6:  2rem;     /*  32 */
+  --space-7:  2.5rem;   /*  40 */
+  --space-8:  3rem;     /*  48 */
+  --space-9:  4rem;     /*  64 */
+  --space-10: 5rem;     /*  80 */
+  --space-11: 6rem;     /*  96 */
+
+  /* Ritmo em três níveis — nenhum valor intermediário improvisado */
+  --stack-tight: var(--space-2);   /*  8 — dentro do grupo */
+  --stack:       var(--space-4);   /* 16 */
+  --stack-loose: var(--space-5);   /* 24 — entre grupos    */
+  --section-y:    clamp(3.5rem, 9vw,  7rem);   /*  56 → 112 */
+  --section-y-lg: clamp(5rem,  13vw, 10rem);   /*  80 → 160 */
+
+  /* ==========================================================================
+     5. GRID E CONTAINER
+     ========================================================================== */
+  --container-max:    75rem;   /* 1200 */
+  --container-narrow: 45rem;   /*  720 */
+  --container-pad:    clamp(1.25rem, 5vw, 2.5rem);
+
+  /* Distância da borda da tela até a coluna de conteúdo. É o que alinha um
+     filho full-bleed (texto do hero, trilho do carrossel) à mesma linha
+     vertical do `.container`.
+
+     `cqw`, não `vw`: `100vw` INCLUI a barra de rolagem, enquanto `.container`
+     se centra com `margin: auto` sobre a largura sem a barra. A diferença é
+     metade da barra — 7px de desalinhamento entre o texto do hero e a faixa
+     de credibilidade, medido. `100cqw` mede o contêiner declarado em `main`,
+     que é exatamente a largura sobre a qual o `.container` se centra.
+     Fora de um contêiner, `cqw` cai para a viewport pequena — o mesmo valor
+     de antes, e nunca pior. */
+  --container-inset:  max(
+                        var(--container-pad),
+                        calc((100cqw - var(--container-max)) / 2 + var(--container-pad))
+                      );
+  --gap-card:         var(--space-4);
+
+  /* ==========================================================================
+     6. RAIO — o caráter vem do conceito, os degraus são arquitetura
+     --------------------------------------------------------------------------
+     Dois degraus, porque dois é o que a página usa. Havia seis (0, lg, pill,
+     circle) e quatro nunca viraram pixel.
+     ========================================================================== */
+  --radius-sm:     2px;
+  --radius-md:     var(--brand-radius);
+
+  /* ==========================================================================
+     7. SOMBRA — nenhuma, e isso é a decisão
+     --------------------------------------------------------------------------
+     Havia três tokens de sombra e um `--shadow-card` por tema. `box-shadow`
+     não aparece uma única vez no projeto: a profundidade desta página vem de
+     CONTRASTE (as faixas de tema alternando escuro/claro) e de FILETE, que é o
+     vocabulário editorial declarado em COMPOSITION.md §1.9. Manter a escala
+     "para o caso de" convidava o próximo componente a usá-la e a quebrar o
+     idioma. Um card que precise de elevação sobe o assunto para o Design
+     System, não improvisa um `0 2px 8px`.
+     ========================================================================== */
+
+  /* ==========================================================================
+     8. BORDA
+     ========================================================================== */
+  --border-width-hair:   1px;
+  /* O FILETE EDITORIAL é um token composto, e por isso NÃO mora aqui —
+     mora em cada bloco de tema, ao lado de `--rule`. Ver o comentário nos
+     temas, no fim deste arquivo. */
+  --border-width-strong: 2px;
+  --border-width-focus:  3px;
+  --focus-offset:        2px;
+
+  /* ==========================================================================
+     9. OPACIDADE — camadas de estado e véus
+     ========================================================================== */
+  --o-disabled:  0.45;
+  --o-hover:     0.08;
+  /* Véu de hover para superfícies GRANDES — cabeça de accordion, linha de
+     cardápio. Em área extensa, 8% vira mancha; 3% ainda é percebido como
+     resposta sem virar cor. Dois consumidores, então é token, não número. */
+  --o-hover-faint: 0.03;
+  --o-scrim:     0.60;
+
+  /* Scrim como token semântico: preto é constante de sistema (a skill pede
+     40–60% para isolar o primeiro plano), não decisão de marca. Promovido a
+     token para que nenhum componente carregue cor literal. */
+  --color-scrim: rgb(0 0 0 / var(--o-scrim));
+
+  /* ==========================================================================
+     10. MOVIMENTO — durações e curvas. Um vocabulário só para a página toda.
+     ========================================================================== */
+  --dur-press: 120ms;
+  --dur-fast:  180ms;
+  --dur-base:  240ms;
+  --dur-enter: 320ms;
+  --dur-exit:  200ms;   /* ~65% da entrada: sair rápido parece responsivo */
+
+  --ease-out: cubic-bezier(.16, 1, .3, 1);   /* expo-out — entradas       */
+  --ease-in:  cubic-bezier(.4, 0, 1, 1);     /* saídas                    */
+  --ease-std: cubic-bezier(.2, 0, 0, 1);     /* mudanças de estado        */
+
+  /* Fonte única do escalonamento: `animations.js` LÊ este token em vez de
+     repetir o número. Ajustar o ritmo da página é editar esta linha. */
+  --stagger:     40ms;
+  --stagger-max: 5;      /* acima disso o último item demora demais */
+
+  /* Escalas de press — dois valores no sistema inteiro. Um terceiro quebra P1.
+     (Havia um `--press-scale-card` de 0.99; os cards de produto não são
+     clicáveis por decisão da seção [4], então ele nunca teve consumidor.) */
+  --press-scale:       0.97;   /* alvo normal        */
+  --press-scale-wide:  0.98;   /* CTA de fechamento  */
+
+  /* ==========================================================================
+     11. Z-INDEX — escala fechada. Qualquer 9999 no projeto é bug.
+     --------------------------------------------------------------------------
+     Cinco degraus, um por camada que existe. Os degraus vagos (base, scrim,
+     modal, toast) saíram: o scrim do menu vive DENTRO da gaveta e ordena por
+     ordem de documento, e modal e toast são componentes que esta página não
+     tem. Numeração espaçada de 10 em 10 deixa espaço para inserir sem renumerar.
+     ========================================================================== */
+  --z-raised:  10;   /* foto que sobrepõe fronteira de seção */
+  --z-sticky:  20;   /* header            */
+  --z-cta-bar: 30;   /* barra fixa mobile */
+  --z-drawer:  50;   /* menu mobile       */
+  --z-skip:    100;  /* skip-link vence o header */
+
+  /* ==========================================================================
+     12. ÍCONES E ALVOS DE TOQUE
+     ========================================================================== */
+  --icon-sm:     1rem;      /* 16 */
+  --icon-md:     1.5rem;    /* 24 — padrão */
+  --icon-lg:     2rem;      /* 32 */
+  --icon-stroke: 1.75;
+  --touch-min:   2.75rem;   /* 44 */
+
+  /* ==========================================================================
+     13. ALTURAS FIXAS
+     ========================================================================== */
+  --header-h:  3.5rem;   /* 56 mobile */
+  --cta-bar-h: 4.5rem;   /* 72        */
+
+  /* ==========================================================================
+     14. BREAKPOINTS — documentais.
+     Custom properties NÃO funcionam dentro de @media; os valores aparecem
+     literais nas queries, sempre com comentário apontando para cá.
+       --bp-sm  480px   grid de 2 colunas em cards pequenos
+       --bp-md  768px   QUEBRA ESTRUTURAL — tablet
+       --bp-lg 1024px   QUEBRA ESTRUTURAL — nav horizontal, 12 col, sem CTA fixa
+       --bp-xl 1280px   container atinge o máximo
+     ========================================================================== */
+}
+
+/* ============================================================================
+   ARMADILHA DOCUMENTADA — token composto que referencia token de tema
+   ----------------------------------------------------------------------------
+   `--rule-border` empacota o filete editorial num token só: largura + estilo +
+   cor. Ele NÃO pode morar no `:root`, e a razão não é óbvia.
+
+   `--rule` só existe dentro de `.theme-*`. Um `--rule-border` declarado no
+   `:root` tem seu valor computado ALI, onde `var(--rule)` é inválido — e o
+   resultado inválido é o que INHERITA para a página inteira. Não há erro no
+   console, não há fallback: os nove filetes simplesmente somem, e as seções
+   encolhem 1px por item.
+
+   Aconteceu exatamente assim durante a refatoração que criou este token, e só
+   apareceu porque a comparação de recortes acusou "TAMANHO MUDOU" em duas
+   seções. Um token composto vive no mesmo escopo do token mais restrito que
+   ele referencia.
+
+   ============================================================================
+   TEMAS DE SEÇÃO
+   Dois temas coexistem na mesma página, aplicados por classe — nunca por
+   media query. A curva de temperatura da direção de arte depende disso.
+   ============================================================================ */
+
+.theme-light {
+  color-scheme: light;
+  --surface:            var(--n-100);
+  --surface-2:          var(--n-50);
+  --on-surface:         var(--n-900);
+  --on-surface-muted:   var(--n-600);
+  --on-surface-faint:   var(--n-500);
+  --border:             var(--n-200);
+  /* Mesmos parâmetros do --n-500 com alfa: é o mesmo degrau da escala, escrito
+     por extenso porque `hsl(from …)` não tem suporte largo o bastante para um
+     token consumido sem @supports. Se o --n-500 mudar, este muda junto. */
+  --rule:               hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.35) 40% / .35);
+  --rule-border:        var(--border-width-hair) var(--brand-rule-style) var(--rule);
+  --ring:               var(--color-cta);
+}
+
+.theme-dark {
+  color-scheme: dark;
+  --surface:            var(--n-900);
+  --surface-2:          var(--n-800);
+  --on-surface:         var(--n-100);
+  --on-surface-muted:   var(--n-300);
+  --on-surface-faint:   var(--n-400);
+  --border:             var(--n-700);
+  --rule:               hsl(var(--brand-neutral-h) calc(var(--brand-neutral-s) * 0.40) 60% / .30);
+  --rule-border:        var(--border-width-hair) var(--brand-rule-style) var(--rule);
+  --ring:               var(--color-accent);   /* o vermelho reprova sobre ink (3.4:1) */
+}
+
+/* Seção de ação plena — o vermelho de tela cheia, usado uma única vez.
+   ----------------------------------------------------------------------------
+   AVISO DE HIERARQUIA COMPRIMIDA: branco puro sobre este vermelho dá 5,56:1.
+   Como o teto é 5,56, o piso de AA (4,5) só cabe a partir de 88% de branco —
+   medido. Os antigos 82% e 64% reprovavam em 4,16:1 e 3,05:1.
+   A consequência é honesta e não tem conserto por token: numa superfície
+   saturada não existe espaço para três níveis de texto. Os valores abaixo
+   passam, mas muted e faint são quase indistinguíveis de --on-surface.
+   Em `.theme-cta`, trate o texto como tendo UM nível só. */
+.theme-cta {
+  color-scheme: dark;
+  --surface:            var(--color-cta);
+  --surface-2:          var(--color-cta-hover);
+  --on-surface:         var(--n-0);
+  --on-surface-muted:   color-mix(in srgb, var(--n-0) 90%, transparent);
+  --on-surface-faint:   color-mix(in srgb, var(--n-0) 88%, transparent);
+  --border:             color-mix(in srgb, var(--n-0) 24%, transparent);
+  --rule:               color-mix(in srgb, var(--n-0) 28%, transparent);
+  --rule-border:        var(--border-width-hair) var(--brand-rule-style) var(--rule);
+  --ring:               var(--n-0);
+}
