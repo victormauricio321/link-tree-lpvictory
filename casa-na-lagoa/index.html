@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- ===========================================================
+     DOMÍNIO — ponto único de configuração.
+     O placeholder SEU-DOMINIO.com.br aparece em 7 URLs absolutas:
+     canonical, og:url, og:image, e as 3 imagens + url do JSON-LD.
+     Para trocar por todas de uma vez (pode rodar de novo depois):
+         node tools/set-domain.mjs casanalagoa.com.br
+     O script lê o domínio atual do <link rel="canonical">, então
+     não é preciso editar nada aqui à mão.
+     =========================================================== -->
+
+<title>Casa na Lagoa · Saquarema — casa inteira com piscina e hidromassagem</title>
+<meta name="description" content="Casa inteira de frente para a lagoa em Saquarema (RJ), para até 10 pessoas: piscina privativa, hidromassagem com vista, área gourmet com churrasqueira e a Praia do Boqueirão a 800 m.">
+<meta name="theme-color" content="#22403A">
+
+<link rel="canonical" href="https://SEU-DOMINIO.com.br/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Casa na Lagoa · Saquarema">
+<meta property="og:title" content="Casa na Lagoa · Saquarema — casa inteira com piscina e hidromassagem">
+<meta property="og:description" content="Casa inteira para até 10 pessoas, na beira da lagoa em Saquarema (RJ). Piscina privativa, hidromassagem com vista e a Praia do Boqueirão a 800 m.">
+<meta property="og:url" content="https://SEU-DOMINIO.com.br/">
+<meta property="og:image" content="https://SEU-DOMINIO.com.br/assets/img/suite-master-sacada-1920.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1920">
+<meta property="og:image:height" content="1165">
+<meta property="og:image:alt" content="Vista da sacada da suíte: piscina, quintal gramado e a lagoa de Saquarema com as montanhas ao fundo.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Karla:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+
+<!-- LCP: o hero usa `fetchpriority="high"` no <img> em vez de <link rel=preload>.
+     Medido: com dois preloads separados por `media`, o preload scanner do Chrome busca
+     os DOIS (o desktop e o mobile), gastando ~63 KB à toa no celular. Como o <picture>
+     do hero está logo no início do <body>, o scanner o encontra na mesma hora e a
+     prioridade alta entrega o mesmo ganho sem o download extra. -->
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322403A'/%3E%3Cpath d='M5 20c3-3 5.5-3 8.5 0s5.5 3 8.5 0 4-1.5 5 0' stroke='%23F7F3EC' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M5 25c3-3 5.5-3 8.5 0s5.5 3 8.5 0 4-1.5 5 0' stroke='%23A8462A' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VacationRental",
+  "name": "Casa na lagoa com piscina e hidromassagem",
+  "description": "Casa inteira de frente para a lagoa em Saquarema (RJ), com 2 suítes com cama king, quarto de solteiro, piscina privativa, banheira de hidromassagem, área gourmet com churrasqueira, ar-condicionado nos quartos e Wi-Fi.",
+  "url": "https://SEU-DOMINIO.com.br/",
+  "image": [
+    "https://SEU-DOMINIO.com.br/assets/img/suite-master-sacada-1920.jpg",
+    "https://SEU-DOMINIO.com.br/assets/img/piscina-wide-01-1920.jpg",
+    "https://SEU-DOMINIO.com.br/assets/img/hidromassagem-vista-1920.jpg"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Saquarema",
+    "addressRegion": "RJ",
+    "addressCountry": "BR"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": -22.92743, "longitude": -42.53948 },
+  "latitude": -22.92743,
+  "longitude": -42.53948,
+  "checkinTime": "15:00",
+  "checkoutTime": "12:00",
+  "numberOfRooms": 3,
+  "numberOfBathroomsTotal": 2,
+  "petsAllowed": false,
+  "smokingAllowed": false,
+  "containsPlace": {
+    "@type": "Accommodation",
+    "occupancy": { "@type": "QuantitativeValue", "value": 10 },
+    "numberOfBedrooms": 3,
+    "numberOfBeds": 3,
+    "numberOfBathroomsTotal": 2,
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Piscina", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Banheira de hidromassagem", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Ar-condicionado", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Cozinha", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Churrasqueira", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Estacionamento gratuito no local", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Máquina de lavar", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Na beira da água", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Acesso ao lago", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "TV", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Secadora", "value": false },
+      { "@type": "LocationFeatureSpecification", "name": "Aquecedor", "value": false }
+    ]
+  }
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<!-- ================= Ícones (sprite SVG inline) ================= -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="i-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c2.2-2.2 4-2.2 6 0s3.8 2.2 6 0 4-2.2 6 0"/><path d="M2 14c2.2-2.2 4-2.2 6 0s3.8 2.2 6 0 4-2.2 6 0"/><path d="M2 20c2.2-2.2 4-2.2 6 0s3.8 2.2 6 0 4-2.2 6 0"/></symbol>
+  <symbol id="i-pool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 15V4.5A2.5 2.5 0 0 1 10.5 2"/><path d="M16 15V4.5A2.5 2.5 0 0 0 13.5 2"/><path d="M8 7h8M8 11h8"/><path d="M2 19c2-2 3.6-2 5.5 0s3.5 2 5.5 0 3.6-2 5.5 0 1.8 1.4 3 .6"/></symbol>
+  <symbol id="i-droplet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7 6.9 8.4a7 7 0 1 0 10.2 0Z"/><path d="M12 15.5a2.5 2.5 0 0 1-2.5-2.5"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 9a14 14 0 0 1 19 0"/><path d="M6 12.6a9 9 0 0 1 12 0"/><path d="M9.4 16.2a4.2 4.2 0 0 1 5.2 0"/><circle cx="12" cy="20" r="1"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c.6 3.4-1.3 4.6-2.6 6.2A6.6 6.6 0 0 0 8 12.6 4.3 4.3 0 0 0 12 17a4.3 4.3 0 0 0 4-4.4c0-2-1-3.2-1.6-4.2"/><path d="M12 22a7 7 0 0 0 7-7c0-1.6-.5-2.9-1.2-4"/><path d="M12 22a7 7 0 0 1-7-7c0-1.6.5-2.9 1.2-4"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v2.5M20 16v2.5"/><path d="M3 16v-3.2l1.8-4.4A2 2 0 0 1 6.6 7h10.8a2 2 0 0 1 1.8 1.4L21 12.8V16Z"/><path d="M3 12.8h18"/><circle cx="7" cy="16" r="1.2"/><circle cx="17" cy="16" r="1.2"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/><path d="M9.5 4.2 12 6.6l2.5-2.4M9.5 19.8 12 17.4l2.5 2.4"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18V6"/><path d="M3 12h18v6"/><path d="M21 18v-2"/><path d="M7.5 12V9.5h4a2 2 0 0 1 2 2V12"/></symbol>
+  <symbol id="i-bath" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18v3a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><path d="M6 11V5.5A1.5 1.5 0 0 1 7.5 4c1 0 1.4.6 1.6 1"/><path d="M6 18l-1 2M18 18l1 2"/></symbol>
+  <symbol id="i-kitchen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v8a2 2 0 0 0 4 0V2"/><path d="M8 10v12"/><path d="M17 2c-1.7 1.4-2.5 3.2-2.5 5.5S15.3 12 17 13"/><path d="M17 13v9"/></symbol>
+  <symbol id="i-washer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><circle cx="12" cy="14" r="4.2"/><path d="M8 6.5h.01M11.5 6.5h.01"/></symbol>
+  <symbol id="i-tv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12.5" rx="2"/><path d="M8 2.8 12 6l4-3.2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 20a6.4 6.4 0 0 1 12.4 0"/><path d="M16.5 5.2a3.4 3.4 0 0 1 0 6.6"/><path d="M18 14.6a6.4 6.4 0 0 1 3.4 5.4"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s7-5.9 7-11a7 7 0 1 0-14 0c0 5.1 7 11 7 11Z"/><circle cx="12" cy="10.2" r="2.6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.7 5.9 6.4.7-4.8 4.3 1.3 6.3L12 16.6 6.4 19.8l1.3-6.3L2.9 9.2l6.4-.7Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6 4.5 5.6v6c0 4.6 3.1 8.2 7.5 9.8 4.4-1.6 7.5-5.2 7.5-9.8v-6Z"/><path d="m8.8 11.9 2.3 2.3 4.1-4.4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.2M12 19.8V22M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2 12h2.2M19.8 12H22M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="m14 6 6 6-6 6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m5 5 14 14M19 5 5 19"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 21h6v-6M21 9V3h-6M3 15v6h6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6h.01"/></symbol>
+</svg>
+
+<!-- ================= Header ================= -->
+<header class="site-header" id="topo">
+  <div class="wrap site-header__inner">
+    <a class="brand" href="#topo" aria-label="Casa na Lagoa, Saquarema — início">
+      <svg class="brand__mark" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-waves"></use></svg>
+      <span class="brand__text">
+        <strong>Casa na Lagoa</strong>
+        <small>Saquarema · RJ</small>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Seções da página">
+      <a href="#fotos">Fotos</a>
+      <a href="#por-que">Por que aqui</a>
+      <a href="#comodidades">Comodidades</a>
+      <a href="#localizacao">Localização</a>
+      <a href="#anfitriao">Anfitrião</a>
+    </nav>
+
+    <!-- CTA de consideração: persistente, sem pedir compromisso -->
+    <a class="btn btn--primary btn--sm site-header__cta js-book" href="https://www.airbnb.com.br/" target="_blank" rel="noopener">
+      Ver datas e valores
+    </a>
+  </div>
+</header>
+
+<main id="conteudo">
+
+<!-- ================= Hero ================= -->
+<section class="hero" aria-labelledby="hero-title">
+  <picture class="hero__media">
+    <source media="(min-width: 760px)" type="image/avif" sizes="100vw"
+            srcset="assets/img/suite-master-sacada-480.avif 480w, assets/img/suite-master-sacada-960.avif 960w, assets/img/suite-master-sacada-1440.avif 1440w, assets/img/suite-master-sacada-1920.avif 1920w">
+    <source media="(min-width: 760px)" type="image/webp" sizes="100vw"
+            srcset="assets/img/suite-master-sacada-480.webp 480w, assets/img/suite-master-sacada-960.webp 960w, assets/img/suite-master-sacada-1440.webp 1440w, assets/img/suite-master-sacada-1920.webp 1920w">
+    <source media="(min-width: 760px)" srcset="assets/img/suite-master-sacada-1920.jpg" width="1920" height="1165">
+    <source type="image/avif" sizes="100vw"
+            srcset="assets/img/suite-master-01-480.avif 480w, assets/img/suite-master-01-960.avif 960w, assets/img/suite-master-01-1200.avif 1200w">
+    <source type="image/webp" sizes="100vw"
+            srcset="assets/img/suite-master-01-480.webp 480w, assets/img/suite-master-01-960.webp 960w, assets/img/suite-master-01-1200.webp 1200w">
+    <img src="assets/img/suite-master-01-1200.jpg" width="1200" height="1975"
+         alt="Suíte com cama king e portas de vidro abertas para a varanda, com a lagoa de Saquarema e as montanhas ao fundo."
+         fetchpriority="high" decoding="async">
+  </picture>
+
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="wrap hero__content">
+    <p class="eyebrow eyebrow--light">
+      <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg>
+      Coqueiral · Saquarema · Rio de Janeiro
+    </p>
+
+    <h1 id="hero-title" class="hero__title">
+      A lagoa começa<br>onde o quintal termina.
+    </h1>
+
+    <p class="hero__lead">
+      Casa inteira para até 10 pessoas, na beira da água. Piscina privativa,
+      hidromassagem com vista e a Praia do Boqueirão a 800&nbsp;m.
+    </p>
+
+    <ul class="hero__facts">
+      <li>10 hóspedes</li>
+      <li>3 quartos</li>
+      <li>2 banheiros</li>
+    </ul>
+
+    <!-- Prova/confiança logo antes do botão: sustenta o clique, e cabe na
+         primeira tela até em 320×700. Tudo verificável no anúncio. -->
+    <ul class="hero__trust">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-shield"></use></svg>Anfitrião verificado</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg>Responde em até 1h</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg>Reserva pelo Airbnb</li>
+    </ul>
+
+    <div class="hero__actions">
+      <a class="btn btn--primary js-book" href="https://www.airbnb.com.br/" target="_blank" rel="noopener">
+        Ver datas e valores
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg>
+      </a>
+      <a class="btn btn--ghost" href="#fotos">Ver a casa por dentro</a>
+    </div>
+  </div>
+
+  <a class="hero__scroll" href="#fotos" aria-label="Descer para as fotos da casa">
+    <span></span>
+  </a>
+</section>
+
+<!-- ================= Barra de fatos ================= -->
+<section class="factbar" aria-label="Resumo da hospedagem">
+  <div class="wrap factbar__inner">
+    <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-home"></use></svg><span><b>Casa inteira</b>só para o seu grupo</span></div>
+    <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg><span><b>10 hóspedes</b>3 quartos · 3 camas · 2 banheiros</span></div>
+    <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pool"></use></svg><span><b>Piscina privativa</b>e hidromassagem na suíte</span></div>
+    <div class="fact"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-wifi"></use></svg><span><b>Wi-Fi 600 mega</b>e ar-condicionado nos quartos</span></div>
+  </div>
+</section>
+
+<!-- ================= Galeria ================= -->
+<section class="section section--tight gallery-section" id="fotos" aria-labelledby="fotos-title">
+  <div class="wrap gallery-head reveal">
+    <div>
+      <p class="eyebrow">Galeria</p>
+      <h2 id="fotos-title" class="h2">A casa como ela é</h2>
+    </div>
+    <button class="btn btn--outline js-open-gallery" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-expand"></use></svg>
+      Abrir as 18 fotos
+    </button>
+  </div>
+
+  <div class="wrap">
+    <figure class="gallery-lead reveal">
+      <button class="shot shot--lead js-shot" type="button" data-index="0" data-base="assets/img/suite-master-sacada" data-full="1920"
+              aria-label="Ampliar foto 1 de 18: vista da sacada da suíte">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1240px) 1100px, 100vw" srcset="assets/img/suite-master-sacada-480.avif 480w, assets/img/suite-master-sacada-960.avif 960w, assets/img/suite-master-sacada-1440.avif 1440w, assets/img/suite-master-sacada-1920.avif 1920w">
+          <source type="image/webp" sizes="(min-width: 1240px) 1100px, 100vw" srcset="assets/img/suite-master-sacada-480.webp 480w, assets/img/suite-master-sacada-960.webp 960w, assets/img/suite-master-sacada-1440.webp 1440w, assets/img/suite-master-sacada-1920.webp 1920w">
+          <img src="assets/img/suite-master-sacada-1920.jpg" width="1920" height="1165" loading="lazy" decoding="async"
+               alt="Vista da sacada da suíte: piscina, quintal gramado, coqueiros e a lagoa de Saquarema com as montanhas ao fundo.">
+        </picture>
+        <span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span>
+      </button>
+      <figcaption>Vista da sacada da suíte master</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap">
+    <!-- Ordem editorial: desejo (1-3) → a casa e a água (4-7) → conviver (8-11)
+         → dormir (12-14) → detalhes (15-16) → chegar (17) -->
+    <div class="gallery" id="galeria">
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="1" data-base="assets/img/piscina-wide-01" data-full="1920" aria-label="Ampliar foto 2 de 18: piscina privativa com a lagoa ao fundo">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/piscina-wide-01-480.avif 480w, assets/img/piscina-wide-01-960.avif 960w, assets/img/piscina-wide-01-1440.avif 1440w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/piscina-wide-01-480.webp 480w, assets/img/piscina-wide-01-960.webp 960w, assets/img/piscina-wide-01-1440.webp 1440w">
+          <img src="assets/img/piscina-wide-01-1920.jpg" width="1920" height="1118" loading="lazy" decoding="async" alt="Piscina privativa com borda de porcelanato claro, churrasqueira de tijolo ao lado e a lagoa logo atrás do muro.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="2" data-base="assets/img/suite-master-01" data-full="1200" aria-label="Ampliar foto 3 de 18: suíte master com vista para a lagoa">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/suite-master-01-480.avif 480w, assets/img/suite-master-01-960.avif 960w, assets/img/suite-master-01-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/suite-master-01-480.webp 480w, assets/img/suite-master-01-960.webp 960w, assets/img/suite-master-01-1200.webp 1200w">
+          <img src="assets/img/suite-master-01-1200.jpg" width="1200" height="1975" loading="lazy" decoding="async" alt="Suíte master com cama king e portas de vidro abertas para a varanda, com a lagoa e as montanhas ao fundo.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="3" data-base="assets/img/hidromassagem-vista" data-full="1920" aria-label="Ampliar foto 4 de 18: banheira de hidromassagem com vista">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/hidromassagem-vista-480.avif 480w, assets/img/hidromassagem-vista-960.avif 960w, assets/img/hidromassagem-vista-1440.avif 1440w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/hidromassagem-vista-480.webp 480w, assets/img/hidromassagem-vista-960.webp 960w, assets/img/hidromassagem-vista-1440.webp 1440w">
+          <img src="assets/img/hidromassagem-vista-1920.jpg" width="1920" height="3232" loading="lazy" decoding="async" alt="Banheira de hidromassagem da suíte master, com janela aberta para a piscina, a lagoa e os morros.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="4" data-base="assets/img/exterior-01" data-full="1920" aria-label="Ampliar foto 5 de 18: a casa vista da piscina">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/exterior-01-480.avif 480w, assets/img/exterior-01-960.avif 960w, assets/img/exterior-01-1440.avif 1440w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/exterior-01-480.webp 480w, assets/img/exterior-01-960.webp 960w, assets/img/exterior-01-1440.webp 1440w">
+          <img src="assets/img/exterior-01-1920.jpg" width="1920" height="3120" loading="lazy" decoding="async" alt="A casa de dois andares vista da piscina, com varanda superior, gramado e um coqueiro alto ao lado.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="5" data-base="assets/img/piscina-wide-02" data-full="1920" aria-label="Ampliar foto 6 de 18: piscina e quintal">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/piscina-wide-02-480.avif 480w, assets/img/piscina-wide-02-960.avif 960w, assets/img/piscina-wide-02-1440.avif 1440w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/piscina-wide-02-480.webp 480w, assets/img/piscina-wide-02-960.webp 960w, assets/img/piscina-wide-02-1440.webp 1440w">
+          <img src="assets/img/piscina-wide-02-1920.jpg" width="1920" height="1174" loading="lazy" decoding="async" alt="Piscina e quintal gramado da casa, com coqueiros ao redor.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="6" data-base="assets/img/piscina-03" data-full="1200" aria-label="Ampliar foto 7 de 18: área da piscina">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/piscina-03-480.avif 480w, assets/img/piscina-03-960.avif 960w, assets/img/piscina-03-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/piscina-03-480.webp 480w, assets/img/piscina-03-960.webp 960w, assets/img/piscina-03-1200.webp 1200w">
+          <img src="assets/img/piscina-03-1200.jpg" width="1200" height="1991" loading="lazy" decoding="async" alt="Área da piscina privativa da casa.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="7" data-base="assets/img/exterior-02" data-full="1200" aria-label="Ampliar foto 8 de 18: caminho da entrada até a piscina">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/exterior-02-480.avif 480w, assets/img/exterior-02-960.avif 960w, assets/img/exterior-02-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/exterior-02-480.webp 480w, assets/img/exterior-02-960.webp 960w, assets/img/exterior-02-1200.webp 1200w">
+          <img src="assets/img/exterior-02-1200.jpg" width="1200" height="1943" loading="lazy" decoding="async" alt="Caminho de pedra da entrada da casa descendo até a piscina, com a lagoa aparecendo ao fundo.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="8" data-base="assets/img/sala-01" data-full="1200" aria-label="Ampliar foto 9 de 18: sala de estar">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/sala-01-480.avif 480w, assets/img/sala-01-960.avif 960w, assets/img/sala-01-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/sala-01-480.webp 480w, assets/img/sala-01-960.webp 960w, assets/img/sala-01-1200.webp 1200w">
+          <img src="assets/img/sala-01-1200.jpg" width="1200" height="1969" loading="lazy" decoding="async" alt="Sala de estar com sofá amplo de canto, mesa de centro de vidro e TV grande.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="9" data-base="assets/img/sala-03" data-full="1200" aria-label="Ampliar foto 10 de 18: outro ângulo da sala">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/sala-03-480.avif 480w, assets/img/sala-03-960.avif 960w, assets/img/sala-03-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/sala-03-480.webp 480w, assets/img/sala-03-960.webp 960w, assets/img/sala-03-1200.webp 1200w">
+          <img src="assets/img/sala-03-1200.jpg" width="1200" height="1997" loading="lazy" decoding="async" alt="Outro ângulo da sala de estar da casa.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="10" data-base="assets/img/cozinha-wide" data-full="1920" aria-label="Ampliar foto 11 de 18: cozinha completa">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/cozinha-wide-480.avif 480w, assets/img/cozinha-wide-960.avif 960w, assets/img/cozinha-wide-1440.avif 1440w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/cozinha-wide-480.webp 480w, assets/img/cozinha-wide-960.webp 960w, assets/img/cozinha-wide-1440.webp 1440w">
+          <img src="assets/img/cozinha-wide-1920.jpg" width="1920" height="1163" loading="lazy" decoding="async" alt="Cozinha completa com ilha de granito, duas banquetas, fogão, forno e geladeira duplex.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="11" data-base="assets/img/cozinha-01" data-full="1200" aria-label="Ampliar foto 12 de 18: cozinha">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/cozinha-01-480.avif 480w, assets/img/cozinha-01-960.avif 960w, assets/img/cozinha-01-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/cozinha-01-480.webp 480w, assets/img/cozinha-01-960.webp 960w, assets/img/cozinha-01-1200.webp 1200w">
+          <img src="assets/img/cozinha-01-1200.jpg" width="1200" height="2010" loading="lazy" decoding="async" alt="Cozinha completa da casa, com utensílios e eletrodomésticos disponíveis para os hóspedes.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="12" data-base="assets/img/suite-master-vista-cama" data-full="1200" aria-label="Ampliar foto 13 de 18: vista da cama da suíte master">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/suite-master-vista-cama-480.avif 480w, assets/img/suite-master-vista-cama-960.avif 960w, assets/img/suite-master-vista-cama-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/suite-master-vista-cama-480.webp 480w, assets/img/suite-master-vista-cama-960.webp 960w, assets/img/suite-master-vista-cama-1200.webp 1200w">
+          <img src="assets/img/suite-master-vista-cama-1200.jpg" width="1200" height="732" loading="lazy" decoding="async" alt="Vista da cama da suíte master, olhando para a varanda e a lagoa.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="13" data-base="assets/img/suite-02-01" data-full="1200" aria-label="Ampliar foto 14 de 18: suíte 2 com cama king">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/suite-02-01-480.avif 480w, assets/img/suite-02-01-960.avif 960w, assets/img/suite-02-01-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/suite-02-01-480.webp 480w, assets/img/suite-02-01-960.webp 960w, assets/img/suite-02-01-1200.webp 1200w">
+          <img src="assets/img/suite-02-01-1200.jpg" width="1200" height="1995" loading="lazy" decoding="async" alt="Suíte 2, com cama king, ar-condicionado e espaço para guardar roupas.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="14" data-base="assets/img/quarto-03-01" data-full="1200" aria-label="Ampliar foto 15 de 18: quarto 3 com cama de solteiro">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/quarto-03-01-480.avif 480w, assets/img/quarto-03-01-960.avif 960w, assets/img/quarto-03-01-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/quarto-03-01-480.webp 480w, assets/img/quarto-03-01-960.webp 960w, assets/img/quarto-03-01-1200.webp 1200w">
+          <img src="assets/img/quarto-03-01-1200.jpg" width="1200" height="1989" loading="lazy" decoding="async" alt="Quarto 3, com cama de solteiro, ventilador de teto e local para guardar as roupas.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="15" data-base="assets/img/banheiro-suite-01" data-full="1200" aria-label="Ampliar foto 16 de 18: banheiro da suíte principal">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/banheiro-suite-01-480.avif 480w, assets/img/banheiro-suite-01-960.avif 960w, assets/img/banheiro-suite-01-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/banheiro-suite-01-480.webp 480w, assets/img/banheiro-suite-01-960.webp 960w, assets/img/banheiro-suite-01-1200.webp 1200w">
+          <img src="assets/img/banheiro-suite-01-1200.jpg" width="1200" height="1982" loading="lazy" decoding="async" alt="Banheiro completo da suíte principal, com banheira de hidromassagem e chuveiro.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="16" data-base="assets/img/banheiro-02-wide" data-full="1200" aria-label="Ampliar foto 17 de 18: banheiro da suíte 2">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/banheiro-02-wide-480.avif 480w, assets/img/banheiro-02-wide-960.avif 960w, assets/img/banheiro-02-wide-1200.avif 1200w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/banheiro-02-wide-480.webp 480w, assets/img/banheiro-02-wide-960.webp 960w, assets/img/banheiro-02-wide-1200.webp 1200w">
+          <img src="assets/img/banheiro-02-wide-1200.jpg" width="1200" height="728" loading="lazy" decoding="async" alt="Banheiro completo da suíte 2, com água quente e bidê.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+      <figure class="gallery__item"><button class="shot js-shot" type="button" data-index="17" data-base="assets/img/exterior-wide-01" data-full="1920" aria-label="Ampliar foto 18 de 18: fachada e estacionamento">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/exterior-wide-01-480.avif 480w, assets/img/exterior-wide-01-960.avif 960w, assets/img/exterior-wide-01-1440.avif 1440w">
+          <source type="image/webp" sizes="(min-width: 1100px) 356px, (min-width: 760px) 45vw, 78vw" srcset="assets/img/exterior-wide-01-480.webp 480w, assets/img/exterior-wide-01-960.webp 960w, assets/img/exterior-wide-01-1440.webp 1440w">
+          <img src="assets/img/exterior-wide-01-1920.jpg" width="1920" height="1167" loading="lazy" decoding="async" alt="Fachada da casa e o pátio de estacionamento em pedra portuguesa, com buganvília florida em primeiro plano.">
+        </picture><span class="shot__zoom" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-expand"></use></svg></span></button></figure>
+
+    </div>
+
+    <p class="gallery-note muted small">Uma seleção de 18 fotos. O anúncio tem 60.</p>
+    <a class="btn btn--primary btn--sm gallery-note__cta js-book" href="https://www.airbnb.com.br/" target="_blank" rel="noopener">
+      Ver datas e valores
+    </a>
+  </div>
+</section>
+
+<!-- ================= Por que esta casa ================= -->
+<section class="section value" id="por-que" aria-labelledby="value-title">
+  <div class="wrap">
+
+    <div class="intro__grid">
+      <div class="intro__text reveal">
+        <p class="eyebrow">Por que esta casa</p>
+        <h2 id="value-title" class="h2">Uma casa de família<br>de frente para a água.</h2>
+        <p class="lead">“Venha relaxar em uma casa completa de frente para a lagoa.”</p>
+        <p>
+          São <strong>2 suítes com cama king</strong> — a master com hidromassagem e varanda voltada para a
+          piscina e a lagoa —, mais <strong>quarto de solteiro</strong> e um <strong>kitnet com cama de casal</strong>.
+          Tem piscina privativa, garagem, área gourmet com churrasqueira, ar-condicionado nos quartos e Wi-Fi de 600 mega.
+        </p>
+        <p class="muted small">Descrição do anfitrião no anúncio, reorganizada para leitura.</p>
+      </div>
+
+      <aside class="intro__highlights reveal" aria-label="Destaques do anúncio no Airbnb">
+        <h3 class="h4">O que o Airbnb destaca nesta casa</h3>
+        <ul class="highlights">
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pool"></use></svg>
+            <div><b>Aproveite para dar um mergulho</b><span>Este é um dos poucos lugares na região com piscina.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg>
+            <div><b>Localização tranquila e conveniente</b><span>É fácil se locomover por esta região.</span></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-star"></use></svg>
+            <div><b>Comunicação excepcional com o anfitrião</b><span>Hóspedes recentes deram 5 estrelas ao anfitrião pela comunicação.</span></div>
+          </li>
+        </ul>
+        <p class="muted small">Destaques gerados pelo próprio Airbnb no anúncio.</p>
+      </aside>
+    </div>
+
+    <ul class="value__grid">
+      <li class="value__card reveal">
+        <svg class="value__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-waves"></use></svg>
+        <h3 class="h4">A água fica a um portão de distância</h3>
+        <p>A casa está na beira da orla e tem acesso ao lago pelo próprio terreno. A lagoa aparece da varanda da suíte, da piscina e da janela da banheira.</p>
+      </li>
+      <li class="value__card reveal">
+        <svg class="value__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pool"></use></svg>
+        <h3 class="h4">Piscina privativa — e isso é raro por aqui</h3>
+        <p>“Este é um dos poucos lugares na região com piscina”, aponta o Airbnb. Ela é só do seu grupo: sem horário, sem fila, sem dividir.</p>
+      </li>
+      <li class="value__card reveal">
+        <svg class="value__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg>
+        <h3 class="h4">Cabe a família inteira, sem apertar</h3>
+        <p>Casa inteira para até 10 pessoas: duas suítes com cama king, quarto de solteiro, dois banheiros completos, cozinha equipada e máquina de lavar.</p>
+      </li>
+      <li class="value__card reveal">
+        <svg class="value__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg>
+        <h3 class="h4">Silêncio de lagoa, praia a 800 metros</h3>
+        <p>No Coqueiral, bairro tranquilo, com a Praia do Boqueirão a 800&nbsp;m e Itaúna — o point do surfe em Saquarema — a 15&nbsp;minutos.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= A estadia ================= -->
+<section class="section experience" id="estadia" aria-labelledby="exp-title">
+  <div class="wrap section-head reveal">
+    <p class="eyebrow">A estadia</p>
+    <h2 id="exp-title" class="h2">Um dia aqui,<br>do café ao último mergulho.</h2>
+  </div>
+
+  <article class="story wrap reveal">
+    <div class="story__media">
+      <picture>
+        <source type="image/avif" sizes="(min-width: 760px) 50vw, 100vw" srcset="assets/img/piscina-wide-01-480.avif 480w, assets/img/piscina-wide-01-960.avif 960w, assets/img/piscina-wide-01-1440.avif 1440w">
+        <source type="image/webp" sizes="(min-width: 760px) 50vw, 100vw" srcset="assets/img/piscina-wide-01-480.webp 480w, assets/img/piscina-wide-01-960.webp 960w, assets/img/piscina-wide-01-1440.webp 1440w">
+        <img src="assets/img/piscina-wide-01-1920.jpg" width="1920" height="1118" loading="lazy" decoding="async"
+             alt="Piscina privativa com jato de água ligado, churrasqueira de tijolo ao lado e a lagoa logo atrás.">
+      </picture>
+    </div>
+    <div class="story__text">
+      <p class="story__index">Manhã</p>
+      <h3 class="h3">O dia começa dentro d’água.</h3>
+      <p>A piscina fica a poucos passos da porta, virada para a lagoa. Sem horário, sem fila: ela é da casa, e a casa é sua.</p>
+      <ul class="story__tags"><li>Piscina privativa</li><li>Quintal gramado</li><li>Chuveiro externo</li></ul>
+    </div>
+  </article>
+
+  <article class="story story--flip wrap reveal">
+    <div class="story__media">
+      <picture>
+        <source type="image/avif" sizes="(min-width: 760px) 50vw, 100vw" srcset="assets/img/exterior-05-480.avif 480w, assets/img/exterior-05-960.avif 960w, assets/img/exterior-05-1200.avif 1200w">
+        <source type="image/webp" sizes="(min-width: 760px) 50vw, 100vw" srcset="assets/img/exterior-05-480.webp 480w, assets/img/exterior-05-960.webp 960w, assets/img/exterior-05-1200.webp 1200w">
+        <img src="assets/img/exterior-05-1200.jpg" width="1200" height="1959" loading="lazy" decoding="async"
+             alt="Vista da varanda coberta para o gramado, a piscina, a área com cobertura e a lagoa ao fundo.">
+      </picture>
+    </div>
+    <div class="story__text">
+      <p class="story__index">Tarde</p>
+      <h3 class="h3">A brasa acende<br>e ninguém tem pressa.</h3>
+      <p>Churrasqueira, mesa de jantar externa, geladeira e utensílios de churrasco — grelha e espetos inclusos. A cozinha completa resolve o resto: fogão, forno, micro-ondas, liquidificador e taças de vinho.</p>
+      <ul class="story__tags"><li>Churrasqueira</li><li>Jantar ao ar livre</li><li>Cozinha completa</li></ul>
+    </div>
+  </article>
+
+  <article class="story wrap reveal">
+    <div class="story__media">
+      <picture>
+        <source type="image/avif" sizes="(min-width: 760px) 50vw, 100vw" srcset="assets/img/hidromassagem-vista-480.avif 480w, assets/img/hidromassagem-vista-960.avif 960w, assets/img/hidromassagem-vista-1440.avif 1440w">
+        <source type="image/webp" sizes="(min-width: 760px) 50vw, 100vw" srcset="assets/img/hidromassagem-vista-480.webp 480w, assets/img/hidromassagem-vista-960.webp 960w, assets/img/hidromassagem-vista-1440.webp 1440w">
+        <img src="assets/img/hidromassagem-vista-1920.jpg" width="1920" height="3232" loading="lazy" decoding="async"
+             alt="Banheira de hidromassagem com a janela aberta para a piscina, a lagoa e os morros ao fundo.">
+      </picture>
+    </div>
+    <div class="story__text">
+      <p class="story__index">Noite</p>
+      <h3 class="h3">A água quente,<br>a lagoa na janela.</h3>
+      <p>A suíte master tem hidromassagem com vista para a piscina e a lagoa, varanda própria, cama king, ar-condicionado e closet. Wi-Fi de 600 mega para quando você quiser voltar ao mundo — e uma lagoa inteira para quando não quiser.</p>
+      <ul class="story__tags"><li>Hidromassagem com vista</li><li>Cama king</li><li>Ar-condicionado</li></ul>
+    </div>
+  </article>
+</section>
+
+<!-- ================= Onde dormir ================= -->
+<section class="section rooms" id="espacos" aria-labelledby="rooms-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Onde dormir</p>
+      <h2 id="rooms-title" class="h2">Três quartos, três camas.</h2>
+    </div>
+
+    <ul class="rooms__grid">
+      <li class="room reveal">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 900px) 340px, (min-width: 760px) 32vw, 88vw" srcset="assets/img/suite-master-01-480.avif 480w, assets/img/suite-master-01-960.avif 960w">
+          <source type="image/webp" sizes="(min-width: 900px) 340px, (min-width: 760px) 32vw, 88vw" srcset="assets/img/suite-master-01-480.webp 480w, assets/img/suite-master-01-960.webp 960w">
+          <img src="assets/img/suite-master-01-1200.jpg" width="1200" height="1975" loading="lazy" decoding="async" alt="Suíte master com cama king e portas abertas para a varanda com vista para a lagoa.">
+        </picture>
+        <div class="room__body">
+          <h3 class="h4">Quarto 1 · Suíte master</h3>
+          <p class="room__bed"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-bed"></use></svg> 1 cama king</p>
+          <p class="muted small">Hidromassagem, varanda com vista, ar-condicionado, closet, roupa de cama, gel de banho, água quente e Wi-Fi.</p>
+        </div>
+      </li>
+      <li class="room reveal">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 900px) 340px, (min-width: 760px) 32vw, 88vw" srcset="assets/img/suite-02-01-480.avif 480w, assets/img/suite-02-01-960.avif 960w">
+          <source type="image/webp" sizes="(min-width: 900px) 340px, (min-width: 760px) 32vw, 88vw" srcset="assets/img/suite-02-01-480.webp 480w, assets/img/suite-02-01-960.webp 960w">
+          <img src="assets/img/suite-02-01-1200.jpg" width="1200" height="1995" loading="lazy" decoding="async" alt="Suíte 2 com cama king e ar-condicionado.">
+        </picture>
+        <div class="room__body">
+          <h3 class="h4">Quarto 2 · Suíte</h3>
+          <p class="room__bed"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-bed"></use></svg> 1 cama king</p>
+          <p class="muted small">Ar-condicionado, cabides, roupa de cama, cobertores e travesseiros extras, itens básicos e água quente.</p>
+        </div>
+      </li>
+      <li class="room reveal">
+        <picture>
+          <source type="image/avif" sizes="(min-width: 900px) 340px, (min-width: 760px) 32vw, 88vw" srcset="assets/img/quarto-03-01-480.avif 480w, assets/img/quarto-03-01-960.avif 960w">
+          <source type="image/webp" sizes="(min-width: 900px) 340px, (min-width: 760px) 32vw, 88vw" srcset="assets/img/quarto-03-01-480.webp 480w, assets/img/quarto-03-01-960.webp 960w">
+          <img src="assets/img/quarto-03-01-1200.jpg" width="1200" height="1989" loading="lazy" decoding="async" alt="Quarto 3 com cama de solteiro e ventilador de teto.">
+        </picture>
+        <div class="room__body">
+          <h3 class="h4">Quarto 3</h3>
+          <p class="room__bed"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-bed"></use></svg> 1 cama de solteiro</p>
+          <p class="muted small">Ventilador de teto, roupa de cama, cobertores e travesseiros extras e local para guardar as roupas.</p>
+        </div>
+      </li>
+    </ul>
+
+    <p class="note reveal">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-info"></use></svg>
+      <span>O anfitrião menciona na descrição um <strong>kitnet com cama de casal</strong>, mas a ficha oficial do
+      anúncio registra 3 quartos e 3 camas. Confirme com ele como o kitnet entra na sua reserva antes de contar com ele.
+      <span class="ph">[INFORMAÇÃO A CONFIRMAR]</span></span>
+    </p>
+  </div>
+</section>
+
+<!-- ================= Comodidades ================= -->
+<section class="section amenities" id="comodidades" aria-labelledby="am-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Comodidades</p>
+      <h2 id="am-title" class="h2">O que já está na casa<br>quando você chega.</h2>
+    </div>
+
+    <div class="amenities__grid">
+      <div class="amgroup reveal">
+        <h3 class="h4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pool"></use></svg> Experiência</h3>
+        <ul class="amlist">
+          <li>Piscina</li>
+          <li>Banheira de hidromassagem</li>
+          <li>Na beira da água (ao lado de uma orla)</li>
+          <li>Acesso ao lago</li>
+          <li>Quintal</li>
+          <li>Área de jantar externa</li>
+          <li>Churrasqueira</li>
+          <li>Utensílios para churrasco (grelha e espetos)</li>
+          <li>Chuveiro externo</li>
+        </ul>
+      </div>
+
+      <div class="amgroup reveal">
+        <h3 class="h4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-snow"></use></svg> Conforto</h3>
+        <ul class="amlist">
+          <li>Ar-condicionado</li>
+          <li>Ventilador de teto</li>
+          <li>Roupas de cama</li>
+          <li>Cobertores e travesseiros extras</li>
+          <li>Itens básicos (toalhas, lençóis, sabonete e papel higiênico)</li>
+          <li>Cabides e local para guardar as roupas</li>
+          <li>Banheira</li>
+          <li>Água quente</li>
+          <li>Gel de banho</li>
+          <li>Bidê de banheiro</li>
+        </ul>
+      </div>
+
+      <div class="amgroup reveal">
+        <h3 class="h4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-kitchen"></use></svg> Cozinha</h3>
+        <ul class="amlist">
+          <li>Cozinha (espaço para preparar suas refeições)</li>
+          <li>Fogão e forno</li>
+          <li>Refrigerador</li>
+          <li>Micro-ondas</li>
+          <li>Torradeira e chaleira elétrica</li>
+          <li>Liquidificador</li>
+          <li>Assadeira</li>
+          <li>Pratos e talheres</li>
+          <li>Itens básicos de cozinha (vasilhas, panelas, óleo, sal e pimenta)</li>
+          <li>Taças de vinho</li>
+        </ul>
+      </div>
+
+      <div class="amgroup reveal">
+        <h3 class="h4"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-car"></use></svg> Praticidade</h3>
+        <ul class="amlist">
+          <li>Wi-Fi</li>
+          <li>Estacionamento gratuito no local</li>
+          <li>Máquina de lavar</li>
+          <li>Varal para secar roupas</li>
+          <li>TV</li>
+          <li>Sistema de som</li>
+          <li>Painéis solares</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="amenities__foot reveal">
+      <div class="amnot">
+        <h3 class="h4">Não incluso — para você não ser pego de surpresa</h3>
+        <ul class="amlist amlist--off">
+          <li>Secadora</li>
+          <li>Aquecedor</li>
+          <li>Detector de fumaça não informado</li>
+          <li>Detector de monóxido de carbono não informado</li>
+        </ul>
+        <p class="muted small">O anfitrião não informou esses detectores no anúncio. O Airbnb sugere levar um detector portátil.</p>
+      </div>
+      <div class="amnot">
+        <h3 class="h4">Segurança da propriedade</h3>
+        <ul class="amlist">
+          <li>Câmeras de segurança na parte externa: “presentes no portão de entrada e no quintal da propriedade”.</li>
+        </ul>
+        <p class="muted small">Informação declarada pelo anfitrião no anúncio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Localização ================= -->
+<section class="section location" id="localizacao" aria-labelledby="loc-title">
+  <div class="wrap location__grid">
+    <div class="location__text reveal">
+      <p class="eyebrow">Localização</p>
+      <h2 id="loc-title" class="h2">Coqueiral, Saquarema —<br>entre a lagoa e a praia.</h2>
+      <p>
+        Saquarema é conhecida como a capital nacional do surfe, mas o Coqueiral fica no lado calmo:
+        de frente para a lagoa, com o mar a poucos minutos de carro.
+      </p>
+
+      <ul class="loc-list">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-waves"></use></svg>
+          <div><b>Na beira da lagoa</b><span>A casa fica ao lado da orla, com acesso ao lago.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-sun"></use></svg>
+          <div><b>Praia do Boqueirão · 800 m</b><span>Distância informada pelo anfitrião no anúncio.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-car"></use></svg>
+          <div><b>Itaúna · 15 minutos</b><span>Tempo informado pelo anfitrião no anúncio.</span></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-pin"></use></svg>
+          <div><b>Fácil de circular</b><span>“É fácil se locomover por esta região”, segundo o Airbnb.</span></div>
+        </li>
+      </ul>
+
+      <p class="muted small">
+        O endereço exato é fornecido pelo Airbnb após a confirmação da reserva. O mapa mostra a
+        <strong>região aproximada</strong> do anúncio.
+      </p>
+    </div>
+
+    <div class="location__map reveal">
+      <iframe
+        title="Mapa da região aproximada da casa, no Coqueiral, em Saquarema (RJ)"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-42.5895%2C-22.9575%2C-42.4895%2C-22.8975&amp;layer=mapnik&amp;marker=-22.92743%2C-42.53948"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <p class="muted small">Mapa: OpenStreetMap · localização aproximada</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= Anfitrião ================= -->
+<section class="section host" id="anfitriao" aria-labelledby="host-title">
+  <div class="wrap host__card reveal">
+    <!-- DADOS FICTÍCIOS: nome, foto e selo são de exemplo. Substituir pelos dados reais
+         do anfitrião antes de publicar — a foto original está em assets/img/anfitriao-samuel.jpg. -->
+    <div class="host__intro">
+      <img class="host__avatar" src="assets/img/anfitriao-placeholder.svg" width="120" height="120" loading="lazy" decoding="async"
+           alt="Avatar genérico de espaço reservado, no lugar da foto do anfitrião.">
+      <div>
+        <p class="eyebrow">Seu anfitrião</p>
+        <h2 id="host-title" class="h3">Marina Duarte <span class="ph">[DADOS FICTÍCIOS]</span></h2>
+        <p class="host__badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-shield"></use></svg>
+          Identidade verificada pelo Airbnb — a confirmar
+        </p>
+      </div>
+    </div>
+
+    <!-- O aviso vem ANTES dos números, para que não sejam lidos como nota da casa -->
+    <p class="host__notice">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-info"></use></svg>
+      <span><strong>Esta casa ainda não tem avaliações.</strong> É um anúncio recente.
+      Os números abaixo são do <strong>perfil do anfitrião</strong> no Airbnb, somando as hospedagens dele —
+      não são a nota desta hospedagem. Nenhum depoimento desta página foi inventado.</span>
+    </p>
+
+    <h3 class="host__stats-title">No perfil do anfitrião no Airbnb</h3>
+    <dl class="host__stats">
+      <div><dt>Avaliações recebidas por ele</dt><dd>7</dd></div>
+      <div><dt>Média dessas avaliações</dt><dd>5,0 <svg class="star" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-star"></use></svg></dd></div>
+      <div><dt>Hospedando há</dt><dd>8 meses</dd></div>
+    </dl>
+
+    <ul class="host__facts">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg> Responde em até 1 hora</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-check"></use></svg> Taxa de resposta: 100%</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-home"></use></svg> Mora em Saquarema, Brasil</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-users"></use></svg> Fala português, inglês e espanhol</li>
+    </ul>
+
+    <p class="host__quote">
+      Hóspedes recentes deram 5 estrelas ao anfitrião pela comunicação.
+      <span class="muted small">— destaque do Airbnb no anúncio</span>
+    </p>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section faq" id="faq" aria-labelledby="faq-title">
+  <div class="wrap faq__wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Antes de reservar</p>
+      <h2 id="faq-title" class="h2">Perguntas frequentes</h2>
+    </div>
+
+    <div class="faq__list reveal">
+      <details name="faq">
+        <summary>Quantas pessoas cabem na casa?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body"><p>Até <strong>10 hóspedes</strong>. É o máximo permitido pelas regras da casa.</p></div>
+      </details>
+
+      <details name="faq">
+        <summary>Quantos quartos, camas e banheiros?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body">
+          <p><strong>3 quartos, 3 camas e 2 banheiros.</strong> Quarto 1 e quarto 2 têm cama king; o quarto 3 tem cama de solteiro.
+          A descrição do anfitrião menciona ainda um kitnet com cama de casal — confirme com ele como ele entra na reserva.
+          <span class="ph">[INFORMAÇÃO A CONFIRMAR]</span></p>
+        </div>
+      </details>
+
+      <details name="faq">
+        <summary>Os quartos têm banheiro privativo?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body"><p>A descrição informa <strong>2 suítes com cama king</strong>, e o anúncio lista dois banheiros completos: um da suíte principal (com hidromassagem) e o da suíte 2.</p></div>
+      </details>
+
+      <details name="faq">
+        <summary>A piscina e a hidromassagem são privativas?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body"><p>Sim. Você aluga a <strong>casa inteira</strong>, então a <strong>piscina privativa</strong> e a <strong>banheira de hidromassagem</strong> da suíte master são de uso exclusivo do seu grupo.</p></div>
+      </details>
+
+      <details name="faq">
+        <summary>Como funciona o check-in e o checkout?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body"><p><strong>Check-in após 15:00</strong> e <strong>checkout antes das 12:00</strong>. O procedimento de entrega das chaves não está descrito no anúncio. <span class="ph">[INFORMAÇÃO A CONFIRMAR]</span></p></div>
+      </details>
+
+      <details name="faq">
+        <summary>Tem Wi-Fi, ar-condicionado e estacionamento?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body"><p>Sim para os três. O anúncio lista <strong>Wi-Fi</strong> (600 mega, segundo a descrição), <strong>ar-condicionado</strong> — em todos os quartos, conforme a descrição — e <strong>estacionamento gratuito no local</strong>. O quarto 3 tem ventilador de teto.</p></div>
+      </details>
+
+      <details name="faq">
+        <summary>Aceita pets? Pode fazer festa ou evento?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body">
+          <p>Não são aceitos pets e <strong>não são permitidas festas ou eventos</strong>. Também não é permitido receber hóspedes fora da reserva, nem fumar, nem fazer fotografia comercial. O horário de silêncio é das <strong>23:00 às 09:00</strong>.</p>
+          <p>Para <strong>day use ou eventos</strong>, o anfitrião pede que você entre em contato pelo chat do Airbnb.</p>
+        </div>
+      </details>
+
+      <details name="faq">
+        <summary>Onde exatamente fica a casa?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body"><p>No bairro <strong>Coqueiral</strong>, em <strong>Saquarema (RJ)</strong>, de frente para a lagoa, a 800&nbsp;m da Praia do Boqueirão e 15&nbsp;minutos de Itaúna. O <strong>endereço exato é fornecido após a confirmação da reserva</strong>.</p></div>
+      </details>
+
+      <details name="faq">
+        <summary>Quanto custa e como reservo?<span class="faq__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></span></summary>
+        <div class="faq__body">
+          <p>O preço varia com as datas e só aparece depois que você as seleciona. A reserva é feita
+            <strong>direto pelo Airbnb</strong>, com o pagamento e a proteção da plataforma.</p>
+          <p>Política de cancelamento: <span class="ph">[INFORMAÇÃO A CONFIRMAR — o Airbnb só exibe depois de escolher as datas]</span></p>
+          <p><a class="link js-book" href="https://www.airbnb.com.br/rooms/1685642968319797589" target="_blank" rel="noopener">Consultar datas e valores no Airbnb</a></p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA final ================= -->
+<section class="final" id="reservar" aria-labelledby="final-title">
+  <picture>
+    <source type="image/avif" sizes="100vw" srcset="assets/img/piscina-wide-02-480.avif 480w, assets/img/piscina-wide-02-960.avif 960w, assets/img/piscina-wide-02-1440.avif 1440w, assets/img/piscina-wide-02-1920.avif 1920w">
+    <source type="image/webp" sizes="100vw" srcset="assets/img/piscina-wide-02-480.webp 480w, assets/img/piscina-wide-02-960.webp 960w, assets/img/piscina-wide-02-1440.webp 1440w, assets/img/piscina-wide-02-1920.webp 1920w">
+    <img class="final__bg" src="assets/img/piscina-wide-02-1920.jpg" width="1920" height="1174" loading="lazy" decoding="async" alt="" aria-hidden="true">
+  </picture>
+  <div class="final__scrim" aria-hidden="true"></div>
+  <div class="wrap final__content reveal">
+    <p class="eyebrow eyebrow--light">Casa na Lagoa · Saquarema</p>
+    <h2 id="final-title" class="final__title">Agora só falta<br>escolher as datas.</h2>
+    <p class="final__lead">
+      A casa inteira para o seu grupo, a piscina, o quintal e a lagoa. O resto já está aqui.
+    </p>
+    <a class="btn btn--primary btn--lg js-book" href="https://www.airbnb.com.br/" target="_blank" rel="noopener">
+      Reservar no Airbnb
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg>
+    </a>
+    <p class="final__note">Reserva, pagamento e cancelamento acontecem no Airbnb. Esta página apenas apresenta a casa.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= Footer ================= -->
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <div>
+      <a class="brand brand--footer" href="#topo">
+        <svg class="brand__mark" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-waves"></use></svg>
+        <span class="brand__text"><strong>Casa na Lagoa</strong><small>Coqueiral · Saquarema · RJ</small></span>
+      </a>
+      <p class="muted small">
+        Casa inteira · 10 hóspedes · 3 quartos · 2 banheiros<br>
+        Check-in após 15:00 · Checkout antes das 12:00
+      </p>
+    </div>
+
+    <nav class="site-footer__nav" aria-label="Navegação do rodapé">
+      <a href="#fotos">Fotos</a>
+      <a href="#por-que">Por que aqui</a>
+      <a href="#estadia">A estadia</a>
+      <a href="#comodidades">Comodidades</a>
+      <a href="#localizacao">Localização</a>
+      <a href="#anfitriao">Anfitrião</a>
+      <a href="#faq">Perguntas frequentes</a>
+    </nav>
+
+    <div class="site-footer__cta">
+      <a class="btn btn--outline js-book" href="https://www.airbnb.com.br/" target="_blank" rel="noopener">Reservar no Airbnb</a>
+      <p class="muted small">
+        Página independente criada para apresentar a hospedagem. Reservas exclusivamente pelo anúncio oficial no Airbnb.
+        Fotos e informações do próprio anúncio.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= CTA fixo mobile ================= -->
+<div class="ctabar" id="ctabar" hidden>
+  <div class="ctabar__inner">
+    <div class="ctabar__info">
+      <b>Casa inteira · 10 hóspedes</b>
+      <span>Piscina privativa, na lagoa</span>
+    </div>
+    <a class="btn btn--primary btn--sm js-book" href="https://www.airbnb.com.br/rooms/1685642968319797589" target="_blank" rel="noopener">
+      Ver datas e valores
+    </a>
+  </div>
+</div>
+
+<!-- ================= Lightbox ================= -->
+<dialog class="lightbox" id="lightbox" aria-label="Galeria de fotos ampliada">
+  <div class="lightbox__bar">
+    <p class="lightbox__count"><span id="lb-current">1</span> / <span id="lb-total">18</span></p>
+    <button class="iconbtn" type="button" id="lb-close" aria-label="Fechar galeria">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-close"></use></svg>
+    </button>
+  </div>
+  <figure class="lightbox__stage">
+    <picture>
+      <source id="lb-avif" type="image/avif">
+      <source id="lb-webp" type="image/webp">
+      <img id="lb-img" alt="" decoding="async">
+    </picture>
+    <figcaption id="lb-caption"></figcaption>
+  </figure>
+  <button class="iconbtn iconbtn--nav iconbtn--prev" type="button" id="lb-prev" aria-label="Foto anterior">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg>
+  </button>
+  <button class="iconbtn iconbtn--nav iconbtn--next" type="button" id="lb-next" aria-label="Próxima foto">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg>
+  </button>
+</dialog>
+
+<script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

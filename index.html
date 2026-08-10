@@ -15,6 +15,7 @@
                      hospedado por ele; nada dele mora neste projeto)
      • Banner 2 .... brasa/  -> landing BRASA Smash House
      • Banner 3 .... fornalha/ -> landing Fornalha (pizzaria)
+     • Banner 4 .... casa-na-lagoa/ -> landing Casa na Lagoa (temporada)
                      Relativos SEM barra inicial de propósito: funcionam
                      em vercel.app, domínio próprio, localhost e em
                      subpasta, sem editar. Precisam de servidor: em
@@ -66,6 +67,16 @@
   --forn-paper:#f5efe4;
   --forn-ember:#c8281f;
   --forn-amber:#e3a13c;
+
+  /* marca 4 — Casa na Lagoa (paleta de assets/css/styles.css do site) */
+  --lagoa-deep:#22403a;
+  --lagoa-deep-2:#16302b;
+  --lagoa-sand:#f7f3ec;
+  --lagoa-terra:#a8462a;
+  /* Clareamento do --c-gold (#b07c2e) do site: a terracota da marca sobre o
+     verde do card dá 1,92:1 e o ouro original 3,10:1 - nenhum dos dois passa.
+     Este tom fecha em 4,78:1, acima do 4,5:1 do WCAG AA. */
+  --lagoa-gold:#d2a054;
 
   /* tipografia */
   --sans:'Satoshi',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -302,6 +313,32 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
 /* O fio do vizinho é preto sobre card claro; aqui só um fio claro aparece. */
 .card--fornalha .card__media::after{box-shadow:inset 1px 0 0 rgba(245,239,228,.13)}
 
+/* — Card 4: Casa na Lagoa —
+   Verde da lagoa, que é o theme-color e o favicon do site: numa peça do tamanho
+   de um card, a cor é a identidade comprimida. Fica ao lado de um card quase
+   preto sem se confundir com ele - um é fuligem, o outro é água. */
+.card--lagoa{
+  --hl-size:clamp(20px,5.4vw,26px);--hl-lh:1.14;--hl-ls:0;
+  background:
+    radial-gradient(120% 92% at 0% 100%,rgba(168,70,42,.24),transparent 60%),
+    radial-gradient(92% 76% at 100% 0%,rgba(210,160,84,.14),transparent 58%),
+    linear-gradient(155deg,#2b5049 0%,var(--lagoa-deep) 48%,var(--lagoa-deep-2) 100%);
+  color:var(--lagoa-sand);
+}
+/* Lockup empilhado (~3,7:1): pede mais altura que um wordmark deitado. */
+.card--lagoa .card__logo{height:clamp(30px,8.2vw,38px)}
+/* Único card inteiramente em serifa: ecoa a Fraunces do site, que a Link Tree
+   não serve. O itálico vem da Instrument Serif, a única serifa self-hosted aqui. */
+.card--lagoa .card__headline{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  color:var(--lagoa-sand);
+}
+.card--lagoa .card__headline em{font-style:italic;color:var(--lagoa-gold)}
+.card--lagoa .card__num,.card--lagoa .card__name{color:rgba(247,243,236,.62)}
+.card--lagoa .arrow{background:rgba(210,160,84,.16);color:var(--lagoa-gold)}
+.card--lagoa .card__media{background:var(--lagoa-deep-2)}
+.card--lagoa .card__media::after{box-shadow:inset 1px 0 0 rgba(247,243,236,.13)}
+
 /* ---------- RODAPÉ ---------- */
 .foot{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:4px}
 .socials{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
@@ -326,6 +363,7 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
 .rise{animation:rise .7s cubic-bezier(.2,.7,.3,1) both}
 .d1{animation-delay:.05s}.d2{animation-delay:.14s}.d3{animation-delay:.22s}
 .d4{animation-delay:.30s}.d5{animation-delay:.38s}.d6{animation-delay:.46s}
+.d7{animation-delay:.54s}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 /* ---------- BREAKPOINTS ---------- */
@@ -438,10 +476,32 @@ a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
       </div>
     </a>
 
+    <!-- ---------- BANNER 4 ---------- -->
+    <a class="card card--lagoa rise d6"
+       data-edit="banner-4"
+       href="casa-na-lagoa/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Abrir projeto Casa na Lagoa em nova aba">
+      <div class="card__body">
+        <div class="card__top">
+          <img class="card__logo" src="assets/lagoa-lockup.svg" alt="Casa na Lagoa" width="186" height="50">
+          <span class="card__num">04</span>
+        </div>
+        <h2 class="card__headline">A lagoa começa<br><em>onde o quintal termina</em></h2>
+        <div class="card__foot">
+          <span class="card__name">Temporada<b> · Saquarema, RJ</b></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </div>
+      </div>
+      <div class="card__media">
+        <img src="assets/lagoa-photo.jpg" alt="" width="380" height="464" loading="lazy">
+      </div>
+    </a>
+
   </section>
 
   <!-- ===== RODAPÉ ===== -->
-  <footer class="foot rise d6">
+  <footer class="foot rise d7">
     <nav class="socials" aria-label="Redes sociais">
       <a class="social" data-edit="instagram" href="https://instagram.com/mauvictorr" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">

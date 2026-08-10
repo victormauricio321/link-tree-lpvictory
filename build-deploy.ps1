@@ -1,7 +1,8 @@
 # Sincroniza as landing pages para dentro deste projeto, prontas para deploy.
 #
-#   meu-site-hamburger/  ->  brasa/      (servida em /brasa/)
-#   site-pizzaria/       ->  fornalha/   (servida em /fornalha/)
+#   meu-site-hamburger/  ->  brasa/           (servida em /brasa/)
+#   site-pizzaria/       ->  fornalha/        (servida em /fornalha/)
+#   site-airbnb/         ->  casa-na-lagoa/   (servida em /casa-na-lagoa/)
 #
 # As pastas de origem NAO sao alteradas: continuam sendo a fonte da verdade.
 # Rode este script sempre que editar uma das landing pages.
@@ -16,6 +17,7 @@ $projetos = Split-Path $root -Parent
 $fontes = @(
     @{ Nome = "BRASA Smash House"; De = "meu-site-hamburger"; Para = "brasa"    }
     @{ Nome = "Fornalha";          De = "site-pizzaria";      Para = "fornalha" }
+    @{ Nome = "Casa na Lagoa";     De = "site-airbnb";        Para = "casa-na-lagoa" }
 )
 
 # Material de trabalho que nao deve ir para producao.
@@ -35,6 +37,10 @@ $excluirPorProjeto = @{
     "site-pizzaria"      = @("cores-e-estrutura-grid.jpg", "estrutura-grid.jpg",
                              "tipografia1.jpg", "tipografia2.jpg",
                              "tom-de-voz1.jpg", "tom-de-voz2.jpg")
+    # assets/img/_src sao os originais de camera: a pasta assets/img ao lado ja
+    # tem as versoes servidas (avif/webp/jpg em 5 larguras). tools/ sao scripts
+    # de build em Node - nao rodam em producao. Juntos, 61 + 2 arquivos e ~10 MB.
+    "site-airbnb"        = @("_src", "tools")
 }
 
 foreach ($f in $fontes) {
